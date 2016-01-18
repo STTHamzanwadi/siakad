@@ -12,7 +12,7 @@ public class ViewFactory {
 		VerticalLayout footer = new VerticalLayout();
 		//footer.addStyleName("viewheader");
 		footer.setSpacing(true);
-		String s = "<p><strong>INTEGRATED ONLINE SYSTEM : SISTEM INFORMASI AKADEMIK<br></strong><br>"
+		String s = "<br><strong>INTEGRATED ONLINE SYSTEM : SISTEM INFORMASI AKADEMIK</strong><br>"
 				+ "http://iosys.stthamzanwadi.ac.id/siakademik <br> "
 				+ "<b>powered by : Ubuntu, JavaEE, JBossAS (Wildfly), Vaadin, Hibernate, MySQL, JasperReport</b>";
 		Label lblCredit = new Label(s, ContentMode.HTML);

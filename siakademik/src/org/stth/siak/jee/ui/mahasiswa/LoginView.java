@@ -3,7 +3,6 @@ package org.stth.siak.jee.ui.mahasiswa;
 import java.util.List;
 
 import org.stth.jee.persistence.GenericPersistence;
-import org.stth.siak.entity.DosenKaryawan;
 import org.stth.siak.entity.Konfigurasi;
 import org.stth.siak.entity.Mahasiswa;
 import org.stth.siak.util.UserAuthenticationService;

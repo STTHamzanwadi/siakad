@@ -5,7 +5,6 @@ import org.stth.siak.entity.Mahasiswa;
 import org.stth.siak.jee.genericview.MahasiswaProfilView;
 import org.stth.siak.jee.genericview.ViewFactory;
 
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Responsive;
@@ -21,7 +20,6 @@ public class MahasiswaProfil extends VerticalLayout implements View{
 	private static final long serialVersionUID = -2694783715823501660L;
 	TextField txtNama,txtNIDN,txtNIS,txtTanggalLahir,txtEmail,txtAlamat,txtKtp;
 	TextField txtJenjangPendidikanTerakhir,txtProdiPendidikanTerakhir,txtInstitusiPendidikanTerakhir;
-	private BeanItem<Mahasiswa> item;
 
 	public MahasiswaProfil() {
 		//System.out.println("numpang lewat");
@@ -29,7 +27,6 @@ public class MahasiswaProfil extends VerticalLayout implements View{
 		Mahasiswa m = (Mahasiswa) VaadinSession.getCurrent().getAttribute(Mahasiswa.class);
 		setMargin(true);
 		Responsive.makeResponsive(this);
-		item = new BeanItem<Mahasiswa>(m);
 		addComponent(ViewFactory.header("Profil Mahasiswa"));
 		addComponent(new MahasiswaProfilView(m));
 		addComponent(ViewFactory.footer());

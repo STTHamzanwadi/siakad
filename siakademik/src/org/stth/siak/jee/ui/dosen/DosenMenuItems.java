@@ -9,6 +9,7 @@ public enum DosenMenuItems {
 	 PERKULIAHAN("Riwayat Mengajar", DosenKelasDiampu.class, FontAwesome.UNIVERSITY, false),
 	 MAHASISWA("Bimbingan Akademik", DosenStatusBimbinganAkademik.class, FontAwesome.USERS, true),
 	 RENCANA_STUDI("Verifikasi Rencana Studi", DosenVerifikasiRencanaStudi.class, FontAwesome.USERS, true),
+	 INFO_KURIKULUM("Struktur Kurikulum", DosenDetailKurikulum.class, FontAwesome.TABLE, true),
 	 DOSEN("Misc", DosenProfil.class, FontAwesome.MALE, false);
 	 
 	 private final String viewName;
