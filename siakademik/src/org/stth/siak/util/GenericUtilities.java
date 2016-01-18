@@ -7,9 +7,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import org.hibernate.HibernateException;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.stth.jee.persistence.HibernateUtil;
 import org.stth.siak.enumtype.Semester;
 
@@ -31,13 +31,20 @@ public class GenericUtilities {
 		Timestamp dbTimeStamp = null;
 		queryString = "SELECT now() param FROM DUAL";
 		//SessionFactory sessionFactory = HibernateUtil.configureSessionFactory();
-	    Session session = HibernateUtil.getSession();
-	    session.beginTransaction();
-		sqlQuery = session.createSQLQuery(queryString);
-		sqlQuery.addScalar("param",
-					org.hibernate.type.TimestampType.INSTANCE);
-		dbTimeStamp = (Timestamp) sqlQuery.uniqueResult();
-		return dbTimeStamp;
+		Session session = HibernateUtil.getSession();
+	    try {
+			
+			session.beginTransaction();
+			sqlQuery = session.createSQLQuery(queryString);
+			sqlQuery.addScalar("param",
+						org.hibernate.type.TimestampType.INSTANCE);
+			dbTimeStamp = (Timestamp) sqlQuery.uniqueResult();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		} finally {
+			HibernateUtil.closeSession();
+		}
+	    return dbTimeStamp;
 	}
 	public static Date getCurrentDBDate() {
 		SQLQuery sqlQuery = null;
@@ -45,11 +52,18 @@ public class GenericUtilities {
 		Date dbDate = null;
 		queryString = "SELECT curdate() param FROM DUAL";
 		Session session = HibernateUtil.getSession();
-	    session.beginTransaction();
-		sqlQuery = session.createSQLQuery(queryString);
-		sqlQuery.addScalar("param",
-					org.hibernate.type.DateType.INSTANCE);
-		dbDate = (Date) sqlQuery.uniqueResult();
+		try {
+			session.beginTransaction();
+			sqlQuery = session.createSQLQuery(queryString);
+			sqlQuery.addScalar("param",
+						org.hibernate.type.DateType.INSTANCE);
+			dbDate = (Date) sqlQuery.uniqueResult();
+		} catch (HibernateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			HibernateUtil.closeSession();
+		}
 		return dbDate;
 
 	}

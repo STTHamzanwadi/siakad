@@ -42,8 +42,6 @@ public class DosenMenuComponent extends CustomComponent {
     public DosenMenuComponent() {
         addStyleName("valo-menu");
         setSizeUndefined();
-      
-
         setCompositionRoot(buildContent());
     }
 
@@ -84,6 +82,7 @@ public class DosenMenuComponent extends CustomComponent {
         settingsItem.addItem("Ganti Password", new Command() {
             @Override
             public void menuSelected(MenuItem selectedItem) {
+            	spawnPasswordResetDialog();
                 
             }
         });
@@ -124,33 +123,13 @@ public class DosenMenuComponent extends CustomComponent {
         
         for (final DosenMenuItems view : DosenMenuItems.values()) {
             Component menuItemComponent = new ValoMenuItemButton(view);
-
-           
-           // if (view == MenuItems.DASHBOARD) {
-                notificationsBadge = new Label();
-                menuItemComponent = buildBadgeWrapper(menuItemComponent,
-                        notificationsBadge);
-            //}
-           
             menuItemsLayout.addComponent(menuItemComponent);
         }
         return menuItemsLayout;
 
     }
 
-    private Component buildBadgeWrapper(Component menuItemButton,
-            Component badgeLabel) {
-        CssLayout dashboardWrapper = new CssLayout(menuItemButton);
-        dashboardWrapper.addStyleName("badgewrapper");
-        dashboardWrapper.addStyleName(ValoTheme.MENU_ITEM);
-        dashboardWrapper.setWidth(100.0f, Unit.PERCENTAGE);
-        badgeLabel.addStyleName(ValoTheme.MENU_BADGE);
-        badgeLabel.setWidthUndefined();
-        badgeLabel.setVisible(false);
-        dashboardWrapper.addComponent(badgeLabel);
-        return dashboardWrapper;
-    }
-
+   
     @Override
     public void attach() {
         super.attach();

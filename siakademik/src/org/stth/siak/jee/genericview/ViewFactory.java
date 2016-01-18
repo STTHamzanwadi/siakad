@@ -11,17 +11,12 @@ public class ViewFactory {
 	public static Component footer(){
 		VerticalLayout footer = new VerticalLayout();
 		//footer.addStyleName("viewheader");
-		Label titleLabel2;
 		footer.setSpacing(true);
-		titleLabel2 = new Label("INTEGRATED ONLINE SYSTEM : SISTEM INFORMASI AKADEMIK");
-		titleLabel2.setSizeUndefined();
-		titleLabel2.addStyleName(ValoTheme.LABEL_H3);
-		titleLabel2.addStyleName(ValoTheme.LABEL_COLORED);
-		footer.addComponent(titleLabel2);
-		
-		String s = "http://iosys.stthamzanwadi.ac.id/siakademik <br> "
+		String s = "<p><strong>INTEGRATED ONLINE SYSTEM : SISTEM INFORMASI AKADEMIK<br></strong><br>"
+				+ "http://iosys.stthamzanwadi.ac.id/siakademik <br> "
 				+ "<b>powered by : Ubuntu, JavaEE, JBossAS (Wildfly), Vaadin, Hibernate, MySQL, JasperReport</b>";
 		Label lblCredit = new Label(s, ContentMode.HTML);
+		lblCredit.setStyleName(ValoTheme.LABEL_COLORED);
 		footer.addComponent(lblCredit);
 		return footer;
 	}

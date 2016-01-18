@@ -18,7 +18,7 @@ import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.UI;
 
-@Title("Dosen Dashboard")
+@Title("IOSYS:SIAKAD-Dosen")
 @Theme("siakademik")
 @SuppressWarnings("serial")
 public class DosenUI extends UI {

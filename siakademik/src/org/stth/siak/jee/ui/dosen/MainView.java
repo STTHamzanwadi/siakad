@@ -17,6 +17,7 @@ public class MainView extends HorizontalLayout {
         content.setPrimaryStyleName("valo-content");
         content.addStyleName("v-scrollable");
         content.setSizeFull();
+        
         addComponent(content);
         setExpandRatio(content, 1.0f);
 

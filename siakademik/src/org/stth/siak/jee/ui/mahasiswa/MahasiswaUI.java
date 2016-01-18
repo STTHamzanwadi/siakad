@@ -4,14 +4,11 @@ import java.util.Locale;
 
 import javax.servlet.annotation.WebServlet;
 
-import org.stth.siak.entity.DosenKaryawan;
 import org.stth.siak.entity.Mahasiswa;
 
-import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
-import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.Page;
 import com.vaadin.server.Page.BrowserWindowResizeEvent;
 import com.vaadin.server.Page.BrowserWindowResizeListener;
@@ -20,7 +17,6 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.Window;
 
 @Title("IOSYS:SIAKAD-Mahasiswa")
 @Theme("siakademik")
@@ -35,7 +31,7 @@ public class MahasiswaUI extends UI {
     protected void init(VaadinRequest request) {
         //getSession().setConverterFactory(new MyConverterFactory());
         setLocale(Locale.US);
-
+        setTheme("tests-valo-reindeer");
     
         Responsive.makeResponsive(this);
 
@@ -59,7 +55,6 @@ public class MahasiswaUI extends UI {
             setContent(new MainView());
             removeStyleName("loginview");
             getNavigator().navigateTo(getNavigator().getState());
-            getContent().setHeightUndefined();
         } else {
             setContent(new LoginView());
             addStyleName("loginview");

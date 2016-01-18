@@ -43,7 +43,6 @@ public class MahasiswaMenuComponent extends CustomComponent {
     	addStyleName("valo-menu");
     	setSizeUndefined();
         setCompositionRoot(buildContent());
-
     }
 
     private Component buildContent() {
@@ -160,10 +159,6 @@ public class MahasiswaMenuComponent extends CustomComponent {
         
         for (final MahasiswaMenuItems view : MahasiswaMenuItems.values()) {
             Component menuItemComponent = new ValoMenuItemButton(view);
-
-           
-           
-           
             menuItemsLayout.addComponent(menuItemComponent);
         }
         return menuItemsLayout;
