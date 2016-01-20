@@ -1,7 +1,7 @@
 package org.stth.siak.jee.ui.dosen;
 
 import org.stth.siak.entity.DosenKaryawan;
-import org.stth.siak.util.GenericUtilities;
+import org.stth.siak.util.GeneralUtilities;
 import org.stth.siak.util.UserAuthenticationService;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
@@ -99,7 +99,7 @@ public class LoginView extends VerticalLayout {
 			isValid = true;
 		}
 		if (isValid) {
-			d.setLastSuccessfulLogin(GenericUtilities.getCurrentDBTime());
+			d.setLastSuccessfulLogin(GeneralUtilities.getCurrentDBTime());
 			//GenericPersistence.merge(d);
 			getSession().setAttribute("user", d.getNama());
 			getSession().setAttribute("curUser", d);

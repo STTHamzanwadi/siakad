@@ -1,5 +1,12 @@
 package org.stth.siak.jee.ui.dosen;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.stth.siak.jee.ui.eis.ControlledAccessMenuItems;
+import org.stth.siak.ui.util.AppMenuItems;
+
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -47,7 +54,13 @@ public class DosenNavigator extends Navigator {
    
 
     private void initViewProviders() {
-        for (final DosenMenuItems view : DosenMenuItems.values()) {
+        //List<AppMenuItems> ls = new ArrayList<>();
+    	AppMenuItems[] y = DosenMenuItems.values(), z = ControlledAccessMenuItems.values();
+    	List<AppMenuItems> l = new ArrayList<>();
+    	l.addAll(Arrays.asList(y));
+    	l.addAll(Arrays.asList(z));
+    	//AppMenuItems[]  x = ArrayUtils.addAll(y,z);
+    	for (final AppMenuItems view : l) {
             ViewProvider viewProvider = new ClassBasedViewProvider(
                     view.getViewName(), view.getViewClass()) {
                 private View cachedInstance;
@@ -79,6 +92,7 @@ public class DosenNavigator extends Navigator {
     
             addProvider(viewProvider);
         }
+        
     
         setErrorProvider(new ViewProvider() {
             @Override

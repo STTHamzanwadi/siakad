@@ -7,9 +7,8 @@ import org.stth.jee.persistence.MahasiswaPersistence;
 import org.stth.siak.entity.DosenKaryawan;
 import org.stth.siak.entity.Mahasiswa;
 import org.stth.siak.helper.IndeksPrestasiHelper;
-import org.stth.siak.jee.genericview.MahasiswaProfilView;
-import org.stth.siak.jee.genericview.ViewFactory;
-import org.stth.siak.jee.ui.mahasiswa.IPKView;
+import org.stth.siak.jee.ui.generalview.ViewFactory;
+import org.stth.siak.ui.util.GeneralPopups;
 
 import com.ibm.icu.text.DecimalFormat;
 import com.vaadin.data.util.BeanContainer;
@@ -25,9 +24,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
 public class DosenStatusBimbinganAkademik extends VerticalLayout implements View{
@@ -95,13 +92,13 @@ public class DosenStatusBimbinganAkademik extends VerticalLayout implements View
 				final Mahasiswa o = (Mahasiswa) i.getBean();
 				buttonTranskrip.addClickListener(new ClickListener() {
 					@Override public void buttonClick(ClickEvent event) {
-						showProfilMahasiswa(o);
+						GeneralPopups.showProfilMahasiswa(o);
 					}
 				});
 				Button buttonProfil = new Button("Transkrip");
 				buttonProfil.addClickListener(new ClickListener() {
 					@Override public void buttonClick(ClickEvent event) {
-						showIpkMahasiswa(o);
+						GeneralPopups.showIpkMahasiswa(o);
 					}
 				});
 				hl.addComponents(buttonProfil,buttonTranskrip);
@@ -124,29 +121,5 @@ public class DosenStatusBimbinganAkademik extends VerticalLayout implements View
 
 	}
 	
-	private void showProfilMahasiswa(Mahasiswa m){
-		final Window win = new Window("Profil Mahasiswa");
-		Component c = new MahasiswaProfilView(m);
-		VerticalLayout vl = new VerticalLayout();
-		vl.setMargin(true);
-		vl.addComponent(c);
-		win.setContent(vl);
-		win.setModal(true);
-		win.setWidth("600px");
-		win.center();
-		UI.getCurrent().addWindow(win);
-	}
-	private void showIpkMahasiswa(Mahasiswa m){
-		final Window win = new Window("Transkrip Nilai Mahasiswa");
-		Component c = new IPKView(m);
-		VerticalLayout vl = new VerticalLayout();
-		vl.setMargin(true);
-		vl.addComponent(c);
-		win.setContent(vl);
-		win.setModal(true);
-		win.setWidth("600px");
-		win.center();
-		UI.getCurrent().addWindow(win);
-	}
-
+	
 }

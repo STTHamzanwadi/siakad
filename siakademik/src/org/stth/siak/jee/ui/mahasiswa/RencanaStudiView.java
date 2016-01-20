@@ -21,7 +21,7 @@ import org.stth.siak.enumtype.RencanaStudiMatkulKeterangan;
 import org.stth.siak.enumtype.Semester;
 import org.stth.siak.enumtype.StatusRencanaStudi;
 import org.stth.siak.helper.RencanaStudiManualHelper;
-import org.stth.siak.jee.genericview.ViewFactory;
+import org.stth.siak.jee.ui.generalview.ViewFactory;
 import org.stth.siak.rpt.ReportContentFactory;
 import org.stth.siak.rpt.ReportOutputGenerator;
 import org.stth.siak.rpt.ReportRawMaterials;

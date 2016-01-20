@@ -2,8 +2,8 @@ package org.stth.siak.jee.ui.mahasiswa;
 
 
 import org.stth.siak.entity.Mahasiswa;
-import org.stth.siak.jee.genericview.MahasiswaProfilView;
-import org.stth.siak.jee.genericview.ViewFactory;
+import org.stth.siak.jee.ui.generalview.MahasiswaProfilView;
+import org.stth.siak.jee.ui.generalview.ViewFactory;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;

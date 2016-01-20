@@ -62,6 +62,8 @@
 		<dependency org="net.sf.jasperreports" name="jasperreports-fonts" rev="6.0.0"/>
 		<dependency org="org.codehaus.groovy" name="groovy-all" rev="2.4.5"/>
 		<dependency org="com.vaadin.addon" name="tableexport-for-vaadin" rev="1.6.2" />
+		<dependency org="org.apache.commons" name="commons-lang3" rev="3.0"/>
+		
 		
 	</dependencies>
 </ivy-module>

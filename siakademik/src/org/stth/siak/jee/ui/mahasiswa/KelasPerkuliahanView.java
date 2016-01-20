@@ -2,7 +2,7 @@ package org.stth.siak.jee.ui.mahasiswa;
 
 import org.stth.siak.entity.Mahasiswa;
 import org.stth.siak.entity.PesertaKuliah;
-import org.stth.siak.jee.genericview.ViewFactory;
+import org.stth.siak.jee.ui.generalview.ViewFactory;
 
 import com.vaadin.data.util.BeanContainer;
 import com.vaadin.navigator.View;

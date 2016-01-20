@@ -1,4 +1,4 @@
-package org.stth.siak.jee.genericview;
+package org.stth.siak.jee.ui.generalview;
 
 import java.util.Collections;
 import java.util.List;

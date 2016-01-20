@@ -2,7 +2,7 @@ package org.stth.siak.jee.ui.dosen;
 
 
 import org.stth.siak.entity.DosenKaryawan;
-import org.stth.siak.jee.genericview.ViewFactory;
+import org.stth.siak.jee.ui.generalview.ViewFactory;
 
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;

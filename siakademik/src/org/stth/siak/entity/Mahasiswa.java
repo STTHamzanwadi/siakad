@@ -12,16 +12,16 @@ import javax.persistence.PrimaryKeyJoinColumn;
 
 @Entity
 public class Mahasiswa implements Comparable<Mahasiswa>, Comparator<Mahasiswa>{
-	
+
 	@Id @GeneratedValue
 	private int id;
 	private String nama;
 	private String npm;
 	@ManyToOne(cascade = CascadeType.REFRESH)
-    @PrimaryKeyJoinColumn
+	@PrimaryKeyJoinColumn
 	private ProgramStudi prodi;
 	@ManyToOne(cascade = CascadeType.REFRESH)
-    @PrimaryKeyJoinColumn
+	@PrimaryKeyJoinColumn
 	private MasterKelas kelas;
 	private int angkatan;
 	private String jenisKelamin;
@@ -38,8 +38,9 @@ public class Mahasiswa implements Comparable<Mahasiswa>, Comparator<Mahasiswa>{
 	private String status;
 	private byte[] password;
 	private byte[] salt;
+	private Date lastSuccessfulLogin;
 	@ManyToOne(cascade = CascadeType.REFRESH)
-    @PrimaryKeyJoinColumn
+	@PrimaryKeyJoinColumn
 	private DosenKaryawan pembimbingAkademik;
 	public int getId() {
 		return id;
@@ -155,6 +156,14 @@ public class Mahasiswa implements Comparable<Mahasiswa>, Comparator<Mahasiswa>{
 	public void setPembimbingAkademik(DosenKaryawan pembimbingAkademik) {
 		this.pembimbingAkademik = pembimbingAkademik;
 	}
+	public Date getLastSuccessfulLogin() {
+		return this.lastSuccessfulLogin;
+	}
+
+	public void setLastSuccessfulLogin(Date lastSuccessfulLogin) { 
+		this.lastSuccessfulLogin = lastSuccessfulLogin; 
+	}
+
 	public byte[] getPassword() {
 		return password;
 	}
@@ -178,7 +187,7 @@ public class Mahasiswa implements Comparable<Mahasiswa>, Comparator<Mahasiswa>{
 	public int compareTo(Mahasiswa arg0) {
 		return npm.compareTo(arg0.npm);
 	}
-	
-	
+
+
 
 }

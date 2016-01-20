@@ -17,7 +17,7 @@ import com.ibm.icu.text.DateFormat;
 import com.ibm.icu.text.SimpleDateFormat;
 import com.ibm.icu.util.Calendar;
 
-public class GenericUtilities {
+public class GeneralUtilities {
 	public static final Locale LOCALE = new Locale("id");
 	/**
 	 * 

@@ -1,10 +1,12 @@
 package org.stth.siak.jee.ui.dosen;
 
+import org.stth.siak.ui.util.AppMenuItems;
+
 import com.vaadin.navigator.View;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Resource;
 
-public enum DosenMenuItems {
+public enum DosenMenuItems implements AppMenuItems{
 	 DASHBOARD("Profil ", DosenProfil.class, FontAwesome.HOME, true),
 	 PERKULIAHAN("Riwayat Mengajar", DosenKelasDiampu.class, FontAwesome.UNIVERSITY, false),
 	 MAHASISWA("Bimbingan Akademik", DosenStatusBimbinganAkademik.class, FontAwesome.USERS, true),

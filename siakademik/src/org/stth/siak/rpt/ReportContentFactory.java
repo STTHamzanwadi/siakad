@@ -18,7 +18,7 @@ import org.stth.siak.entity.RencanaStudiPilihanMataKuliah;
 import org.stth.siak.enumtype.JenisUjian;
 import org.stth.siak.enumtype.Semester;
 import org.stth.siak.helper.IndeksPrestasiHelper;
-import org.stth.siak.util.GenericUtilities;
+import org.stth.siak.util.GeneralUtilities;
 
 import com.ibm.icu.text.DecimalFormat;
 
@@ -33,7 +33,7 @@ public class ReportContentFactory {
 		parameters.put("nim", curMhs.getNpm());
 		parameters.put("nama", curMhs.getNama());
 		parameters.put("prodi", curMhs.getProdi().getNama());
-		parameters.put("ttl",curMhs.getTempatLahir()+"/"+GenericUtilities.getLongFormattedDate(curMhs.getTanggalLahir()));
+		parameters.put("ttl",curMhs.getTempatLahir()+"/"+GeneralUtilities.getLongFormattedDate(curMhs.getTanggalLahir()));
 		parameters.put("totsks", iph.getTotsks());
 		DecimalFormat df = new DecimalFormat("#.00");
 		String ipk = df.format(iph.getIpk());

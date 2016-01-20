@@ -1,4 +1,4 @@
-package org.stth.siak.jee.genericview;
+package org.stth.siak.jee.ui.generalview;
 
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Component;

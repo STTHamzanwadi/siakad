@@ -5,6 +5,7 @@ import java.util.List;
 import org.stth.jee.persistence.GenericPersistence;
 import org.stth.siak.entity.Konfigurasi;
 import org.stth.siak.entity.Mahasiswa;
+import org.stth.siak.util.GeneralUtilities;
 import org.stth.siak.util.UserAuthenticationService;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
@@ -107,10 +108,12 @@ public class LoginView extends VerticalLayout {
 			isValid = true;
 		}
 		if (isValid) {
-			List<Konfigurasi> konfs = GenericPersistence.findList(Konfigurasi.class);
+			d.setLastSuccessfulLogin(GeneralUtilities.getCurrentDBTime());
+		    GenericPersistence.merge(d);
+			//List<Konfigurasi> konfs = GenericPersistence.findList(Konfigurasi.class);
 			getSession().setAttribute("user", d.getNama());
 			getSession().setAttribute("curUser", d);
-			getSession().setAttribute("konfigurasi", konfs);
+			//getSession().setAttribute("konfigurasi", konfs);
 			VaadinSession.getCurrent().setAttribute(Mahasiswa.class, d);
 			MahasiswaUI ui = (MahasiswaUI) getUI();//
 			ui.updateContent();

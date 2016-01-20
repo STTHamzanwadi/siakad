@@ -7,8 +7,8 @@ import java.util.List;
 import org.stth.jee.persistence.KelasPerkuliahanPersistence;
 import org.stth.siak.entity.DosenKaryawan;
 import org.stth.siak.entity.KelasPerkuliahan;
-import org.stth.siak.jee.genericview.PesertaKelasPerkuliahanView;
-import org.stth.siak.jee.genericview.ViewFactory;
+import org.stth.siak.jee.ui.generalview.PesertaKelasPerkuliahanView;
+import org.stth.siak.jee.ui.generalview.ViewFactory;
 
 import com.vaadin.data.util.BeanContainer;
 import com.vaadin.data.util.BeanItem;

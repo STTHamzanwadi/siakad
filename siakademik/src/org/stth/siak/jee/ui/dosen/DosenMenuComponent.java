@@ -6,6 +6,7 @@ import java.security.spec.InvalidKeySpecException;
 import org.stth.jee.persistence.GenericPersistence;
 import org.stth.jee.util.PasswordEncryptionService;
 import org.stth.siak.entity.DosenKaryawan;
+import org.stth.siak.jee.ui.eis.ControlledAccessMenuItems;
 
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.ThemeResource;
@@ -33,130 +34,152 @@ import com.vaadin.ui.themes.ValoTheme;
 @SuppressWarnings("serial")
 public class DosenMenuComponent extends CustomComponent {
 
-    private static final String STYLE_VISIBLE = "valo-menu-visible";
-    public static final String NAME = "";
-    private Label notificationsBadge;
+	private static final String STYLE_VISIBLE = "valo-menu-visible";
+	public static final String NAME = "";
+	//private Label notificationsBadge;
 	private DosenKaryawan dosen;
-    
 
-    public DosenMenuComponent() {
-        addStyleName("valo-menu");
-        setSizeUndefined();
-        setCompositionRoot(buildContent());
-    }
 
-    private Component buildContent() {
-        final CssLayout menuContent = new CssLayout();
-        menuContent.addStyleName("sidebar");
-        menuContent.addStyleName(ValoTheme.MENU_PART);
-        menuContent.addStyleName("no-vertical-drag-hints");
-        menuContent.addStyleName("no-horizontal-drag-hints");
-        menuContent.setWidth(null);
-        menuContent.setHeight("100%");
+	public DosenMenuComponent() {
+		addStyleName("valo-menu");
+		setSizeUndefined();
+		setCompositionRoot(buildContent());
+	}
 
-        menuContent.addComponent(buildTitle());
-        menuContent.addComponent(buildUserMenu());
-        menuContent.addComponent(buildToggleButton());
-        menuContent.addComponent(buildMenuItems());
+	private Component buildContent() {
+		final CssLayout menuContent = new CssLayout();
+		menuContent.addStyleName("sidebar");
+		menuContent.addStyleName(ValoTheme.MENU_PART);
+		menuContent.addStyleName("no-vertical-drag-hints");
+		menuContent.addStyleName("no-horizontal-drag-hints");
+		menuContent.setWidth(null);
+		menuContent.setHeight("100%");
 
-        return menuContent;
-    }
+		menuContent.addComponent(buildTitle());
+		menuContent.addComponent(buildUserMenu());
+		menuContent.addComponent(buildToggleButton());
+		menuContent.addComponent(buildMenuItems());
 
-    private Component buildTitle() {
-        Label logo = new Label("STT <strong>Hamzanwadi</strong>",
-                ContentMode.HTML);
-        logo.setSizeUndefined();
-        HorizontalLayout logoWrapper = new HorizontalLayout(logo);
-        logoWrapper.setComponentAlignment(logo, Alignment.MIDDLE_CENTER);
-        logoWrapper.addStyleName("valo-menu-title");
-        return logoWrapper;
-    }
+		return menuContent;
+	}
 
-    private Component buildUserMenu() {
-        final MenuBar settings = new MenuBar();
-        settings.addStyleName("user-menu");
+	private Component buildTitle() {
+		Label logo = new Label("STT <strong>Hamzanwadi</strong>",
+				ContentMode.HTML);
+		logo.setSizeUndefined();
+		HorizontalLayout logoWrapper = new HorizontalLayout(logo);
+		logoWrapper.setComponentAlignment(logo, Alignment.MIDDLE_CENTER);
+		logoWrapper.addStyleName("valo-menu-title");
+		return logoWrapper;
+	}
+
+	private Component buildUserMenu() {
+		final MenuBar settings = new MenuBar();
+		settings.addStyleName("user-menu");
 		dosen = VaadinSession.getCurrent().getAttribute(DosenKaryawan.class);
 		System.out.println(dosen);
-        final MenuItem settingsItem = settings.addItem(dosen.getNama(), new ThemeResource(
-                "img/profile-pic-300px.jpg"), null);
-        settingsItem.addItem("Ganti Password", new Command() {
-            @Override
-            public void menuSelected(MenuItem selectedItem) {
-            	spawnPasswordResetDialog();
-                
-            }
-        });
-        settingsItem.addSeparator();
-        settingsItem.addItem("Sign Out", new Command() {
-            @Override
-            public void menuSelected(MenuItem selectedItem) {
-                VaadinSession.getCurrent().setAttribute(DosenKaryawan.class, null);
-                DosenUI ui = (DosenUI) getUI();
-                ui.updateContent();
-            }
-        });
-        return settings;
-    }
+		final MenuItem settingsItem = settings.addItem(dosen.getNama(), new ThemeResource(
+				"img/profile-pic-300px.jpg"), null);
+		settingsItem.addItem("Ganti Password", new Command() {
+			@Override
+			public void menuSelected(MenuItem selectedItem) {
+				spawnPasswordResetDialog();
 
-    private Component buildToggleButton() {
-        Button valoMenuToggleButton = new Button("Menu", new ClickListener() {
-            @Override
-            public void buttonClick(ClickEvent event) {
-                if (getCompositionRoot().getStyleName().contains(STYLE_VISIBLE)) {
-                    getCompositionRoot().removeStyleName(STYLE_VISIBLE);
-                } else {
-                    getCompositionRoot().addStyleName(STYLE_VISIBLE);
-                }
-            }
-        });
-        valoMenuToggleButton.setIcon(FontAwesome.LIST);
-        valoMenuToggleButton.addStyleName("valo-menu-toggle");
-        valoMenuToggleButton.addStyleName(ValoTheme.BUTTON_BORDERLESS);
-        valoMenuToggleButton.addStyleName(ValoTheme.BUTTON_SMALL);
-        return valoMenuToggleButton;
-    }
+			}
+		});
+		settingsItem.addSeparator();
+		settingsItem.addItem("Sign Out", new Command() {
+			@Override
+			public void menuSelected(MenuItem selectedItem) {
+				VaadinSession.getCurrent().setAttribute(DosenKaryawan.class, null);
+				DosenUI ui = (DosenUI) getUI();
+				ui.updateContent();
+			}
+		});
+		return settings;
+	}
 
-    private Component buildMenuItems() {
-        CssLayout menuItemsLayout = new CssLayout();
-        menuItemsLayout.addStyleName("valo-menuitems");
-        menuItemsLayout.setHeight(100.0f, Unit.PERCENTAGE);
-        
-        for (final DosenMenuItems view : DosenMenuItems.values()) {
-            Component menuItemComponent = new ValoMenuItemButton(view);
-            menuItemsLayout.addComponent(menuItemComponent);
-        }
-        return menuItemsLayout;
+	private Component buildToggleButton() {
+		Button valoMenuToggleButton = new Button("Menu", new ClickListener() {
+			@Override
+			public void buttonClick(ClickEvent event) {
+				if (getCompositionRoot().getStyleName().contains(STYLE_VISIBLE)) {
+					getCompositionRoot().removeStyleName(STYLE_VISIBLE);
+				} else {
+					getCompositionRoot().addStyleName(STYLE_VISIBLE);
+				}
+			}
+		});
+		valoMenuToggleButton.setIcon(FontAwesome.LIST);
+		valoMenuToggleButton.addStyleName("valo-menu-toggle");
+		valoMenuToggleButton.addStyleName(ValoTheme.BUTTON_BORDERLESS);
+		valoMenuToggleButton.addStyleName(ValoTheme.BUTTON_SMALL);
+		return valoMenuToggleButton;
+	}
 
-    }
+	private Component buildMenuItems() {
+		CssLayout menuItemsLayout = new CssLayout();
+		menuItemsLayout.addStyleName("valo-menuitems");
+		menuItemsLayout.setHeight(100.0f, Unit.PERCENTAGE);
 
-   
-    @Override
-    public void attach() {
-        super.attach();
-        //updateNotificationsCount(null);
-    }
+		for (final DosenMenuItems view : DosenMenuItems.values()) {
+			Component menuItemComponent = new ValoMenuItemButton(view);
+			menuItemsLayout.addComponent(menuItemComponent);
+		}
+		for (final ControlledAccessMenuItems view : ControlledAccessMenuItems.values()){
+			if(true){
+				Component menuItemComponent = new ValoMenuItemButton(view);
+				menuItemsLayout.addComponent(menuItemComponent);
+			}
+		}
 
-    
-    public class ValoMenuItemButton extends Button {
+		return menuItemsLayout;
 
-        public ValoMenuItemButton(final DosenMenuItems view) {
-            setPrimaryStyleName("valo-menu-item");
-            setIcon(view.getIcon());
-            setCaption(view.getViewName().substring(0, 1).toUpperCase()
-                    + view.getViewName().substring(1));
-            addClickListener(new ClickListener() {
-                @Override
-                public void buttonClick(final ClickEvent event) {
-                    System.out.println(view.getViewName());
-                	UI.getCurrent().getNavigator()
-                            .navigateTo(view.getViewName());
-                    
-                }
-            });
-        }
-        
-        }
-    protected void spawnPasswordResetDialog() {
+	}
+
+
+	@Override
+	public void attach() {
+		super.attach();
+		//updateNotificationsCount(null);
+	}
+
+
+	public class ValoMenuItemButton extends Button {
+
+		public ValoMenuItemButton(final DosenMenuItems view) {
+			setPrimaryStyleName("valo-menu-item");
+			setIcon(view.getIcon());
+			setCaption(view.getViewName().substring(0, 1).toUpperCase()
+					+ view.getViewName().substring(1));
+			addClickListener(new ClickListener() {
+				@Override
+				public void buttonClick(final ClickEvent event) {
+					System.out.println(view.getViewName());
+					UI.getCurrent().getNavigator()
+					.navigateTo(view.getViewName());
+
+				}
+			});
+		}
+		public ValoMenuItemButton(final ControlledAccessMenuItems view) {
+			setPrimaryStyleName("valo-menu-item");
+			setIcon(view.getIcon());
+			setCaption(view.getViewName().substring(0, 1).toUpperCase()
+					+ view.getViewName().substring(1));
+			addClickListener(new ClickListener() {
+				@Override
+				public void buttonClick(final ClickEvent event) {
+					System.out.println(view.getViewName());
+					UI.getCurrent().getNavigator()
+					.navigateTo(view.getViewName());
+
+				}
+			});
+		}
+
+	}
+	protected void spawnPasswordResetDialog() {
 		final Window gantiPassword = new Window("Ganti password");
 		FormLayout fly = new FormLayout();
 		final PasswordField tpass1 = new PasswordField("Password baru");
@@ -192,5 +215,5 @@ public class DosenMenuComponent extends CustomComponent {
 		gantiPassword.center();
 		UI.getCurrent().addWindow(gantiPassword);
 	}
-    
+
 }

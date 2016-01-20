@@ -11,8 +11,8 @@ import org.stth.siak.entity.Mahasiswa;
 import org.stth.siak.entity.RencanaStudiMahasiswa;
 import org.stth.siak.enumtype.Semester;
 import org.stth.siak.helper.IndeksPrestasiHelper;
-import org.stth.siak.jee.genericview.MahasiswaProfilView;
-import org.stth.siak.jee.genericview.ViewFactory;
+import org.stth.siak.jee.ui.generalview.MahasiswaProfilView;
+import org.stth.siak.jee.ui.generalview.ViewFactory;
 import org.stth.siak.jee.ui.mahasiswa.IPKView;
 
 import com.ibm.icu.text.DecimalFormat;

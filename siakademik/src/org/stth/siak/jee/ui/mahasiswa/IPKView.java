@@ -5,7 +5,7 @@ import java.util.List;
 import org.stth.siak.entity.Mahasiswa;
 import org.stth.siak.entity.PesertaKuliah;
 import org.stth.siak.helper.IndeksPrestasiHelper;
-import org.stth.siak.jee.genericview.ViewFactory;
+import org.stth.siak.jee.ui.generalview.ViewFactory;
 
 import com.vaadin.data.util.BeanContainer;
 import com.vaadin.navigator.View;
@@ -16,7 +16,6 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.ValoTheme;
 
 @SuppressWarnings("serial")
 public class IPKView extends VerticalLayout implements View {
