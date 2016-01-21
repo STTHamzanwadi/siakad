@@ -8,14 +8,17 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.stth.siak.entity.DosenKaryawan;
 import org.stth.siak.entity.Mahasiswa;
+import org.stth.siak.enumtype.StatusMahasiswa;
 
 public class MahasiswaPersistence {
 	public static List<Mahasiswa> getListByPembimbingAkademik(DosenKaryawan d){
 		List<Criterion> lc = new ArrayList<>();
 		lc.add(Restrictions.eq("pembimbingAkademik", d));
+		lc.add(Restrictions.eq("status", StatusMahasiswa.AKTIF));
 		List<Mahasiswa> rslt = GenericPersistence.findList(Mahasiswa.class,lc);
 		return rslt;
 	}
+	
 	public static List<Mahasiswa> getListByExample(Mahasiswa example){
 		List<Criterion> lc = new ArrayList<>();
 		if (example.getPembimbingAkademik()!=null){
@@ -33,6 +36,7 @@ public class MahasiswaPersistence {
 		if (example.getProdi()!=null){
 			lc.add(Restrictions.eq("prodi", example.getProdi()));
 		}
+		lc.add(Restrictions.eq("status", StatusMahasiswa.AKTIF));
 		List<Mahasiswa> rslt = GenericPersistence.findList(Mahasiswa.class,lc);
 		return rslt;
 	}

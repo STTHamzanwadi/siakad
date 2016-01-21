@@ -34,7 +34,7 @@ public class MahasiswaProfilView extends CustomComponent{
         FieldGroup binder = new FieldGroup(item);
         binder.bindMemberFields(this);
         txtProdi.setValue(mhs.getProdi().toString());
-        txtJenisKelamin.setValue(mhs.getJenisKelamin());
+        txtJenisKelamin.setValue(mhs.getJenisKelamin().toString());
         txtPembimbingAkademik.setValue(mhs.getPembimbingAkademik().toString());
         setCompositionRoot(layout);
 	}

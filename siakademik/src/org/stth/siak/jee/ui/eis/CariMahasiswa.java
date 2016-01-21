@@ -28,7 +28,6 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.ValoTheme;
 
 public class CariMahasiswa extends VerticalLayout implements View{
 	/**
@@ -48,7 +47,6 @@ public class CariMahasiswa extends VerticalLayout implements View{
 	private TextField tfAngkatan;
 
 	public CariMahasiswa() {
-		addStyleName(ValoTheme.PANEL_BORDERLESS);
 		setMargin(true);
 		setSpacing(true);
 		Responsive.makeResponsive(this);

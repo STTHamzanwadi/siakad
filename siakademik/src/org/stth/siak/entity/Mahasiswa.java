@@ -5,10 +5,15 @@ import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
+
+import org.stth.siak.enumtype.JenisKelamin;
+import org.stth.siak.enumtype.StatusMahasiswa;
 
 @Entity
 public class Mahasiswa implements Comparable<Mahasiswa>, Comparator<Mahasiswa>{
@@ -24,7 +29,8 @@ public class Mahasiswa implements Comparable<Mahasiswa>, Comparator<Mahasiswa>{
 	@PrimaryKeyJoinColumn
 	private MasterKelas kelas;
 	private int angkatan;
-	private String jenisKelamin;
+	@Enumerated(EnumType.STRING)
+	private JenisKelamin jenisKelamin;
 	private String alamat;
 	private String email;
 	private String nomorHP;
@@ -35,7 +41,8 @@ public class Mahasiswa implements Comparable<Mahasiswa>, Comparator<Mahasiswa>{
 	private String hubDenganWali;
 	private String alamatWali;
 	private String nomorHPWali;
-	private String status;
+	@Enumerated(EnumType.STRING)
+	private StatusMahasiswa status;
 	private byte[] password;
 	private byte[] salt;
 	private Date lastSuccessfulLogin;
@@ -78,10 +85,10 @@ public class Mahasiswa implements Comparable<Mahasiswa>, Comparator<Mahasiswa>{
 	public void setAngkatan(int angkatan) {
 		this.angkatan = angkatan;
 	}
-	public String getJenisKelamin() {
+	public JenisKelamin getJenisKelamin() {
 		return jenisKelamin;
 	}
-	public void setJenisKelamin(String jenisKelamin) {
+	public void setJenisKelamin(JenisKelamin jenisKelamin) {
 		this.jenisKelamin = jenisKelamin;
 	}
 	public String getAlamat() {
@@ -144,10 +151,10 @@ public class Mahasiswa implements Comparable<Mahasiswa>, Comparator<Mahasiswa>{
 	public void setNomorHPWali(String nomorHPWali) {
 		this.nomorHPWali = nomorHPWali;
 	}
-	public String getStatus() {
+	public StatusMahasiswa getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+	public void setStatus(StatusMahasiswa status) {
 		this.status = status;
 	}
 	public DosenKaryawan getPembimbingAkademik() {
