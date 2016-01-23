@@ -7,10 +7,10 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Resource;
 
 public enum ControlledAccessMenuItems implements AppMenuItems{
-	 MHS_STAT("Statistik Mahasiswa ", CariMahasiswa.class, FontAwesome.USERS, false, AccessControlList.MHS_STAT),
+	 //MHS_STAT("Statistik Mahasiswa ", CariMahasiswa.class, FontAwesome.USERS, false, AccessControlList.MHS_STAT),
 	 MHS_CARI("Pencarian Mahasiswa ", CariMahasiswa.class, FontAwesome.USERS, false, AccessControlList.MHS_CARI),
-	 DOSEN_STAT("Statistik Dosen ", StatistikMahasiswa.class, FontAwesome.USERS, false, AccessControlList.DSN_STAT),
-	 DOSEN_CARI("Pencarian Dosen ", StatistikMahasiswa.class, FontAwesome.USERS, false, AccessControlList.DSN_STAT),
+	 //DOSEN_STAT("Statistik Dosen ", StatistikMahasiswa.class, FontAwesome.USERS, false, AccessControlList.DSN_STAT),
+	// DOSEN_CARI("Pencarian Dosen ", StatistikMahasiswa.class, FontAwesome.USERS, false, AccessControlList.DSN_STAT),
 	 KRS_STAT("Monitoring Rencana Studi ", MonitoringPenyusunanRencanaStudi.class, FontAwesome.USERS, false, AccessControlList.DSN_CARI);
 	 
 	 

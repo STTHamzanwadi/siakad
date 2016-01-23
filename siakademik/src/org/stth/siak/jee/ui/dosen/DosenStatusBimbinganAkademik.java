@@ -87,6 +87,7 @@ public class DosenStatusBimbinganAkademik extends VerticalLayout implements View
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
 				HorizontalLayout hl = new HorizontalLayout();
+				hl.setSpacing(true);
 				Button buttonTranskrip = new Button("Profil");
 				BeanItem<?> i = (BeanItem<?>) source.getContainerDataSource().getItem(itemId);
 				final Mahasiswa o = (Mahasiswa) i.getBean();

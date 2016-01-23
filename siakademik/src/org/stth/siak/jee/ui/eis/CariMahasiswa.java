@@ -50,7 +50,7 @@ public class CariMahasiswa extends VerticalLayout implements View{
 		setMargin(true);
 		setSpacing(true);
 		Responsive.makeResponsive(this);
-		addComponent(ViewFactory.header("Bimbingan Akademik"));
+		addComponent(ViewFactory.header("Pencarian Data Mahasiswa"));
 		addComponent(createFilterComponent());
 		siapkanPilihanProdi();
 		siapkanPilihanPA();

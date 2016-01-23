@@ -112,14 +112,18 @@ public class RencanaStudiDiajukanView extends Panel implements View {
         int totSks=0;
         List<MataKuliah> ls = new ArrayList<>();
         List<RencanaStudiPilihanMataKuliah> lsR = RencanaStudiPilihanMataKuliahPersistence.getByRencanaStudi(rsm);
-        for (RencanaStudiPilihanMataKuliah rencanaStudiPilihanMataKuliah : lsR) {
-			MataKuliah mk = rencanaStudiPilihanMataKuliah.getMataKuliah();
-			ls.add(mk);
-			totSks += mk.getSks();
-		}
         beansPK.setBeanIdProperty("id");
 		beansPK.removeAllItems();
-		beansPK.addAll(lsR);
+        if (lsR!=null) {
+        	beansPK.addAll(lsR);
+        	for (RencanaStudiPilihanMataKuliah rencanaStudiPilihanMataKuliah : lsR) {
+				MataKuliah mk = rencanaStudiPilihanMataKuliah.getMataKuliah();
+				ls.add(mk);
+				totSks += mk.getSks();
+			}
+		}
+		beansPK.addBean(new RencanaStudiPilihanMataKuliah());
+		
 		tableMatkul.setContainerDataSource(beansPK);
 		
 		tableMatkul.addGeneratedColumn("kode", new ColumnGenerator() {
@@ -128,7 +132,10 @@ public class RencanaStudiDiajukanView extends Panel implements View {
 				
 				BeanItem<?> i = (BeanItem<?>) source.getContainerDataSource().getItem(itemId);
 				RencanaStudiPilihanMataKuliah o = (RencanaStudiPilihanMataKuliah) i.getBean();
-				return o.getMataKuliah().getKode();
+				if (o.getMataKuliah()!=null){
+					return o.getMataKuliah().getKode();
+				}
+				return '-';
 			}
 		});
 		tableMatkul.addGeneratedColumn("nama", new ColumnGenerator() {
@@ -137,7 +144,10 @@ public class RencanaStudiDiajukanView extends Panel implements View {
 				
 				BeanItem<?> i = (BeanItem<?>) source.getContainerDataSource().getItem(itemId);
 				RencanaStudiPilihanMataKuliah o = (RencanaStudiPilihanMataKuliah) i.getBean();
-				return o.getMataKuliah().getNama();
+				if (o.getMataKuliah()!=null){
+					return o.getMataKuliah().getNama();
+				}
+				return '-';
 			}
 		});
 		tableMatkul.addGeneratedColumn("sks", new ColumnGenerator() {
@@ -146,8 +156,10 @@ public class RencanaStudiDiajukanView extends Panel implements View {
 				
 				BeanItem<?> i = (BeanItem<?>) source.getContainerDataSource().getItem(itemId);
 				RencanaStudiPilihanMataKuliah o = (RencanaStudiPilihanMataKuliah) i.getBean();
-				
-				return o.getMataKuliah().getSks();
+				if (o.getMataKuliah()!=null){
+					return o.getMataKuliah().getSks();
+				}
+				return '-';
 			}
 		});
 		tableMatkul.setColumnHeader("keterangan", "KETERANGAN");

@@ -45,6 +45,7 @@ public class MonitoringPenyusunanRencanaStudi extends VerticalLayout implements 
 	protected ProgramStudi prodi;
 	private List<RekapMonevKRS> rekap;
 	private Table tabel;
+	private TextField tfa;
 	
 	public MonitoringPenyusunanRencanaStudi() {
 		setMargin(true);
@@ -84,7 +85,8 @@ public class MonitoringPenyusunanRencanaStudi extends VerticalLayout implements 
 		FormLayout fl1 = new FormLayout();
 		FormLayout fl2 = new FormLayout();
 		fl1.addComponent(cbProdi);
-		fl2.addComponent(new TextField("angkatan"));
+		tfa = new TextField("angkatan");
+		fl2.addComponent(tfa);
 		Button buttonProses = new Button("Lakukan Kalkulasi");
 		buttonProses.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = 1L;
@@ -105,7 +107,7 @@ public class MonitoringPenyusunanRencanaStudi extends VerticalLayout implements 
 	}
 	
 	public void prepareContent(){
-		MonevKRS m = new MonevKRS(semester, ta);
+		MonevKRS m = new MonevKRS(semester,ta,Integer.valueOf(tfa.getValue()),prodi);
 		rekap = m.getRekap();
 		beanRekap.removeAllItems();
 		beanRekap.addAll(rekap);
@@ -116,6 +118,11 @@ public class MonitoringPenyusunanRencanaStudi extends VerticalLayout implements 
 		tabel.setRowHeaderMode(Table.RowHeaderMode.INDEX);
 		tabel.addGeneratedColumn("prodi", new ColumnGenerator() {
 			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
 				BeanItem<?> i = (BeanItem<?>) source.getContainerDataSource().getItem(itemId);
@@ -130,10 +137,14 @@ public class MonitoringPenyusunanRencanaStudi extends VerticalLayout implements 
 		tabel.setColumnHeader("disetujui", "DISETUJUI");
 		tabel.setColumnHeader("ditolak", "DITOLAK");
 		tabel.setColumnHeader("finaL", "FINAL");
-		tabel.setVisibleColumns("prodi","belumSusun","draft","diajukan","disetujui","ditolak","finaL");
-		p.setContent(tabel);
+		tabel.setColumnHeader("dosenPa", "DOSEN P.A");
+		tabel.setVisibleColumns("prodi","dosenPa","belumSusun","draft","diajukan","disetujui","ditolak","finaL");
+		VerticalLayout vl = new VerticalLayout();
+		vl.setMargin(true);
+		vl.addComponent(tabel);
+		p.setContent(vl);
 		content.setSpacing(true);
-		content.setMargin(true);
+		//content.setMargin(true);
 		content.addComponent(p);
 	}
 	

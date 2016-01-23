@@ -1,12 +1,14 @@
 package org.stth.siak.helper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.stth.jee.persistence.GenericPersistence;
 import org.stth.jee.persistence.MahasiswaPersistence;
 import org.stth.jee.persistence.RencanaStudiPersistence;
+import org.stth.siak.entity.DosenKaryawan;
 import org.stth.siak.entity.Mahasiswa;
 import org.stth.siak.entity.ProgramStudi;
 import org.stth.siak.entity.RencanaStudiMahasiswa;
@@ -21,6 +23,8 @@ public class MonevKRS {
 	private int angkatan=0;
 	private ProgramStudi prodi = null;
 	private Map<Integer, ProgramStudi> mapProdi;
+	private Map<Integer, DosenKaryawan> mapDosenPa;
+	private Map<String, RekapMonevKRS> mapRekapMonev;
 	
 	public MonevKRS(Semester sem, String tahunAjaran){
 		this.semester = sem;
@@ -30,12 +34,14 @@ public class MonevKRS {
 		loadData();
 		prepareRekap();
 		calculate();
+		String a ="";
 	}
 	
 	public MonevKRS(Semester sem, String tahunAjaran, int angkatan, ProgramStudi prodi){
 		this.semester = sem;
 		this.ta = tahunAjaran;
 		this.angkatan = angkatan;
+		this.prodi = prodi;
 		loadData();
 		prepareRekap();
 		calculate();
@@ -46,34 +52,38 @@ public class MonevKRS {
 	private void calculate() {
 		for (Mahasiswa mahasiswa2 : mahasiswa) {
 			ProgramStudi pm = mahasiswa2.getProdi();
+			DosenKaryawan pa = mahasiswa2.getPembimbingAkademik();
 			RencanaStudiMahasiswa rsm = RencanaStudiPersistence.getByMhsSemTa(mahasiswa2, semester, ta);
 			for (RekapMonevKRS e : rekap) {
 				if (e.prodi.equals(pm)){
-					if (rsm!=null){
-						switch (rsm.getStatus()) {
-						case DRAFT:
-							e.draft++;
-							break;
-						case DIAJUKAN:
-							e.diajukan++;
-							break;
-						case DISETUJUI:
-							e.disetujui++;
-							break;
-						case DITOLAK:
-							e.ditolak++;
-							break;
-						case FINAL:
-							e.finaL++;
-							break;
-						default:
-							break;
+					if (e.dosenPa.equals(pa)) {
+						if (rsm != null) {
+							switch (rsm.getStatus()) {
+							case DRAFT:
+								e.draft++;
+								break;
+							case DIAJUKAN:
+								e.diajukan++;
+								break;
+							case DISETUJUI:
+								e.disetujui++;
+								break;
+							case DITOLAK:
+								e.ditolak++;
+								break;
+							case FINAL:
+								e.finaL++;
+								break;
+							default:
+								break;
+							}
+
+						} else {
+							e.belumSusun++;
 						}
-						
-					} else {
-						e.belumSusun++;
+						break;
 					}
-					break;
+					
 				}
 				
 			}
@@ -85,10 +95,26 @@ public class MonevKRS {
 
 
 	private void prepareRekap() {
-		for (ProgramStudi p : listProdi) {
-			RekapMonevKRS e = new RekapMonevKRS();
-			e.prodi = p;
-			rekap.add(e);
+		rekap.clear();
+		mapProdi = new HashMap<>();
+		mapDosenPa = new HashMap<>();
+		for (Mahasiswa m : mahasiswa){
+			if(!mapProdi.containsKey(m.getProdi().getId())){
+				mapProdi.put(m.getProdi().getId(), m.getProdi());
+			}
+			if(!mapDosenPa.containsKey(m.getPembimbingAkademik().getId())){
+				mapDosenPa.put(m.getPembimbingAkademik().getId(), m.getPembimbingAkademik());
+			}
+		}
+		
+		for (Map.Entry<Integer, ProgramStudi> prodi : mapProdi.entrySet()){
+			for (Map.Entry<Integer, DosenKaryawan> dosenPa : mapDosenPa.entrySet()){
+				RekapMonevKRS r = new RekapMonevKRS();
+				r.prodi = prodi.getValue();
+				r.dosenPa = dosenPa.getValue();
+				//mapRekapMonev.put(r.prodi.getKode()+r.dosenPa.getAlias(), r);
+				rekap.add(r);
+			}
 		}
 		
 	}
@@ -113,7 +139,7 @@ public class MonevKRS {
 
 	public class RekapMonevKRS{
 		ProgramStudi prodi;
-		
+		DosenKaryawan dosenPa;
 		int belumSusun=0;
 		int draft=0;
 		int diajukan=0;
@@ -125,6 +151,12 @@ public class MonevKRS {
 		}
 		public void setProdi(ProgramStudi prodi) {
 			this.prodi = prodi;
+		}
+		public DosenKaryawan getDosenPa() {
+			return dosenPa;
+		}
+		public void setDosenPa(DosenKaryawan dosenPa) {
+			this.dosenPa = dosenPa;
 		}
 		public int getBelumSusun() {
 			return belumSusun;
