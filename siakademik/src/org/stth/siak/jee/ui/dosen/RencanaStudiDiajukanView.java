@@ -25,6 +25,7 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
 @SuppressWarnings("serial")
@@ -36,10 +37,13 @@ public class RencanaStudiDiajukanView extends Panel implements View {
     private Table tableMatkul = new Table("DAFTAR MATA KULIAH YANG DIAMBIL");
 	private BeanContainer<Integer, RencanaStudiPilihanMataKuliah> beansPK = new BeanContainer<Integer, RencanaStudiPilihanMataKuliah>(RencanaStudiPilihanMataKuliah.class);
 	private RencanaStudiMahasiswa rsm;
+	private Window window;
+	public boolean needRefresh=false;
 
     
-	public RencanaStudiDiajukanView(RencanaStudiMahasiswa rsm) {
+	public RencanaStudiDiajukanView(RencanaStudiMahasiswa rsm, Window win) {
 		this.rsm = rsm;
+		this.window = win;
     	prepareView();
     }
 	
@@ -73,6 +77,8 @@ public class RencanaStudiDiajukanView extends Panel implements View {
 				public void buttonClick(ClickEvent event) {
 					rsm.setStatus(StatusRencanaStudi.DISETUJUI);
 					GenericPersistence.merge(rsm);
+					needRefresh = true;
+					window.close();
 				}
 			});
 			Button buttonTolak = new Button("TOLAK");
@@ -81,6 +87,9 @@ public class RencanaStudiDiajukanView extends Panel implements View {
 				public void buttonClick(ClickEvent event) {
 					rsm.setStatus(StatusRencanaStudi.DITOLAK);
 					GenericPersistence.merge(rsm);
+					needRefresh = true;
+					window.close();
+					
 				}
 			});
 			hl.addComponents(buttonSetujui,buttonTolak);

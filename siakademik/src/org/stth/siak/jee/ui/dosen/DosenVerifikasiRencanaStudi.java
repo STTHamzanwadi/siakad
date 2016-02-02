@@ -30,9 +30,11 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
+import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.Window.CloseListener;
 import com.vaadin.ui.themes.ValoTheme;
 
 public class DosenVerifikasiRencanaStudi extends VerticalLayout implements View{
@@ -199,7 +201,7 @@ public class DosenVerifikasiRencanaStudi extends VerticalLayout implements View{
 
 	private void showRencanaStudiMahasiswa(RencanaStudiMahasiswa rsm) {
 		final Window win = new Window("Pengajuan Rencana Studi Mahasiswa");
-		Component c = new RencanaStudiDiajukanView(rsm);
+		final RencanaStudiDiajukanView c = new RencanaStudiDiajukanView(rsm, win);
 		VerticalLayout vl = new VerticalLayout();
 		vl.setMargin(true);
 		vl.addComponent(c);
@@ -208,7 +210,15 @@ public class DosenVerifikasiRencanaStudi extends VerticalLayout implements View{
 		win.setWidth("600px");
 		win.center();
 		UI.getCurrent().addWindow(win);
-
+		win.addCloseListener(new CloseListener() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void windowClose(CloseEvent e) {
+				if (c.needRefresh){
+					UI.getCurrent().getPage().reload();
+				}
+			}
+		});
 	}
 
 }

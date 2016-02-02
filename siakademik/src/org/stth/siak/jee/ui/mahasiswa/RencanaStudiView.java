@@ -40,6 +40,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -164,6 +165,7 @@ public class RencanaStudiView extends VerticalLayout implements View{
 			@Override
 			public void buttonClick(ClickEvent event) {
 				submitRencanaStudi();
+				UI.getCurrent().getPage().reload();
 			}
 		});
 		actionButtonContainer.addComponents(buttonAutoPick,buttonPrint,buttonSubmit);
@@ -175,7 +177,7 @@ public class RencanaStudiView extends VerticalLayout implements View{
 		rsm.setStatus(StatusRencanaStudi.DIAJUKAN);
 		GenericPersistence.merge(rsm);
 		rsmh = new RencanaStudiManualHelper(mhs, semester, ta, limitPengambilanSKS);
-		prepareMainUI();
+		//prepareMainUI();
 
 	}
 
@@ -216,11 +218,8 @@ public class RencanaStudiView extends VerticalLayout implements View{
 		rss.add(this.rsmh.getRencanaStudi());
 		List<ReportRawMaterials> rrms = ReportContentFactory.siapkanReportRencanaStudi(rss);
 		ReportOutputGenerator rog = new ReportOutputGenerator(rrms, "Rencana Studi Mahasiswa");
-		//FileDownloader fileDownloader = new FileDownloader(rog.exportToPdf());
 		StreamResource resource = rog.exportToPdf();
-        //fileDownloader.extend(buttonPrint);
-        //buttonPrint.click();
-		getUI().getPage().open(resource, "_blank", false);
+ 		getUI().getPage().open(resource, "_blank", false);
         
 	}
 
