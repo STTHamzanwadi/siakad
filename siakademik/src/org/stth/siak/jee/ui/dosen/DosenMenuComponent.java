@@ -8,7 +8,7 @@ import org.stth.jee.persistence.GenericPersistence;
 import org.stth.jee.util.PasswordEncryptionService;
 import org.stth.siak.entity.DosenKaryawan;
 import org.stth.siak.jee.ui.eis.ControlledAccessMenuItems;
-import org.stth.siak.ui.util.MultiPurposeImageUploader;
+import org.stth.siak.ui.util.MultiPurposeImageUploaderWindow;
 
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.ThemeResource;
@@ -234,7 +234,7 @@ public class DosenMenuComponent extends CustomComponent {
 	}
 	
 	protected void changeProfilePicture() throws IOException{
-		final MultiPurposeImageUploader gantiFotoProfil = new MultiPurposeImageUploader(dosen);
+		final MultiPurposeImageUploaderWindow gantiFotoProfil = new MultiPurposeImageUploaderWindow(dosen);
 		gantiFotoProfil.center();
 		UI.getCurrent().addWindow(gantiFotoProfil);
 		gantiFotoProfil.addCloseListener(new CloseListener() {
