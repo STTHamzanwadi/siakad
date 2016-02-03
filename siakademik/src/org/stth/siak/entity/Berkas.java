@@ -1,17 +1,32 @@
 package org.stth.siak.entity;
 
-import javax.persistence.Entity;
+import java.util.Date;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
-@Entity
-public class Berkas {
+@MappedSuperclass
+abstract class Berkas {
 	@Id @GeneratedValue
 	private int id;
 	@Lob
 	private byte[] file;
-	private String owner;
+	private Date created;
+	private Date updated;
+
+	@PrePersist
+	protected void onCreate() {
+		created = new Date();
+	}
+
+	@PreUpdate
+	protected void onUpdate() {
+		updated = new Date();
+	}
 	public int getId() {
 		return id;
 	}
@@ -24,13 +39,23 @@ public class Berkas {
 	public void setFile(byte[] file) {
 		this.file = file;
 	}
-	public String getOwner() {
-		return owner;
+
+	public Date getCreated() {
+		return created;
 	}
-	public void setOwner(String owner) {
-		this.owner = owner;
+
+	public void setCreated(Date created) {
+		this.created = created;
 	}
-	
-	
+
+	public Date getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
+
+
 
 }

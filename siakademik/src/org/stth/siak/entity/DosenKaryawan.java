@@ -38,8 +38,6 @@ public class DosenKaryawan implements Comparable<DosenKaryawan>, Comparator<Dose
     @PrimaryKeyJoinColumn
 	private ProgramStudi prodi;
 	@ManyToOne(cascade = CascadeType.REFRESH)
-    @PrimaryKeyJoinColumn
-	private Berkas berkas;
 	public int getId() {
 		return id;
 	}

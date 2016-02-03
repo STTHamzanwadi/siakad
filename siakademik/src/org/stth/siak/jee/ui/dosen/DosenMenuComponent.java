@@ -1,16 +1,22 @@
 package org.stth.siak.jee.ui.dosen;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
+import org.stth.jee.persistence.DosenKaryawanPersistence;
 import org.stth.jee.persistence.GenericPersistence;
 import org.stth.jee.util.PasswordEncryptionService;
+import org.stth.siak.entity.BerkasFotoDosen;
 import org.stth.siak.entity.DosenKaryawan;
 import org.stth.siak.jee.ui.eis.ControlledAccessMenuItems;
 import org.stth.siak.ui.util.MultiPurposeImageUploaderWindow;
 
 import com.vaadin.server.FontAwesome;
+import com.vaadin.server.Resource;
+import com.vaadin.server.StreamResource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -81,9 +87,22 @@ public class DosenMenuComponent extends CustomComponent {
 		final MenuBar settings = new MenuBar();
 		settings.addStyleName("user-menu");
 		dosen = VaadinSession.getCurrent().getAttribute(DosenKaryawan.class);
-		System.out.println(dosen);
-		final MenuItem settingsItem = settings.addItem(dosen.getNama(), new ThemeResource(
-				"img/profile-pic-300px.jpg"), null);
+		//System.out.println(dosen);
+		final BerkasFotoDosen bfd = DosenKaryawanPersistence.getFotoDosen(dosen);
+		Resource resource;
+		if (bfd!=null) {
+			StreamResource.StreamSource imageSource = new StreamResource.StreamSource() {
+				@Override
+				public InputStream getStream() {
+					return new ByteArrayInputStream(bfd.getFile());
+				}
+			};
+			resource = new StreamResource(imageSource, dosen.toString().trim()+".jpg");
+		} else {
+			resource = new ThemeResource(
+					"img/usermale.png");
+		}
+		final MenuItem settingsItem = settings.addItem(dosen.getNama(), resource, null);
 		settingsItem.addItem("Ganti Password", new Command() {
 			@Override
 			public void menuSelected(MenuItem selectedItem) {
@@ -243,7 +262,8 @@ public class DosenMenuComponent extends CustomComponent {
 			public void windowClose(CloseEvent e) {
 				try {
 					if (gantiFotoProfil.getImage()!=null&&gantiFotoProfil.isGambarOK()){
-						Notification.show("horeeee");
+						DosenKaryawanPersistence.updatePicture(dosen, gantiFotoProfil.getImage());
+						UI.getCurrent().getPage().reload();
 					}
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
