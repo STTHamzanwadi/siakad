@@ -14,6 +14,8 @@ public class Konfigurasi {
 	public static final String KRS_SEM = "krs sem";
 	public static final String KRS_OPEN = "krs open";
 	public static final String KRS_TA = "krs ta";
+	public static final String CUR_SEM = "cur sem";
+	public static final String CUR_TA = "cur ta";
 	
 	public Konfigurasi(){
 		

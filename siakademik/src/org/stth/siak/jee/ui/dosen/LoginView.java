@@ -31,8 +31,8 @@ public class LoginView extends VerticalLayout {
 	private PasswordField password = new PasswordField("Password");
 
 	public LoginView() {
-		//username.setValue("MHZ");
-		//password.setValue("mhz");
+		username.setValue("MHZ");
+		password.setValue("mhz");
         setSizeFull();
         Component loginForm = buildLoginForm();
         addComponent(loginForm);

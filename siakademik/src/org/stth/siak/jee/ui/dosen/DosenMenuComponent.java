@@ -1,5 +1,6 @@
 package org.stth.siak.jee.ui.dosen;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
@@ -7,6 +8,7 @@ import org.stth.jee.persistence.GenericPersistence;
 import org.stth.jee.util.PasswordEncryptionService;
 import org.stth.siak.entity.DosenKaryawan;
 import org.stth.siak.jee.ui.eis.ControlledAccessMenuItems;
+import org.stth.siak.ui.util.MultiPurposeImageUploader;
 
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.ThemeResource;
@@ -23,12 +25,14 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.PasswordField;
-import com.vaadin.ui.Window;
 import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.UI;
+import com.vaadin.ui.Window;
+import com.vaadin.ui.Window.CloseEvent;
+import com.vaadin.ui.Window.CloseListener;
 import com.vaadin.ui.themes.ValoTheme;
 
 @SuppressWarnings("serial")
@@ -88,6 +92,19 @@ public class DosenMenuComponent extends CustomComponent {
 			}
 		});
 		settingsItem.addSeparator();
+		settingsItem.addItem("Ganti Foto Profil", new Command() {
+			
+			@Override
+			public void menuSelected(MenuItem selectedItem) {
+				try {
+					changeProfilePicture();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		});
 		settingsItem.addItem("Sign Out", new Command() {
 			@Override
 			public void menuSelected(MenuItem selectedItem) {
@@ -214,6 +231,28 @@ public class DosenMenuComponent extends CustomComponent {
 		fly.addComponents(tpass1,tpass2,b);
 		gantiPassword.center();
 		UI.getCurrent().addWindow(gantiPassword);
+	}
+	
+	protected void changeProfilePicture() throws IOException{
+		final MultiPurposeImageUploader gantiFotoProfil = new MultiPurposeImageUploader(dosen);
+		gantiFotoProfil.center();
+		UI.getCurrent().addWindow(gantiFotoProfil);
+		gantiFotoProfil.addCloseListener(new CloseListener() {
+			
+			@Override
+			public void windowClose(CloseEvent e) {
+				try {
+					if (gantiFotoProfil.getImage()!=null&&gantiFotoProfil.isGambarOK()){
+						Notification.show("horeeee");
+					}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
+		
 	}
 
 }

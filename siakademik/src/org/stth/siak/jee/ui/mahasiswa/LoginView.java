@@ -1,9 +1,6 @@
 package org.stth.siak.jee.ui.mahasiswa;
 
-import java.util.List;
-
 import org.stth.jee.persistence.GenericPersistence;
-import org.stth.siak.entity.Konfigurasi;
 import org.stth.siak.entity.Mahasiswa;
 import org.stth.siak.util.GeneralUtilities;
 import org.stth.siak.util.UserAuthenticationService;
@@ -37,8 +34,8 @@ public class LoginView extends VerticalLayout {
 
 	public LoginView() {
         setSizeFull();
-        //username.setValue("01.01.13.0075");
-        //password.setValue("p");
+        username.setValue("02.03.15.0008");
+        password.setValue("0008");
         Component loginForm = buildLoginForm();
         addComponent(loginForm);
         setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);

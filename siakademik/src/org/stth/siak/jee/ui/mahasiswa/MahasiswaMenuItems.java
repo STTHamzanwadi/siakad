@@ -8,6 +8,7 @@ public enum MahasiswaMenuItems {
 	 DASHBOARD("Profil Anda", MahasiswaProfil.class, FontAwesome.USER, true),
 	 PERKULIAHAN("Kelas Perkuliahan", KelasPerkuliahanView.class, FontAwesome.UNIVERSITY, false),
 	 INDEKSPRESTASI("Indeks Prestasi", IPKView.class, FontAwesome.TABLE, true),
+	 KURIKULUM("Struktur Kurikulum", MahasiswaDetailKurikulum.class, FontAwesome.TABLE, true),
 	 RENCANASTUDI("Rencana Studi", RencanaStudiView.class, FontAwesome.LIST, false);
 	 
 	 private final String viewName;

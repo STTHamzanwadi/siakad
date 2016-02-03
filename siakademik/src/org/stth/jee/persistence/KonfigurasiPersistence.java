@@ -55,4 +55,19 @@ public class KonfigurasiPersistence {
 		}
 		return false;
 	}
+	public Semester getCurrentSemester(){
+		String s = getValue(Konfigurasi.CUR_SEM);
+		if (s!=null){
+			Semester sem = Semester.valueOf(s);
+			return sem;
+		}
+		return null;
+	}
+	public String getCurrentTa(){
+		String s = getValue(Konfigurasi.CUR_TA);
+		if (s!=null){
+			return s;
+		}
+		return "";
+	}
 }
