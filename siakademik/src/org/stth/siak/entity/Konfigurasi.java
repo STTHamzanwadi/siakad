@@ -16,6 +16,7 @@ public class Konfigurasi {
 	public static final String KRS_TA = "krs ta";
 	public static final String CUR_SEM = "cur sem";
 	public static final String CUR_TA = "cur ta";
+	public static final String UPLOAD_DIR = "upl dir";
 	
 	public Konfigurasi(){
 		

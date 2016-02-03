@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.apache.commons.io.IOUtils;
+import org.stth.jee.persistence.KonfigurasiPersistence;
 import org.stth.siak.entity.DosenKaryawan;
 import org.stth.siak.entity.Mahasiswa;
 
@@ -34,7 +35,7 @@ public class MultiPurposeImageUploaderWindow extends Window{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final String UPLOAD_DIR="/home/stth/upload/";
+	private String uploadDirectory;
 	public static final long FILE_MAX_SIZE = 0;
 	final Embedded image = new Embedded();
 	private Panel pl;
@@ -46,6 +47,8 @@ public class MultiPurposeImageUploaderWindow extends Window{
 			namaFile = o.toString();
 		}
 		prepareComponents();
+		KonfigurasiPersistence k = new KonfigurasiPersistence();
+		uploadDirectory = k.getUploadDirectory();
 	}
 
 	private void prepareComponents() {
@@ -129,7 +132,7 @@ public class MultiPurposeImageUploaderWindow extends Window{
 			if (mimeType.equalsIgnoreCase("image/jpeg")||mimeType.equalsIgnoreCase("image/png")) {
 				try {
 					// Open the file for writing.
-					file = new File(UPLOAD_DIR + namaFile.trim() + ".jpg");
+					file = new File(uploadDirectory + namaFile.trim() + ".jpg");
 					fos = new FileOutputStream(file);
 				} catch (final java.io.FileNotFoundException e) {
 					new Notification("Could not open file<br/>",

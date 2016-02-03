@@ -70,4 +70,11 @@ public class KonfigurasiPersistence {
 		}
 		return "";
 	}
+	public String getUploadDirectory(){
+		String s = getValue(Konfigurasi.UPLOAD_DIR);
+		if (s!=null){
+			return s;
+		}
+		return "";
+	}
 }
