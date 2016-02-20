@@ -1,6 +1,9 @@
 package org.stth.siak.helper;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,21 +14,20 @@ import org.stth.siak.entity.DosenKaryawan;
 import org.stth.siak.entity.Mahasiswa;
 import org.stth.siak.entity.MataKuliah;
 import org.stth.siak.entity.ProgramStudi;
+import org.stth.siak.entity.RencanaStudiMahasiswa;
 import org.stth.siak.entity.RencanaStudiPilihanMataKuliah;
 import org.stth.siak.enumtype.Semester;
 
 public class MonevKRSMataKuliah {
 	private List<RencanaStudiPilihanMataKuliah> lrspmkRaw = new ArrayList<>();
 	private List<RencanaStudiPilihanMataKuliah> lrspmk = new ArrayList<>();
-	private List<Mahasiswa> mahasiswa;
-	private List<ProgramStudi> listProdi;
 	private Semester semester;
 	private String tahunAjaran;
 	private int angkatan=0;
 	private ProgramStudi prodi = null;
 	private Map<Integer, ProgramStudi> mapProdi;
 	private Map<Integer, DosenKaryawan> mapDosenPa;
-	private Map<String, RekapPengambilanMataKuliah> mapRekapMatkul;
+	private Map<String, RekapPengambilanMataKuliah> mapRekapMatkul = new HashMap<>();
 	
 	public MonevKRSMataKuliah(Semester sem, String tahunAjaran){
 		this.semester = sem;
@@ -44,8 +46,8 @@ public class MonevKRSMataKuliah {
 	}
 	
 	void perform(){
-		filter();
 		loadDataMataKuliahTerpilih();
+		filter();
 		calculate();
 		
 	}
@@ -76,6 +78,8 @@ public class MonevKRSMataKuliah {
 					lrspmktemp2.add(r);
 				}
 			}
+		} else {
+			lrspmktemp2.addAll(lrspmktemp);
 		}
 		lrspmk.addAll(lrspmktemp2);
 	}
@@ -83,47 +87,43 @@ public class MonevKRSMataKuliah {
 	private void calculate() {
 		for (RencanaStudiPilihanMataKuliah r : lrspmk){
 			String key = getElementPengambilanKey(r);
+			RencanaStudiMahasiswa rsm = r.getRencanaStudi();
+			Mahasiswa m = rsm.getMahasiswa();
 			RekapPengambilanMataKuliah rpmk;
 			if (mapRekapMatkul.containsKey(key)){
 				rpmk = mapRekapMatkul.get(key);
 				rpmk.ambil++;
-				
+				rpmk.addPengambil(m);
 			} else {
 				rpmk = new RekapPengambilanMataKuliah(r);
+				rpmk.addPengambil(m);
 				mapRekapMatkul.put(key, rpmk);
 			}
-			
 		}
-		
 	}
-
-
-
 	private void loadDataMataKuliahTerpilih() {
 		//load data matakuliah terpilih berdasarkan semester dan angkatan
-		lrspmkRaw = RencanaStudiPilihanMataKuliahPersistence.getBySemesterTahunAjaran(semester, tahunAjaran);
+		lrspmkRaw = RencanaStudiPilihanMataKuliahPersistence.getValidBySemesterTahunAjaran(semester, tahunAjaran);
 		//load mahasiswa aktif berdasarkan kriteria
-		Mahasiswa m = new Mahasiswa();
-		if (angkatan>0){
-			m.setAngkatan(angkatan);
-		}
-		if (prodi!=null){
-			m.setProdi(prodi);
-		}
-		mahasiswa = MahasiswaPersistence.getListByExample(m);
-		//load seluruh prodi
-		listProdi = GenericPersistence.findList(ProgramStudi.class);
+	
+	}
+	
+	public List<RekapPengambilanMataKuliah> getRekap(){
+		List<RekapPengambilanMataKuliah> lrkp = new ArrayList<>(mapRekapMatkul.values());
+		Collections.sort(lrkp);
+		return lrkp;
 	}
 
 	
 	
-	public class RekapPengambilanMataKuliah{
+	public class RekapPengambilanMataKuliah implements Comparable<RekapPengambilanMataKuliah>, Comparator<RekapPengambilanMataKuliah>{
 		String kodeMataKuliah;
 		String namaMataKuliah;
 		int sks;
 		String prodi;
 		int angkatan;
 		int ambil;
+		List<Mahasiswa> pengambil = new ArrayList<>();
 		public RekapPengambilanMataKuliah(RencanaStudiPilihanMataKuliah rspmk) {
 			MataKuliah mk = rspmk.getMataKuliah();
 			Mahasiswa m = rspmk.getRencanaStudi().getMahasiswa();
@@ -170,6 +170,30 @@ public class MonevKRSMataKuliah {
 		}
 		public void setAmbil(int ambil) {
 			this.ambil = ambil;
+		}
+		public void addPengambil(Mahasiswa m){
+			pengambil.add(m);
+		}
+		public List<Mahasiswa> getPengambil(){
+			return pengambil;
+		}
+		@Override
+		public int compare(RekapPengambilanMataKuliah o1,
+				RekapPengambilanMataKuliah o2) {
+			return o1.compareTo(o2);
+		}
+		@Override
+		public int compareTo(RekapPengambilanMataKuliah o) {
+			if (!prodi.equals(o.prodi)){
+				return prodi.compareTo(o.prodi);
+			}
+			if (!kodeMataKuliah.equals(o.kodeMataKuliah)){
+				return kodeMataKuliah.compareTo(o.kodeMataKuliah);
+			}
+			if (angkatan!=o.angkatan){
+				return angkatan-o.angkatan;
+			}
+			return 0;
 		}
 				
 	}

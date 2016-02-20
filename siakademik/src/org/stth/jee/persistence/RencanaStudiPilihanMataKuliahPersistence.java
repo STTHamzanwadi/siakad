@@ -8,6 +8,7 @@ import org.hibernate.criterion.Restrictions;
 import org.stth.siak.entity.RencanaStudiMahasiswa;
 import org.stth.siak.entity.RencanaStudiPilihanMataKuliah;
 import org.stth.siak.enumtype.Semester;
+import org.stth.siak.enumtype.StatusRencanaStudi;
 
 public class RencanaStudiPilihanMataKuliahPersistence {
 	
@@ -23,11 +24,12 @@ public class RencanaStudiPilihanMataKuliahPersistence {
 		return null;
 	}
 	
-	public static List<RencanaStudiPilihanMataKuliah> getBySemesterTahunAjaran(Semester semester, String tahunAjaran){
+	public static List<RencanaStudiPilihanMataKuliah> getValidBySemesterTahunAjaran(Semester semester, String tahunAjaran){
 		List<Criterion> lc = new ArrayList<>();
 		String[] alias = {"rencanaStudi"};
 		lc.add(Restrictions.eq("rencanaStudi.semester", semester));
 		lc.add(Restrictions.eq("rencanaStudi.tahunAjaran", tahunAjaran));
+		lc.add(Restrictions.eq("rencanaStudi.status", StatusRencanaStudi.DISETUJUI));
 		List<RencanaStudiPilihanMataKuliah> rslt = GenericPersistence.findList(RencanaStudiPilihanMataKuliah.class, lc,alias);
 		if (rslt.size()>0){
 			return rslt;

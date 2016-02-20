@@ -8,10 +8,11 @@ import com.vaadin.server.Resource;
 
 public enum ControlledAccessMenuItems implements AppMenuItems{
 	 //MHS_STAT("Statistik Mahasiswa ", CariMahasiswa.class, FontAwesome.USERS, false, AccessControlList.MHS_STAT),
-	 MHS_CARI("Pencarian Mahasiswa ", CariMahasiswa.class, FontAwesome.USERS, false, AccessControlList.MHS_CARI),
+	 MHS_CARI("Pencarian Mahasiswa ", CariMahasiswa.class, FontAwesome.SEARCH, false, AccessControlList.MHS_CARI),
 	 //DOSEN_STAT("Statistik Dosen ", StatistikMahasiswa.class, FontAwesome.USERS, false, AccessControlList.DSN_STAT),
 	// DOSEN_CARI("Pencarian Dosen ", StatistikMahasiswa.class, FontAwesome.USERS, false, AccessControlList.DSN_STAT),
-	 KRS_STAT("Monitoring Rencana Studi ", MonitoringPenyusunanRencanaStudi.class, FontAwesome.USERS, false, AccessControlList.DSN_CARI);
+	 KRS_AMBIL("Monitoring Pengambilan Mata Kuliah ", MonitoringPengambilanMataKuliahRencanaStudi.class, FontAwesome.TABLE, false, AccessControlList.KRS_MONEV),
+	 KRS_STAT("Monitoring Rencana Studi ", MonitoringPenyusunanRencanaStudi.class, FontAwesome.USERS, false, AccessControlList.KRS_MONEV);
 	 
 	 
 	 private final String viewName;

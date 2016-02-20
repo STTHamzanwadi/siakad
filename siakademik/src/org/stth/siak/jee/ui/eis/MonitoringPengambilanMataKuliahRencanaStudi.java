@@ -5,11 +5,13 @@ import java.util.List;
 
 import org.stth.jee.persistence.GenericPersistence;
 import org.stth.jee.persistence.KonfigurasiPersistence;
+import org.stth.siak.entity.Mahasiswa;
 import org.stth.siak.entity.ProgramStudi;
 import org.stth.siak.enumtype.Semester;
-import org.stth.siak.helper.MonevKRS;
-import org.stth.siak.helper.MonevKRS.RekapMonevKRS;
+import org.stth.siak.helper.MonevKRSMataKuliah;
+import org.stth.siak.helper.MonevKRSMataKuliah.RekapPengambilanMataKuliah;
 import org.stth.siak.jee.ui.generalview.ViewFactory;
+import org.stth.siak.ui.util.GeneralPopups;
 
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
@@ -36,14 +38,14 @@ public class MonitoringPengambilanMataKuliahRencanaStudi extends VerticalLayout 
 	 * 
 	 */
 	private static final long serialVersionUID = -5660284900239030833L;
-	private BeanItemContainer<RekapMonevKRS> beanRekap = new BeanItemContainer<>(RekapMonevKRS.class);
+	private BeanItemContainer<RekapPengambilanMataKuliah> beanRekap = new BeanItemContainer<>(RekapPengambilanMataKuliah.class);
 	private BeanItemContainer<ProgramStudi> beanProdi = new BeanItemContainer<>(ProgramStudi.class);	
 	private ComboBox cbProdi = new ComboBox("Pilih prodi");
 	private VerticalLayout content = new VerticalLayout();
 	private Semester semester;
 	private String ta;
 	protected ProgramStudi prodi;
-	private List<RekapMonevKRS> rekap;
+	private List<RekapPengambilanMataKuliah> rekap;
 	private Table tabel;
 	private TextField tfa;
 	
@@ -107,38 +109,54 @@ public class MonitoringPengambilanMataKuliahRencanaStudi extends VerticalLayout 
 	}
 	
 	public void prepareContent(){
-		MonevKRS m = new MonevKRS(semester,ta,Integer.valueOf(tfa.getValue()),prodi);
+		//MonevKRS m = new MonevKRS(semester,ta,Integer.valueOf(tfa.getValue()),prodi);
+		int angkatan = 0;
+		 
+		try {
+			angkatan = Integer.valueOf(tfa.getValue());
+		} catch (Exception e) {
+			//nothing todo here
+		}
+		MonevKRSMataKuliah m = new MonevKRSMataKuliah(semester, ta, angkatan, prodi); 
 		rekap = m.getRekap();
 		beanRekap.removeAllItems();
 		beanRekap.addAll(rekap);
 		content.removeAllComponents();
-		Panel p = new Panel("Rekapitulasi Status Penyusunan Rencana Studi");
+		Panel p = new Panel("Rekapitulasi Pengambilan Mata Kuliah");
 		
 		tabel = new Table("",beanRekap);
 		tabel.setRowHeaderMode(Table.RowHeaderMode.INDEX);
-		tabel.addGeneratedColumn("prodi", new ColumnGenerator() {
-			
-			/**
-			 * 
-			 */
+		tabel.setColumnHeader("prodi", "PROGRAM STUDI");
+		tabel.setColumnHeader("angkatan", "ANGKATAN");
+		tabel.setColumnHeader("kodeMataKuliah", "KODE");
+		tabel.setColumnHeader("namaMataKuliah", "MATA KULIAH");
+		tabel.setColumnHeader("sks", "SKS");
+		tabel.setColumnHeader("ambil", "PENGAMBIL");
+		tabel.addGeneratedColumn("aksi", new ColumnGenerator() {
+
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
 				BeanItem<?> i = (BeanItem<?>) source.getContainerDataSource().getItem(itemId);
-				final RekapMonevKRS r = (RekapMonevKRS) i.getBean();
-				return r.getProdi().getNama();
+				final RekapPengambilanMataKuliah r = (RekapPengambilanMataKuliah) i.getBean();
+				Button lihat = new Button("Klik untuk lihat pengambil");
+				lihat.addClickListener(new ClickListener() {
+					
+					@Override
+					public void buttonClick(ClickEvent event) {
+						showPengambilMataKuliah(r.getPengambil());
+						
+					}
+
+					
+				});
+				
+				return lihat;
 			}
 		});
-		tabel.setColumnHeader("prodi", "PROGRAM STUDI");
-		tabel.setColumnHeader("belumSusun", "BELUM SUSUN");
-		tabel.setColumnHeader("draft", "DRAFT");
-		tabel.setColumnHeader("diajukan", "DIAJUKAN");
-		tabel.setColumnHeader("disetujui", "DISETUJUI");
-		tabel.setColumnHeader("ditolak", "DITOLAK");
-		tabel.setColumnHeader("finaL", "FINAL");
-		tabel.setColumnHeader("dosenPa", "DOSEN P.A");
-		tabel.setVisibleColumns("prodi","dosenPa","belumSusun","draft","diajukan","disetujui","ditolak","finaL");
+		
+		tabel.setVisibleColumns("prodi","angkatan","kodeMataKuliah","namaMataKuliah","sks","ambil","aksi");
 		VerticalLayout vl = new VerticalLayout();
 		vl.setMargin(true);
 		vl.addComponent(tabel);
@@ -152,7 +170,9 @@ public class MonitoringPengambilanMataKuliahRencanaStudi extends VerticalLayout 
 	public void enter(ViewChangeEvent event) {
 		
 	}
-	
+	private void showPengambilMataKuliah(List<Mahasiswa> pengambil) {
+		GeneralPopups.showDaftarMahasiswa(pengambil);
+	}
 	
 	
 

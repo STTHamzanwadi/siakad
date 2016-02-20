@@ -34,8 +34,8 @@ public class LoginView extends VerticalLayout {
 
 	public LoginView() {
         setSizeFull();
-        username.setValue("02.03.15.0008");
-        password.setValue("0008");
+        //username.setValue("02.03.15.0008");
+        //password.setValue("0008");
         Component loginForm = buildLoginForm();
         addComponent(loginForm);
         setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);

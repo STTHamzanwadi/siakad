@@ -1,6 +1,9 @@
 package org.stth.siak.ui.util;
 
+import java.util.List;
+
 import org.stth.siak.entity.Mahasiswa;
+import org.stth.siak.jee.ui.generalview.DaftarMahasiswaView;
 import org.stth.siak.jee.ui.generalview.MahasiswaProfilView;
 import org.stth.siak.jee.ui.mahasiswa.IPKView;
 
@@ -34,6 +37,18 @@ public class GeneralPopups {
 		win.center();
 		UI.getCurrent().addWindow(win);
 	}
-
+	public static void showDaftarMahasiswa(List<Mahasiswa> lm ){
+		final Window win = new Window("Profil Mahasiswa");
+		Component c = new DaftarMahasiswaView(lm);
+		VerticalLayout vl = new VerticalLayout();
+		vl.setSizeUndefined();
+		vl.setMargin(true);
+		vl.addComponent(c);
+		win.setContent(vl);
+		win.setModal(true);
+		win.setWidth("600px");
+		win.center();
+		UI.getCurrent().addWindow(win);
+	}
 
 }
