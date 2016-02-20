@@ -31,7 +31,7 @@ import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
-public class MonitoringPenyusunanRencanaStudi extends VerticalLayout implements View{
+public class MonitoringPengambilanMataKuliahRencanaStudi extends VerticalLayout implements View{
 	/**
 	 * 
 	 */
@@ -47,7 +47,7 @@ public class MonitoringPenyusunanRencanaStudi extends VerticalLayout implements 
 	private Table tabel;
 	private TextField tfa;
 	
-	public MonitoringPenyusunanRencanaStudi() {
+	public MonitoringPengambilanMataKuliahRencanaStudi() {
 		setMargin(true);
 		setSpacing(true);
 		Responsive.makeResponsive(this);
@@ -56,7 +56,7 @@ public class MonitoringPenyusunanRencanaStudi extends VerticalLayout implements 
 		semester = k.getKRSSemester();
 		ta = k.getKRSTa();
 		
-		addComponent(ViewFactory.header("Monitoring Penyusunan Rencana Studi semester "+semester+" t.a "+ ta));
+		addComponent(ViewFactory.header("Monitoring Pengambilan Mata Kuliah Semester "+semester+" T.A "+ ta));
 		addComponent(createFilterComponent());
 		siapkanPilihanProdi();
 		addComponent(content);
@@ -107,13 +107,7 @@ public class MonitoringPenyusunanRencanaStudi extends VerticalLayout implements 
 	}
 	
 	public void prepareContent(){
-		int angkatan=0;
-		try {
-			angkatan = Integer.valueOf(tfa.getValue());
-		} catch (Exception e) {
-			
-		}
-		MonevKRS m = new MonevKRS(semester,ta,angkatan,prodi);
+		MonevKRS m = new MonevKRS(semester,ta,Integer.valueOf(tfa.getValue()),prodi);
 		rekap = m.getRekap();
 		beanRekap.removeAllItems();
 		beanRekap.addAll(rekap);
