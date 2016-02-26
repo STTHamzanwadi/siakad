@@ -55,7 +55,7 @@ public class AdministrasiNavigator extends Navigator {
 
     private void initViewProviders() {
         //List<AppMenuItems> ls = new ArrayList<>();
-    	AppMenuItems[] y = AdministrasiMenuItems.values(), z = ControlledAccessMenuItems.values();
+    	AppMenuItems[] y = AdministrasiMenuItems.values(), z = AdministrasiControlledAccessMenuItems.values();
     	List<AppMenuItems> l = new ArrayList<>();
     	l.addAll(Arrays.asList(y));
     	l.addAll(Arrays.asList(z));

@@ -9,8 +9,8 @@ import com.vaadin.server.Resource;
 
 public enum AdministrasiControlledAccessMenuItems implements AppMenuItems{
 	 
-	 LOG_PERKULIAHAN("Log Perkuliahan", EntryLogPerkuliahan.class, FontAwesome.TABLE, false, ACLAdministrasiEnum.LOG_PERKULIAHAN),
-	 KRS_STAT("Monitoring Rencana Studi ", EntryLogPerkuliahan.class, FontAwesome.USERS, false, ACLAdministrasiEnum.LOG_PERKULIAHAN);
+	 LOG_PERKULIAHAN("Log Perkuliahan", DaftarLogPerkuliahan.class, FontAwesome.TABLE, false, ACLAdministrasiEnum.LOG_PERKULIAHAN),
+	 ENTRY_NILAI("Pengisian Nilai", DaftarLogPerkuliahan.class, FontAwesome.USERS, false, ACLAdministrasiEnum.LOG_PERKULIAHAN);
 	 
 	 
 	 private final String viewName;

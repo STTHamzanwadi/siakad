@@ -17,6 +17,14 @@ public class LogKehadiranPesertaKuliah {
 	@ManyToOne(cascade = CascadeType.REFRESH)
     @PrimaryKeyJoinColumn
 	private Mahasiswa mahasiswa;
+	private boolean isHadir;
+	public LogKehadiranPesertaKuliah() {
+		
+	}
+	public LogKehadiranPesertaKuliah(LogPerkuliahan log, PesertaKuliah pk){
+		this.logPerkuliahan = log;
+		this.mahasiswa = pk.getMahasiswa();
+	}
 	public int getId() {
 		return id;
 	}
@@ -35,6 +43,15 @@ public class LogKehadiranPesertaKuliah {
 	public void setMahasiswa(Mahasiswa mahasiswa) {
 		this.mahasiswa = mahasiswa;
 	}
+	public boolean isHadir() {
+		return isHadir;
+	}
+	public void setHadir(boolean isHadir) {
+		this.isHadir = isHadir;
+	}
 	
+	public String toString(){
+		return mahasiswa.getNama()+" "+isHadir;
+	}
 
 }

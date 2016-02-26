@@ -19,6 +19,15 @@ public class KelasPerkuliahanPersistence {
 		return l;
 	}
 	
+	public static List<KelasPerkuliahan> getKelasPerkuliahanByDosenSemesterTa(DosenKaryawan d, Semester semester, String tahunAjaran){
+		List<Criterion> lc = new ArrayList<>();
+		lc.add(Restrictions.eq("dosenPengampu", d));
+		lc.add(Restrictions.eq("semester", semester));
+		lc.add(Restrictions.eq("tahunAjaran", tahunAjaran));
+		List<KelasPerkuliahan> l = GenericPersistence.findList(KelasPerkuliahan.class, lc);
+		return l;
+	}
+	
 	public static List<KelasPerkuliahan> getKelasPerkuliahanMahasiswaSemester(Mahasiswa mhs, Semester sem, String ta){
 		List<Criterion> lc = new ArrayList<>();
 		List<KelasPerkuliahan> lkp = new ArrayList<>();

@@ -30,7 +30,7 @@ public class AdministrasiUI extends UI {
     @Override
     protected void init(VaadinRequest request) {
         //getSession().setConverterFactory(new MyConverterFactory());
-        setLocale(Locale.US);
+        setLocale(Locale.UK);
         setTheme("tests-valo-reindeer");
     
         Responsive.makeResponsive(this);

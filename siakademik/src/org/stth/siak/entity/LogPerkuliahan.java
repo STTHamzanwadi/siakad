@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 
 @Entity
 public class LogPerkuliahan {
@@ -75,6 +77,12 @@ public class LogPerkuliahan {
 	public void setDiisiOleh(DosenKaryawan diisiOleh) {
 		this.diisiOleh = diisiOleh;
 	}
-	
+	public String getLongDesc(){
+		String s="";
+		s+=kelasPerkuliahan.toString();
+		s+=" "+tanggalPertemuan;
+		s+=" "+diisiOleh.getNama();
+		return s;
+	}
 
 }
