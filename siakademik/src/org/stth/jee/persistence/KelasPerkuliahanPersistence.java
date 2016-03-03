@@ -9,12 +9,21 @@ import org.stth.siak.entity.DosenKaryawan;
 import org.stth.siak.entity.KelasPerkuliahan;
 import org.stth.siak.entity.Mahasiswa;
 import org.stth.siak.entity.PesertaKuliah;
+import org.stth.siak.entity.ProgramStudi;
 import org.stth.siak.enumtype.Semester;
 
 public class KelasPerkuliahanPersistence {
 	public static List<KelasPerkuliahan> getKelasPerkuliahanByDosen(DosenKaryawan d){
 		List<Criterion> lc = new ArrayList<>();
 		lc.add(Restrictions.eq("dosenPengampu", d));
+		List<KelasPerkuliahan> l = GenericPersistence.findList(KelasPerkuliahan.class, lc);
+		return l;
+	}
+	public static List<KelasPerkuliahan> getKelasPerkuliahanByProdiSemester(ProgramStudi prodi, Semester semester, String ta){
+		List<Criterion> lc = new ArrayList<>();
+		lc.add(Restrictions.eq("prodi", prodi));
+		lc.add(Restrictions.eq("semester", semester));
+		lc.add(Restrictions.eq("tahunAjaran", ta));
 		List<KelasPerkuliahan> l = GenericPersistence.findList(KelasPerkuliahan.class, lc);
 		return l;
 	}

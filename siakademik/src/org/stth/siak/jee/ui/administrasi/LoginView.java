@@ -98,7 +98,7 @@ public class LoginView extends VerticalLayout {
 		String password = this.password.getValue();
 		boolean isValid=false;
 		alias = alias.toUpperCase();
-		DosenKaryawan user = UserAuthenticationService.getValidDosen(alias, password);
+		DosenKaryawan user = UserAuthenticationService.getValidKaryawan(alias, password);
 		if (user!=null){
 			isValid = true;
 		}

@@ -30,6 +30,27 @@ public class UserAuthenticationService {
 		}
 		return null;
 	}
+	public static DosenKaryawan getValidKaryawan(String alias, String password) {
+		List<Criterion> critList = new ArrayList<Criterion>();
+    	critList.add(Restrictions.eq("alias", alias));
+		List<?> l = GenericPersistence.findList(DosenKaryawan.class, critList);
+		if (l.size()>0){
+			DosenKaryawan o = (DosenKaryawan) l.get(0);
+			if (o.getPassword()==null||o.getSalt()==null){
+				return null;
+			}
+			try {
+				boolean isValidUser = PasswordEncryptionService.authenticate(password, 
+						o.getPassword(), o.getSalt());
+				if (isValidUser) return o;
+			} catch (NoSuchAlgorithmException e) {
+				e.printStackTrace();
+			} catch (InvalidKeySpecException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
 	public static DosenKaryawan getValidDosen(String alias, String password) {
 		List<Criterion> critList = new ArrayList<Criterion>();
     	critList.add(Restrictions.eq("alias", alias));

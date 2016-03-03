@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version last-->
+<!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports Library version 5.6.1  -->
+<!-- 2016-03-02T08:52:27 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d72ff107-3a31-43c3-a01c-2e337b71e36b">
 	<property name="ireport.callouts" value="callouts.1.fg=0,0,0\n callouts.1.bg=255,255,0\n "/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
@@ -11,6 +12,9 @@
 	<parameter name="prodi" class="java.lang.String"/>
 	<parameter name="kodekelas" class="java.lang.String"/>
 	<parameter name="nisdosen" class="java.lang.String"/>
+	<parameter name="basepath" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
 	<queryString language="SQL">
 		<![CDATA[]]>
 	</queryString>
@@ -31,7 +35,7 @@
 		<band height="136" splitType="Stretch">
 			<image>
 				<reportElement x="30" y="14" width="80" height="84" uuid="a868b989-aa23-4728-b71d-54c02d24b792"/>
-				<imageExpression><![CDATA["rpt/image/logo.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{basepath}+"image/logo.png"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="100" y="14" width="454" height="20" uuid="2a0a9972-abb9-438f-81dc-1c144f7420bd"/>

@@ -9,6 +9,7 @@ import java.util.Map;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.stth.jee.persistence.GenericPersistence;
+import org.stth.jee.persistence.PesertaKuliahPersistence;
 import org.stth.siak.entity.KelasPerkuliahan;
 import org.stth.siak.entity.KelasPerkuliahanMahasiswaPerSemester;
 import org.stth.siak.entity.Mahasiswa;
@@ -256,6 +257,44 @@ public class ReportContentFactory {
 		parameters.put("prodi", curObject.getProdi().toString());
 		parameters.put("timestamp", new Date());
 		String title = "RPT: Daftar Peserta Ujian";
+		ReportRawMaterials rrm = new ReportRawMaterials(rptFile, parameters, lpkre, title);
+		return rrm;
+	}
+	
+	public static List<ReportRawMaterials> siapkanReportAbsensiHarian(List<KelasPerkuliahan> lkp) {
+		List<ReportRawMaterials> rrms = new ArrayList<>();
+		for (KelasPerkuliahan kp : lkp) {
+			List<PesertaKuliahReportElement> lpkre = new ArrayList<>();
+			List<PesertaKuliah> lpk = PesertaKuliahPersistence.getPesertaKuliahByKelasPerkuliahan(kp);
+			for (PesertaKuliah pesertaKuliah : lpk) {
+				PesertaKuliahReportElement pkre = new PesertaKuliahReportElement(pesertaKuliah);
+				lpkre.add(pkre);
+			}
+			ReportRawMaterials rrm = siapkanReportAbsensiHarian(kp, lpkre);
+			rrms.add(rrm);
+		}
+		return rrms;
+	}
+	
+	private static ReportRawMaterials siapkanReportAbsensiHarian(KelasPerkuliahan curObject, List<PesertaKuliahReportElement> lpkre) {
+		Map<String,Object> parameters = new HashMap<>();
+		String rptFile = "KelasPerkuliahanAbsensiHarian.jrxml";
+		parameters.put("matakuliah", curObject.getMataKuliah().toString());
+		parameters.put("kodekelas", curObject.getKodeKelas());
+		if (curObject.getDosenPengampu()!=null){
+			parameters.put("dosen", curObject.getDosenPengampu().getNama());
+			if (curObject.getDosenPengampu().getNis()!=null){
+				parameters.put("nisdosen", curObject.getDosenPengampu().getNis());
+			} else {
+				parameters.put("nisdosen", "-");
+			}
+		} else {
+			parameters.put("dosen", "-");
+		}
+		parameters.put("semta", curObject.getSemester().toString()+"/"+curObject.getTahunAjaran());
+		parameters.put("prodi", curObject.getProdi().toString());
+		parameters.put("timestamp", new Date());
+		String title = "RPT: Berita Acara Perkuliahan";
 		ReportRawMaterials rrm = new ReportRawMaterials(rptFile, parameters, lpkre, title);
 		return rrm;
 	}

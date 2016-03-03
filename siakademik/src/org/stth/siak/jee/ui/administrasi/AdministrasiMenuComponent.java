@@ -10,6 +10,7 @@ import java.util.List;
 import org.stth.jee.persistence.DosenKaryawanPersistence;
 import org.stth.jee.persistence.GenericPersistence;
 import org.stth.jee.util.PasswordEncryptionService;
+import org.stth.siak.entity.ACLAdministrasiEnum;
 import org.stth.siak.entity.BerkasFotoDosen;
 import org.stth.siak.entity.DosenKaryawan;
 import org.stth.siak.entity.UserAccessRightsAdministrasi;
@@ -162,12 +163,11 @@ public class AdministrasiMenuComponent extends CustomComponent {
 		try {
 			List<UserAccessRightsAdministrasi> lacl = (List<UserAccessRightsAdministrasi>) VaadinSession.getCurrent().getAttribute("admrights");
 			for (final AdministrasiControlledAccessMenuItems view : AdministrasiControlledAccessMenuItems.values()){
-				for(UserAccessRightsAdministrasi acl : lacl){
-					if (acl.getAcl().equals(view.getAccessControlList())){
-						Component menuItemComponent = new ValoMenuItemButton(view);
-						menuItemsLayout.addComponent(menuItemComponent);
-					}
+				if(ACLAdministrasiEnum.isEligibleTo(lacl, view.getAccessControlList())){
+					Component menuItemComponent = new ValoMenuItemButton(view);
+					menuItemsLayout.addComponent(menuItemComponent);
 				}
+				
 			}
 		} catch (Exception e) {
 			

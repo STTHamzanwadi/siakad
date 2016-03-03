@@ -6,6 +6,7 @@ import org.stth.jee.persistence.DosenKaryawanPersistence;
 import org.stth.jee.persistence.GenericPersistence;
 import org.stth.jee.persistence.KelasPerkuliahanPersistence;
 import org.stth.jee.persistence.KonfigurasiPersistence;
+import org.stth.jee.persistence.LogPerkuliahanPersistence;
 import org.stth.siak.entity.DosenKaryawan;
 import org.stth.siak.entity.KelasPerkuliahan;
 import org.stth.siak.entity.LogPerkuliahan;
@@ -53,20 +54,30 @@ public class EntryLogPerkuliahan extends CustomComponent {
 	private Window parent;
 	private DosenKaryawan user;
 	
-	public EntryLogPerkuliahan(final Window parent) {
+	public EntryLogPerkuliahan() {
+		LogPerkuliahan log = new LogPerkuliahan();
+		prepare(log);
+		
+	}
+	public EntryLogPerkuliahan( LogPerkuliahan log) {
+		prepare(log);
+	}
+	public void setParent(final Window parent){
 		this.parent = parent;
+	}
+	
+	private void prepare(LogPerkuliahan log){
+		
 		KonfigurasiPersistence k = new KonfigurasiPersistence();
 		semester = k.getKRSSemester();
 		ta = k.getKRSTa();
-		item = new BeanItem<LogPerkuliahan>(new LogPerkuliahan());
+		item = new BeanItem<LogPerkuliahan>(log);
 		cbDosenPengganti.setEnabled(false);
 		user = VaadinSession.getCurrent().getAttribute(DosenKaryawan.class);
 		//cbDosenPengganti.set
 		siapkanDaftarDosen();
 		siapkanFormIsian();
 		siapkanTombolAksi();
-		
-		
 	}
 	
 	private void siapkanTombolAksi(){
@@ -80,9 +91,7 @@ public class EntryLogPerkuliahan extends CustomComponent {
 					fieldGroup.commit();
 					BeanItem<?> bi = (BeanItem<?>) fieldGroup.getItemDataSource();
 					LogPerkuliahan log = (LogPerkuliahan) bi.getBean();
-					log.setEntryOleh(user);
-					GenericPersistence.merge(log);
-					parent.close();
+					saveLog(log);
 				} catch (CommitException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -202,6 +211,17 @@ public class EntryLogPerkuliahan extends CustomComponent {
 	protected void siapkanPilihanDosenPengganti() {
 		cbDosenPengganti.setEnabled(true);
 		
+		
+	}
+	private void saveLog(LogPerkuliahan log) {
+		List<LogPerkuliahan> existedLogs = LogPerkuliahanPersistence.getLogSimilarOnDate(log);
+		if (existedLogs.size()==0){
+			log.setEntryOleh(user);
+			GenericPersistence.merge(log);
+			parent.close();
+		} else {
+			Notification.show("Data perkuliahan di hari yang sama untuk kelas bersangkutan sudah ada", Notification.Type.ERROR_MESSAGE);
+		}
 		
 	}
 

@@ -1,0 +1,60 @@
+$v-app-loading-text: "Flat Valo";
+$v-background-color: #FFFFFD;
+$v-app-background-color: #CFFFB8;
+$v-panel-background-color: #ffffff;
+$v-font-family: Helvetica, Arial, 'lucida grande', tahoma, verdana, arial, sans-serif;
+$v-font-size: 14px;
+$v-font-color: #37404E;
+$v-focus-color: #002000;
+$v-font-weight: 400;
+$v-focus-color: rgb(10,130,70);
+$v-luminance-threshold: 180;
+$v-border: 2px solid v-shade;
+$v-border-radius: 3px;
+$v-bevel: false;
+$v-gradient: false;
+$v-shadow: false;
+$v-textfield-bevel: false;
+$v-textfield-shadow: false;
+$v-link-text-decoration: false;
+$v-selection-overlay-padding-horizontal: 0;
+$v-selection-overlay-padding-vertical: 4px;
+$v-selection-item-height: 20px;
+$v-selection-item-border-radius: 0;
+$valo-menu-background-color: #002000;
+$v-font-size: 12px;
+
+$v-unit-size: 26px;
+$v-unit-size--small: 20px;
+$v-unit-size--tiny: 18px;
+
+$v-layout-margin-top: 18px;
+$v-layout-margin-right: 18px;
+$v-layout-margin-bottom: 18px;
+$v-layout-margin-left: 18px;
+$v-layout-spacing-vertical: 7px;
+$v-layout-spacing-horizontal: 6px;
+
+@import "../valo/valo";
+
+
+.valo-test {
+  .v-button-primary.v-button-primary {
+    background: #000;
+    border-color: $v-focus-color;
+    color: $v-focus-color;
+  }
+
+  .v-button-danger.v-button-danger {
+    background: #fff;
+    border-color: $v-error-indicator-color;
+    color: $v-error-indicator-color;
+  }
+
+  .v-slider-base:before,
+  .v-slider-base:after {
+    border: none !important;
+  }
+
+  
+}

@@ -8,6 +8,7 @@ import org.stth.jee.persistence.DosenKaryawanPersistence;
 import org.stth.jee.persistence.KelasPerkuliahanPersistence;
 import org.stth.jee.persistence.KonfigurasiPersistence;
 import org.stth.jee.persistence.LogPerkuliahanPersistence;
+import org.stth.siak.entity.ACLAdministrasiEnum;
 import org.stth.siak.entity.DosenKaryawan;
 import org.stth.siak.entity.KelasPerkuliahan;
 import org.stth.siak.entity.LogPerkuliahan;
@@ -53,6 +54,7 @@ public class DaftarLogPerkuliahan extends VerticalLayout implements View {
 	private VerticalLayout content = new VerticalLayout();
 	protected DosenKaryawan dosen;
 	protected KelasPerkuliahan kelasPerkuliahan;
+	private List<UserAccessRightsAdministrasi> lacl;
 
 	public DaftarLogPerkuliahan() {
 		setMargin(true);
@@ -63,7 +65,7 @@ public class DaftarLogPerkuliahan extends VerticalLayout implements View {
 		semester = k.getKRSSemester();
 		ta = k.getKRSTa();
 		
-		List<UserAccessRightsAdministrasi> lacl = (List<UserAccessRightsAdministrasi>) VaadinSession.getCurrent().getAttribute("admrights");
+		lacl = (List<UserAccessRightsAdministrasi>) VaadinSession.getCurrent().getAttribute("admrights");
 		
 		addComponent(ViewFactory.header("Catatan Perkuliahan Semester "+semester+" t.a "+ ta));
 		addComponent(createActionButton());
@@ -104,19 +106,20 @@ public class DaftarLogPerkuliahan extends VerticalLayout implements View {
 	
 	private Component createActionButton() {
 		HorizontalLayout hl = new HorizontalLayout();
-		Button tambah,edit,hapus;
+		Button tambah;
 		tambah = new Button("Tambah");
 		tambah.addClickListener(new ClickListener() {
 			
 			@Override
 			public void buttonClick(ClickEvent event) {
-				siapkanLogPerkuliahan();
+				EntryLogPerkuliahan entryLog = new EntryLogPerkuliahan();
+				siapkanLogPerkuliahan(entryLog);
 			}
 		});
-		edit = new Button("Ubah");
-		hapus = new Button("Hapus");
-		hapus.setEnabled(false);
-		hl.addComponents(tambah,edit,hapus);
+		
+		
+		
+		hl.addComponents(tambah);
 		hl.setSpacing(true);
 		return hl;
 	}
@@ -168,19 +171,21 @@ public class DaftarLogPerkuliahan extends VerticalLayout implements View {
 		}		
 		t.setContainerDataSource(beans);
 		t.setRowHeaderMode(Table.RowHeaderMode.INDEX);
-		t.setColumnHeader("daftarHadir", "DAFTAR HADIR");
+		t.setColumnHeader("aksi", "AKSI");
 		t.setColumnHeader("diisiOleh", "DOSEN");
 		t.setColumnHeader("kelasPerkuliahan", "KELAS");
 		t.setColumnHeader("tanggalPertemuan", "WAKTU");
 		t.setColumnHeader("ruangPertemuan", "RUANGAN");
 		t.setColumnHeader("materiPertemuan", "MATERI");
 		t.setColumnHeader("entryOleh", "PETUGAS ENTRI");
-		t.addGeneratedColumn("daftarHadir", new ColumnGenerator() {
+		t.addGeneratedColumn("aksi", new ColumnGenerator() {
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
+				HorizontalLayout hl = new HorizontalLayout();
+				hl.setSpacing(true);
 				BeanItem<?> i = (BeanItem<?>) source.getContainerDataSource().getItem(itemId);
 				final LogPerkuliahan log = (LogPerkuliahan) i.getBean();
-				Button daftarHadir = new Button("Lihat");
+				Button daftarHadir = new Button("Daftar Hadir");
 				daftarHadir.addClickListener(new ClickListener() {
 					@Override
 					public void buttonClick(ClickEvent event) {
@@ -188,10 +193,26 @@ public class DaftarLogPerkuliahan extends VerticalLayout implements View {
 					}
 
 				});
-				return daftarHadir;
+				hl.addComponent(daftarHadir);
+				if (ACLAdministrasiEnum.isEligibleTo(lacl, ACLAdministrasiEnum.LOG_PERKULIAHAN_EDIT)){
+					Button edit = new Button("Ubah");
+					edit.setEnabled(true);
+					edit.addClickListener(new ClickListener() {
+						
+						@Override
+						public void buttonClick(ClickEvent event) {
+							EntryLogPerkuliahan entryLog = new EntryLogPerkuliahan(log);
+							siapkanLogPerkuliahan(entryLog);
+							
+						}
+					});
+					hl.addComponent(edit);
+				}
+				
+				return hl;
 			}
 		});
-		t.setVisibleColumns("daftarHadir","diisiOleh","kelasPerkuliahan","tanggalPertemuan","ruangPertemuan","materiPertemuan","entryOleh");
+		t.setVisibleColumns("aksi","diisiOleh","kelasPerkuliahan","tanggalPertemuan","ruangPertemuan","materiPertemuan","entryOleh");
 		t.setSizeUndefined();
 		Panel pnl = new Panel("Daftar Hasil Penyaringan");
 		VerticalLayout pnlroot = new VerticalLayout();
@@ -213,18 +234,16 @@ public class DaftarLogPerkuliahan extends VerticalLayout implements View {
 		UI.getCurrent().addWindow(win);
 	}
 	
-	private void siapkanLogPerkuliahan(){
+	private void siapkanLogPerkuliahan(EntryLogPerkuliahan entryLog){
 		final Window win = new Window("Entry Log Perkuliahan");
+		entryLog.setParent(win);
 		win.addCloseListener(new CloseListener() {
-			
 			@Override
 			public void windowClose(CloseEvent e) {
 				saringData();
-				
 			}
 		});
-		Component c = new EntryLogPerkuliahan(win);
-		win.setContent(c);
+		win.setContent(entryLog);
 		win.setModal(true);
 		win.setWidth("600px");
 		win.center();
