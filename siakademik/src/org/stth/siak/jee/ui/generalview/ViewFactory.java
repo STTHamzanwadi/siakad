@@ -25,7 +25,7 @@ public class ViewFactory {
 		//ooter.addStyleName("viewheader");
 		Label titleLabel2;
 		header.setSpacing(true);
-		titleLabel2 = new Label(label);
+		titleLabel2 = new Label(label.toUpperCase());
 		titleLabel2.setSizeUndefined();
 		titleLabel2.addStyleName(ValoTheme.LABEL_H3);
 		titleLabel2.addStyleName(ValoTheme.LABEL_COLORED);

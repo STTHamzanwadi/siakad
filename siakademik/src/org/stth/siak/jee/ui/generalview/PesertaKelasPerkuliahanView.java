@@ -1,10 +1,14 @@
 package org.stth.siak.jee.ui.generalview;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import org.stth.jee.persistence.LogKehadiranPerkuliahanPersistence;
 import org.stth.jee.persistence.PesertaKuliahPersistence;
 import org.stth.siak.entity.DosenKaryawan;
 import org.stth.siak.entity.KelasPerkuliahan;
+import org.stth.siak.entity.LogKehadiranPesertaKuliah;
 import org.stth.siak.entity.PesertaKuliah;
 
 import com.vaadin.addon.tableexport.ExcelExport;
@@ -25,16 +29,22 @@ public class PesertaKelasPerkuliahanView extends CustomComponent{
 	/**
 	 * 
 	 */
+	
 	private static final long serialVersionUID = 4001325208244016531L;
 	private KelasPerkuliahan kp;
 	private Table table;
+	private VerticalLayout content = new VerticalLayout();
+	private boolean showRekapKehadiran=false;
+	private boolean showNilai=false;
 
 	public PesertaKelasPerkuliahanView(KelasPerkuliahan kp){
 		this.kp = kp;
 		VerticalLayout layout = new VerticalLayout();
 		layout.setMargin(true);
 		layout.setSpacing(true);
-		layout.addComponent(getTable());
+		layout.addComponent(content);
+		content.setSizeUndefined();
+		content.addComponent(getTable());
 		DosenKaryawan d = (DosenKaryawan) VaadinSession.getCurrent().getAttribute(DosenKaryawan.class);
 		if (d!=null){
 			layout.addComponent(getExcelExporter());
@@ -59,7 +69,7 @@ public class PesertaKelasPerkuliahanView extends CustomComponent{
 	}
 	@SuppressWarnings("serial")
 	public Component getTable(){
-		table = new Table("Daftar Peserta Kuliah");
+		table = new Table();
 		BeanContainer<Integer, PesertaKuliah> beans = new BeanContainer<Integer, PesertaKuliah>(PesertaKuliah.class);
 		List<PesertaKuliah> lm = PesertaKuliahPersistence.getPesertaKuliahByKelasPerkuliahan(kp);
 		beans.setBeanIdProperty("id");
@@ -97,12 +107,43 @@ public class PesertaKelasPerkuliahanView extends CustomComponent{
 				return o.getMahasiswa().getPembimbingAkademik().getNama();
 			}
 		});
+		table.addGeneratedColumn("rekapHadir", new ColumnGenerator() {
+			@Override
+			public Object generateCell(Table source, Object itemId, Object columnId) {
+				BeanItem<?> i = (BeanItem<?>) source.getContainerDataSource().getItem(itemId);
+				PesertaKuliah o = (PesertaKuliah) i.getBean();
+				List<LogKehadiranPesertaKuliah> l = LogKehadiranPerkuliahanPersistence.getByPesertaKuliah(o);
+				return l.size();
+			}
+		});
+		String[] s = {"nim","nama","pa"};
+		List<String> visColumns= new ArrayList<>(Arrays.asList(s));
 		table.setColumnHeader("nama", "NAMA");
 		table.setColumnHeader("nim", "NIM");
 		table.setColumnHeader("nilai", "NILAI");
+		table.setColumnHeader("rekapHadir", "TOTAL HADIR");
 		table.setColumnHeader("pa", "PEMBIMBING AKADEMIK");
-		table.setVisibleColumns("nim","nama","nilai","pa");
+		table.setColumnHeader("nim", "NIM");
+		if (showNilai){
+			visColumns.add("nilai");
+		}
+		if (showRekapKehadiran){
+			visColumns.add("rekapHadir");
+		}
+		table.setVisibleColumns(visColumns.toArray());
 		return table;
 	}
-
+	
+	public void refreshContent(){
+		content.removeAllComponents();
+		content.addComponent(getTable());
+	}
+	
+	public void setNilaiVisible(){
+		showNilai = true;
+	}
+	public void setRekapKehadiranVisible(){
+		showRekapKehadiran = true;
+	}
+	
 }

@@ -50,5 +50,17 @@ public class GeneralPopups {
 		win.center();
 		UI.getCurrent().addWindow(win);
 	}
+	public static void showGenericWindow(Component c, String title){
+		final Window win = new Window(title);
+		VerticalLayout vl = new VerticalLayout();
+		vl.setSizeUndefined();
+		vl.setMargin(true);
+		vl.addComponent(c);
+		win.setContent(vl);
+		win.setModal(true);
+		win.setWidth("600px");
+		win.center();
+		UI.getCurrent().addWindow(win);
+	}
 
 }

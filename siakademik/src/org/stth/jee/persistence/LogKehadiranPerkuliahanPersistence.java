@@ -10,6 +10,8 @@ import org.stth.siak.entity.DosenKaryawan;
 import org.stth.siak.entity.KelasPerkuliahan;
 import org.stth.siak.entity.LogKehadiranPesertaKuliah;
 import org.stth.siak.entity.LogPerkuliahan;
+import org.stth.siak.entity.Mahasiswa;
+import org.stth.siak.entity.PesertaKuliah;
 
 public class LogKehadiranPerkuliahanPersistence {
 	public static List<LogKehadiranPesertaKuliah> getByLogPerkuliahan(LogPerkuliahan log){
@@ -18,5 +20,12 @@ public class LogKehadiranPerkuliahanPersistence {
 		List<LogKehadiranPesertaKuliah> l = GenericPersistence.findList(LogKehadiranPesertaKuliah.class, lc);
 		return l;
 	}
-	
+	public static List<LogKehadiranPesertaKuliah> getByPesertaKuliah(PesertaKuliah p){
+		List<Criterion> lc = new ArrayList<>();
+		String[] alias = {"logPerkuliahan"};
+		lc.add(Restrictions.eq("logPerkuliahan.kelasPerkuliahan", p.getKelasPerkuliahan()));
+		lc.add(Restrictions.eq("mahasiswa", p.getMahasiswa()));
+		List<LogKehadiranPesertaKuliah> l = GenericPersistence.findList(LogKehadiranPesertaKuliah.class, lc, alias);
+		return l;
+	}
 }

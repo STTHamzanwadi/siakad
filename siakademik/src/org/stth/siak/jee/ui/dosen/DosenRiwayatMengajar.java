@@ -5,14 +5,10 @@ import java.util.Collections;
 import java.util.List;
 
 import org.stth.jee.persistence.KelasPerkuliahanPersistence;
-import org.stth.jee.persistence.KonfigurasiPersistence;
 import org.stth.siak.entity.DosenKaryawan;
 import org.stth.siak.entity.KelasPerkuliahan;
-import org.stth.siak.enumtype.Semester;
-import org.stth.siak.jee.ui.generalview.DaftarLogPerkuliahan;
 import org.stth.siak.jee.ui.generalview.PesertaKelasPerkuliahanView;
 import org.stth.siak.jee.ui.generalview.ViewFactory;
-import org.stth.siak.ui.util.GeneralPopups;
 
 import com.vaadin.data.util.BeanContainer;
 import com.vaadin.data.util.BeanItem;
@@ -32,28 +28,23 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
-public class DosenKelasDiampu extends VerticalLayout implements View{
+public class DosenRiwayatMengajar extends VerticalLayout implements View{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1653775031486924211L;
-	private Table tabel = new Table("");
+	private Table tabel = new Table();
 	private VerticalLayout dashboardPanels;
 	private BeanContainer<Integer, KelasPerkuliahan> beans = new BeanContainer<Integer, KelasPerkuliahan>(KelasPerkuliahan.class);
 	private DosenKaryawan dosen;
-	private Semester semester;
-	private String ta;
 
-	public DosenKelasDiampu() {
-		setMargin(true);
-		setSpacing(true);
+	public DosenRiwayatMengajar() {
+		//System.out.println("numpang lewat");
 		addStyleName(ValoTheme.PANEL_BORDERLESS);
 		dosen = (DosenKaryawan) VaadinSession.getCurrent().getAttribute(DosenKaryawan.class);
-		KonfigurasiPersistence k = new KonfigurasiPersistence();
-		semester = k.getKRSSemester();
-		ta = k.getKRSTa();
+		setMargin(true);
 		Responsive.makeResponsive(this);
-		addComponent(ViewFactory.header("Tugas Mengajar Semester "+ semester + " T.A " +ta));
+		addComponent(ViewFactory.header("Riwayat Mengajar Dosen"));
 		addComponent(getTable());
 		addComponent(ViewFactory.footer());
 
@@ -62,8 +53,8 @@ public class DosenKelasDiampu extends VerticalLayout implements View{
 	
 	@SuppressWarnings("serial")
 	private Component getTable(){
-		List<KelasPerkuliahan> lm = KelasPerkuliahanPersistence.getKelasPerkuliahanByDosenSemesterTa(dosen, semester, ta);
-		Collections.sort(lm);
+		List<KelasPerkuliahan> lm = KelasPerkuliahanPersistence.getKelasPerkuliahanByDosen(dosen);
+		Collections.sort(lm, Collections.reverseOrder());
 		dashboardPanels = new VerticalLayout();
         dashboardPanels.addStyleName("dashboard-panels");
         Responsive.makeResponsive(dashboardPanels);
@@ -76,14 +67,6 @@ public class DosenKelasDiampu extends VerticalLayout implements View{
 		}
 		tabel.setContainerDataSource(beans);
 		tabel.setRowHeaderMode(Table.RowHeaderMode.INDEX);
-		tabel.addGeneratedColumn("sks", new ColumnGenerator() {
-			@Override
-			public Object generateCell(Table source, Object itemId, Object columnId) {
-				BeanItem<?> i = (BeanItem<?>) source.getContainerDataSource().getItem(itemId);
-				KelasPerkuliahan o = (KelasPerkuliahan) i.getBean();
-				return o.getMataKuliah().getSks();
-			}
-		});
 		tabel.addGeneratedColumn("matakuliah", new ColumnGenerator() {
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
@@ -105,9 +88,7 @@ public class DosenKelasDiampu extends VerticalLayout implements View{
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
 				HorizontalLayout hl = new HorizontalLayout();
-				hl.setSpacing(true);
-				Button button = new Button("Peserta Kuliah");
-				Button buttonLog = new Button("Log Mengajar");
+				Button button = new Button("Peserta");
 				BeanItem<?> i = (BeanItem<?>) source.getContainerDataSource().getItem(itemId);
 				final KelasPerkuliahan o = (KelasPerkuliahan) i.getBean();
 				button.addClickListener(new ClickListener() {
@@ -116,23 +97,16 @@ public class DosenKelasDiampu extends VerticalLayout implements View{
 					}
 
 				});
-				buttonLog.addClickListener(new ClickListener() {
-					@Override
-					public void buttonClick(ClickEvent event) {
-						showLogPerkuliahan(o);
-					}
-
-				});
-				hl.addComponents(button,buttonLog);
+				hl.addComponent(button);
 				return hl;
 			}
 		});
 		tabel.setColumnHeader("matakuliah", "MATA KULIAH");
+		tabel.setColumnHeader("semester", "SEMESTER");
 		tabel.setColumnHeader("prodi", "PRODI");
-		tabel.setColumnHeader("kodeKelas", "KELAS");
-		tabel.setColumnHeader("sks", "SKS");
+		tabel.setColumnHeader("tahunAjaran", "T.A");
 		tabel.setColumnHeader("aksi", "LIHAT");
-		tabel.setVisibleColumns("matakuliah","sks","kodeKelas","prodi","aksi");
+		tabel.setVisibleColumns("tahunAjaran","semester","matakuliah","prodi","aksi");
 		dashboardPanels.addComponent(tabel);
 		return dashboardPanels;
 	}
@@ -145,16 +119,16 @@ public class DosenKelasDiampu extends VerticalLayout implements View{
 	
 
 	private void showPesertaKuliah(KelasPerkuliahan o) {
-		PesertaKelasPerkuliahanView c = new PesertaKelasPerkuliahanView(o);
-		c.setRekapKehadiranVisible();
-		c.refreshContent();
-		GeneralPopups.showGenericWindow(c,"Daftar Peserta Kuliah");
-	}
-	
-
-	private void showLogPerkuliahan(KelasPerkuliahan kp) {
-		DaftarLogPerkuliahan dlp = new DaftarLogPerkuliahan(kp);
-		GeneralPopups.showGenericWindow(dlp, "Log Perkuliahan");
+		final Window win = new Window("Daftar Peserta Kuliah");
+		Component c = new PesertaKelasPerkuliahanView(o);
+		VerticalLayout vl = new VerticalLayout();
+		vl.setMargin(true);
+		vl.addComponent(c);
+		win.setContent(vl);
+		win.setModal(true);
+		win.setWidth("600px");
+		win.center();
+		UI.getCurrent().addWindow(win);
 		
 	}
 	

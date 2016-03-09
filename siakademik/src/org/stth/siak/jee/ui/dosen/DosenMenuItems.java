@@ -8,9 +8,11 @@ import com.vaadin.server.Resource;
 
 public enum DosenMenuItems implements AppMenuItems{
 	 DASHBOARD("Profil ", DosenProfil.class, FontAwesome.HOME, true),
-	 PERKULIAHAN("Riwayat Mengajar", DosenKelasDiampu.class, FontAwesome.UNIVERSITY, false),
-	 MAHASISWA("Bimbingan Akademik", DosenStatusBimbinganAkademik.class, FontAwesome.USERS, true),
-	 RENCANA_STUDI("Verifikasi Rencana Studi", DosenVerifikasiRencanaStudi.class, FontAwesome.USERS, true),
+	 LOG_PERKULIAHAN("Daftar Log Perkuliahan", DosenLogPerkuliahan.class, FontAwesome.TABLE, false),
+	 KELAS_DIAMPU("Daftar Kelas Diampu", DosenKelasDiampu.class, FontAwesome.TABLE, false),
+	 PERKULIAHAN("Daftar Riwayat Mengajar", DosenRiwayatMengajar.class, FontAwesome.HISTORY, false),
+	 MAHASISWA("Daftar Bimbingan Akademik", DosenStatusBimbinganAkademik.class, FontAwesome.USERS, true),
+	 RENCANA_STUDI("Verifikasi Rencana Studi", DosenVerifikasiRencanaStudi.class, FontAwesome.PENCIL, true),
 	 INFO_KURIKULUM("Struktur Kurikulum", DosenDetailKurikulum.class, FontAwesome.TABLE, true);
 	 //,DOSEN("Misc", DosenProfil.class, FontAwesome.MALE, false);
 	 

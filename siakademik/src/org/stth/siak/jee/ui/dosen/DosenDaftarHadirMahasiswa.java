@@ -1,4 +1,4 @@
-package org.stth.siak.jee.ui.administrasi;
+package org.stth.siak.jee.ui.dosen;
 
 import java.util.Collection;
 import java.util.List;
@@ -30,15 +30,13 @@ import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
-public class DaftarHadirMahasiswa extends CustomComponent{
+public class DosenDaftarHadirMahasiswa extends CustomComponent{
 	private KelasPerkuliahan kelasPerkuliahan;
 	private LogPerkuliahan logPerkuliahan;
 	private List<LogKehadiranPesertaKuliah> l;
-	private Window parent;
 	private Table t;
 
-	public DaftarHadirMahasiswa(LogPerkuliahan log, Window parent) {
-		this.parent = parent;
+	public DosenDaftarHadirMahasiswa(LogPerkuliahan log) {
 		this.logPerkuliahan = log;
 		this.kelasPerkuliahan = log.getKelasPerkuliahan();
 		loadDaftarHadir();
@@ -55,23 +53,6 @@ public class DaftarHadirMahasiswa extends CustomComponent{
 		Panel pnl = new Panel("Daftar Hadir");
 		pnl.setContent(getTable());
 		vl.addComponent(pnl);
-		Button simpan = new Button("Simpan");
-		simpan.addClickListener(new ClickListener() {
-			
-			@Override
-			public void buttonClick(ClickEvent event) {
-				Collection<?> ids = t.getContainerDataSource().getItemIds();
-				for (Object component : ids) {
-					BeanItem<?> item = (BeanItem<?>) t.getContainerDataSource().getItem(component);
-					LogKehadiranPesertaKuliah lkp = (LogKehadiranPesertaKuliah) item.getBean();
-					//Notification.show(lkp.toString());
-					GenericPersistence.merge(lkp);
-					
-				}
-				parent.close();
-			}
-		});
-		vl.addComponent(simpan);
 		setCompositionRoot(vl);
 	}
 

@@ -19,6 +19,12 @@ public class LogPerkuliahanPersistence {
 		List<LogPerkuliahan> l = GenericPersistence.findList(LogPerkuliahan.class, lc);
 		return l;
 	}
+	public static List<LogPerkuliahan> getByKelas(KelasPerkuliahan kp){
+		List<Criterion> lc = new ArrayList<>();
+		lc.add(Restrictions.eq("kelasPerkuliahan", kp));
+		List<LogPerkuliahan> l = GenericPersistence.findList(LogPerkuliahan.class, lc);
+		return l;
+	}
 	public static List<LogPerkuliahan> getByKelasOnPeriod(KelasPerkuliahan kp, Date start, Date end){
 		List<Criterion> lc = new ArrayList<>();
 		lc.add(Restrictions.eq("kelasPerkuliahan", kp));
