@@ -36,7 +36,7 @@ public class UserAuthenticationService {
 		List<?> l = GenericPersistence.findList(DosenKaryawan.class, critList);
 		if (l.size()>0){
 			DosenKaryawan o = (DosenKaryawan) l.get(0);
-			if (o.getPassword()==null||o.getSalt()==null){
+			if (o.getPassword()==null||o.getSalt()==null||password==null){
 				return null;
 			}
 			try {

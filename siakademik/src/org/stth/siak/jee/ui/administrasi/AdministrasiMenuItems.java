@@ -1,5 +1,6 @@
 package org.stth.siak.jee.ui.administrasi;
 
+import org.stth.siak.jee.ui.generalview.ProfilUmumDosenKaryawan;
 import org.stth.siak.ui.util.AppMenuItems;
 
 import com.vaadin.navigator.View;
@@ -7,7 +8,7 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Resource;
 
 public enum AdministrasiMenuItems implements AppMenuItems{
-	 DASHBOARD("Profil ", AdministrasiDashboard.class, FontAwesome.HOME, true);
+	 DASHBOARD("Profil ", ProfilUmumDosenKaryawan.class, FontAwesome.HOME, true);
 	 //,DOSEN("Misc", DosenProfil.class, FontAwesome.MALE, false);
 	 
 	 private final String viewName;

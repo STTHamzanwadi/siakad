@@ -4,8 +4,11 @@ package org.stth.siak.util;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.hibernate.HibernateException;
 import org.hibernate.SQLQuery;
@@ -16,9 +19,12 @@ import org.stth.siak.enumtype.Semester;
 import com.ibm.icu.text.DateFormat;
 import com.ibm.icu.text.SimpleDateFormat;
 import com.ibm.icu.util.Calendar;
+import com.vaadin.data.Container;
+import com.vaadin.data.util.IndexedContainer;
 
 public class GeneralUtilities {
 	public static final Locale LOCALE = new Locale("id");
+	public static final String[] AGAMA = new String[] {"ISLAM","HINDU","BUDDHA","KATOLIK","PROTESTAN"};
 	/**
 	 * 
 	 * 
@@ -32,19 +38,19 @@ public class GeneralUtilities {
 		queryString = "SELECT now() param FROM DUAL";
 		//SessionFactory sessionFactory = HibernateUtil.configureSessionFactory();
 		Session session = HibernateUtil.getSession();
-	    try {
-			
+		try {
+
 			session.beginTransaction();
 			sqlQuery = session.createSQLQuery(queryString);
 			sqlQuery.addScalar("param",
-						org.hibernate.type.TimestampType.INSTANCE);
+					org.hibernate.type.TimestampType.INSTANCE);
 			dbTimeStamp = (Timestamp) sqlQuery.uniqueResult();
 		} catch (HibernateException e) {
 			e.printStackTrace();
 		} finally {
 			HibernateUtil.closeSession();
 		}
-	    return dbTimeStamp;
+		return dbTimeStamp;
 	}
 	public static Date getCurrentDBDate() {
 		SQLQuery sqlQuery = null;
@@ -56,7 +62,7 @@ public class GeneralUtilities {
 			session.beginTransaction();
 			sqlQuery = session.createSQLQuery(queryString);
 			sqlQuery.addScalar("param",
-						org.hibernate.type.DateType.INSTANCE);
+					org.hibernate.type.DateType.INSTANCE);
 			dbDate = (Date) sqlQuery.uniqueResult();
 		} catch (HibernateException e) {
 			// TODO Auto-generated catch block
@@ -156,8 +162,8 @@ public class GeneralUtilities {
 		}
 		return false;
 	}
-	
-	
+
+
 	public static List<Date> getDates(Date tglMulai, Date tglAkhir){
 		List<Date> dates = new ArrayList<>();
 		Calendar c,e;
@@ -172,5 +178,32 @@ public class GeneralUtilities {
 		}
 		return dates;
 	}
-	
+	public static int getBit(int n, int pos) {
+		return (n >> pos) & 1;
+	}
+	public static Container createContainerFromEnumClass(Class<? extends Enum<?>> enumClass) {
+		LinkedHashMap<Enum<?>, String> enumMap = new LinkedHashMap<Enum<?>, String>();
+		for (Object enumConstant : enumClass.getEnumConstants()) {
+			enumMap.put((Enum<?>) enumConstant, enumConstant.toString());
+		}
+
+		return createContainerFromMap(enumMap);
+	}
+	public static String CAPTION_PROPERTY_NAME = "caption";
+
+	public static Container createContainerFromMap(Map<?, String> hashMap) {
+		IndexedContainer container = new IndexedContainer();
+		container.addContainerProperty(CAPTION_PROPERTY_NAME, String.class, "");
+
+		Iterator<?> iter = hashMap.keySet().iterator();
+		while(iter.hasNext()) {
+			Object itemId = iter.next();
+			container.addItem(itemId);
+			container.getItem(itemId).getItemProperty(CAPTION_PROPERTY_NAME).setValue(hashMap.get(itemId));
+		}
+
+		return container;
+	}
+
+
 }

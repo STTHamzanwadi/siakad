@@ -31,12 +31,14 @@ public class Mahasiswa implements Comparable<Mahasiswa>, Comparator<Mahasiswa>{
 	private int angkatan;
 	@Enumerated(EnumType.STRING)
 	private JenisKelamin jenisKelamin;
+	private String agama;
 	private String alamat;
 	private String email;
 	private String nomorHP;
 	private Date tanggalLahir;
 	private String tempatLahir;
 	private String asalSekolah;
+	private int tahunLulus;
 	private String wali;
 	private String hubDenganWali;
 	private String alamatWali;
@@ -49,6 +51,12 @@ public class Mahasiswa implements Comparable<Mahasiswa>, Comparator<Mahasiswa>{
 	@ManyToOne(cascade = CascadeType.REFRESH)
 	@PrimaryKeyJoinColumn
 	private DosenKaryawan pembimbingAkademik;
+	@ManyToOne(cascade = CascadeType.REFRESH)
+    @PrimaryKeyJoinColumn
+	private DosenKaryawan entryOleh;
+	@ManyToOne(cascade = CascadeType.REFRESH)
+    @PrimaryKeyJoinColumn
+	private DosenKaryawan updateOleh;
 	public int getId() {
 		return id;
 	}
@@ -84,6 +92,18 @@ public class Mahasiswa implements Comparable<Mahasiswa>, Comparator<Mahasiswa>{
 	}
 	public void setAngkatan(int angkatan) {
 		this.angkatan = angkatan;
+	}
+	public String getAgama() {
+		return agama;
+	}
+	public void setAgama(String agama) {
+		this.agama = agama;
+	}
+	public int getTahunLulus() {
+		return tahunLulus;
+	}
+	public void setTahunLulus(int tahunLulus) {
+		this.tahunLulus = tahunLulus;
 	}
 	public JenisKelamin getJenisKelamin() {
 		return jenisKelamin;
@@ -182,6 +202,18 @@ public class Mahasiswa implements Comparable<Mahasiswa>, Comparator<Mahasiswa>{
 	}
 	public void setSalt(byte[] salt) {
 		this.salt = salt;
+	}
+	public DosenKaryawan getEntryOleh() {
+		return entryOleh;
+	}
+	public void setEntryOleh(DosenKaryawan entryOleh) {
+		this.entryOleh = entryOleh;
+	}
+	public DosenKaryawan getUpdateOleh() {
+		return updateOleh;
+	}
+	public void setUpdateOleh(DosenKaryawan updateOleh) {
+		this.updateOleh = updateOleh;
 	}
 	public String toString(){
 		return npm+" "+nama+" "+angkatan;

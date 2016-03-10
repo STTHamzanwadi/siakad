@@ -62,5 +62,6 @@ public class GeneralPopups {
 		win.center();
 		UI.getCurrent().addWindow(win);
 	}
+	
 
 }

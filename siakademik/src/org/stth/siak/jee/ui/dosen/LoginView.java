@@ -1,5 +1,6 @@
 package org.stth.siak.jee.ui.dosen;
 
+import org.stth.jee.persistence.GenericPersistence;
 import org.stth.siak.entity.DosenKaryawan;
 import org.stth.siak.util.GeneralUtilities;
 import org.stth.siak.util.UserAuthenticationService;
@@ -100,7 +101,7 @@ public class LoginView extends VerticalLayout {
 		}
 		if (isValid) {
 			d.setLastSuccessfulLogin(GeneralUtilities.getCurrentDBTime());
-			//GenericPersistence.merge(d);
+			GenericPersistence.merge(d);
 			getSession().setAttribute("user", d.getNama());
 			getSession().setAttribute("curUser", d);
 			VaadinSession.getCurrent().setAttribute(DosenKaryawan.class, d);

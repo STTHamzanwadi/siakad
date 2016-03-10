@@ -160,6 +160,10 @@ public class AdministrasiMenuComponent extends CustomComponent {
 		CssLayout menuItemsLayout = new CssLayout();
 		menuItemsLayout.addStyleName("valo-menuitems");
 		menuItemsLayout.setHeight(100.0f, Unit.PERCENTAGE);
+		for (final AdministrasiMenuItems view : AdministrasiMenuItems.values()){
+			Component menuItemComponent = new ValoMenuItemButton(view);
+			menuItemsLayout.addComponent(menuItemComponent);
+		}
 		try {
 			List<UserAccessRightsAdministrasi> lacl = (List<UserAccessRightsAdministrasi>) VaadinSession.getCurrent().getAttribute("admrights");
 			for (final AdministrasiControlledAccessMenuItems view : AdministrasiControlledAccessMenuItems.values()){

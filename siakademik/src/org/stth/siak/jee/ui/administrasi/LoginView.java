@@ -3,6 +3,7 @@ package org.stth.siak.jee.ui.administrasi;
 import java.util.List;
 
 import org.stth.jee.persistence.AdministrasiAccessControlListPersistence;
+import org.stth.jee.persistence.GenericPersistence;
 import org.stth.siak.entity.DosenKaryawan;
 import org.stth.siak.entity.UserAccessRightsAdministrasi;
 import org.stth.siak.util.GeneralUtilities;
@@ -104,7 +105,7 @@ public class LoginView extends VerticalLayout {
 		}
 		if (isValid) {
 			user.setLastSuccessfulLogin(GeneralUtilities.getCurrentDBTime());
-			//GenericPersistence.merge(d);
+			GenericPersistence.merge(user);
 			getSession().setAttribute("user", user.getNama());
 			getSession().setAttribute("curUser", user);
 			List<UserAccessRightsAdministrasi> lacl = AdministrasiAccessControlListPersistence.getListByUser(user);
