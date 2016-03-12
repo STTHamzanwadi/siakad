@@ -101,7 +101,7 @@ public class LoginView extends VerticalLayout {
 		}
 		if (isValid) {
 			d.setLastSuccessfulLogin(GeneralUtilities.getCurrentDBTime());
-			GenericPersistence.merge(d);
+			//GenericPersistence.merge(d);
 			getSession().setAttribute("user", d.getNama());
 			getSession().setAttribute("curUser", d);
 			VaadinSession.getCurrent().setAttribute(DosenKaryawan.class, d);

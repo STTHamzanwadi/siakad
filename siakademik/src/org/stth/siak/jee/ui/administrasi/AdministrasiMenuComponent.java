@@ -113,7 +113,7 @@ public class AdministrasiMenuComponent extends CustomComponent {
 
 			}
 		});
-		settingsItem.addSeparator();
+		
 		settingsItem.addItem("Ganti Foto Profil", new Command() {
 			
 			@Override
@@ -127,6 +127,7 @@ public class AdministrasiMenuComponent extends CustomComponent {
 				
 			}
 		});
+		settingsItem.addSeparator();
 		settingsItem.addItem("Sign Out", new Command() {
 			@Override
 			public void menuSelected(MenuItem selectedItem) {

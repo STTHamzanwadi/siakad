@@ -3,7 +3,6 @@ package org.stth.siak.jee.ui.administrasi;
 import java.util.List;
 
 import org.stth.jee.persistence.AdministrasiAccessControlListPersistence;
-import org.stth.jee.persistence.GenericPersistence;
 import org.stth.siak.entity.DosenKaryawan;
 import org.stth.siak.entity.UserAccessRightsAdministrasi;
 import org.stth.siak.util.GeneralUtilities;
@@ -36,15 +35,14 @@ public class LoginView extends VerticalLayout {
 	private PasswordField password = new PasswordField("Password");
 
 	public LoginView() {
-		//username.setValue("MHZ");
-		//password.setValue("mhz");
+	
         setSizeFull();
         Component loginForm = buildLoginForm();
         addComponent(loginForm);
         setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
 
         Notification notification = new Notification(
-                "Selamat datang pada aplikasi data akademik untuk dosen");
+                "Selamat datang pada aplikasi data akademik untuk bagian administrasi");
         notification
                 .setDescription("<span>Anda dapat melihat data kelas yang anda ampu, status bimbingan akademik, dan berbagai fitur lain sebagai dosen di STTH.</span> <span>Masukkan email dan password anda kemudian klik tombol <b>Masuk</b> untuk melanjutkan.</span>");
         notification.setHtmlContentAllowed(true);
@@ -105,7 +103,7 @@ public class LoginView extends VerticalLayout {
 		}
 		if (isValid) {
 			user.setLastSuccessfulLogin(GeneralUtilities.getCurrentDBTime());
-			GenericPersistence.merge(user);
+			//GenericPersistence.merge(user);
 			getSession().setAttribute("user", user.getNama());
 			getSession().setAttribute("curUser", user);
 			List<UserAccessRightsAdministrasi> lacl = AdministrasiAccessControlListPersistence.getListByUser(user);

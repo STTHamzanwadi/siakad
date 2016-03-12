@@ -131,7 +131,16 @@ public class AdministrasiCetakTranskripMahasiswa extends VerticalLayout implemen
 		example.setPembimbingAkademik(dosenPA);
 		content.removeAllComponents();
 		List<Mahasiswa> kr = MahasiswaPersistence.getListByExample(example);
-		DaftarMahasiswaView dafv = new DaftarMahasiswaView(kr);
+		int visColumns = DaftarMahasiswaView.NIM 
+				| DaftarMahasiswaView.NAMA 
+				| DaftarMahasiswaView.PRODI 
+				| DaftarMahasiswaView.TGL_LAHIR
+				| DaftarMahasiswaView.TEMPAT_LAHIR
+				| DaftarMahasiswaView.DOSEN_PA
+				;
+		int allowedActions = DaftarMahasiswaView.LIHAT_PROFIL
+				| DaftarMahasiswaView.CETAK_TRANSKRIP;
+		DaftarMahasiswaView dafv = new DaftarMahasiswaView(kr, visColumns, allowedActions);
 		dafv.showTranskripButton();
 		Panel panel = new Panel("Hasil Pencarian");
 		panel.setContent(dafv);

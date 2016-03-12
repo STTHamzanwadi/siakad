@@ -14,6 +14,7 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.server.Responsive;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
@@ -21,6 +22,7 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextArea;
@@ -35,11 +37,12 @@ public class AdministrasiEditorDataMahasiswa extends CustomComponent{
 	private Mahasiswa mahasiswa;
 	private BeanItem<Mahasiswa> item;
 	private TextField tfNama,tfNim,tfTempatLahir,tfProdi,tfAngkatan,tfAsalSekolah,tfTahunLulus,tfTelp,tfEmail,
-			tfWali,tfTelpWali;
+			tfWali,tfTelpWali,tfDosenPa,tfStatus;
 	private TextArea taAlamat,taAlamatWali;
-	private ComboBox cbAgama, cbStatus, cbDosenPa, cbJenisKelamin;
+	private ComboBox cbAgama, cbJenisKelamin;
 	private DateField dtTglLahir;
 	private FieldGroup fg;
+	private DosenKaryawan user;
 	/**
 	 * Open editor for Mahasiswa instance
 	 * @param mahasiswa if creating new record, use new Mahasiswa()
@@ -47,6 +50,7 @@ public class AdministrasiEditorDataMahasiswa extends CustomComponent{
 	
 	public AdministrasiEditorDataMahasiswa(Mahasiswa mahasiswa) {
 		this.mahasiswa =mahasiswa;
+		user = VaadinSession.getCurrent().getAttribute(DosenKaryawan.class);
 		setCompositionRoot(vl);
 		vl.setMargin(true);
 		Responsive.makeResponsive(this);
@@ -55,16 +59,23 @@ public class AdministrasiEditorDataMahasiswa extends CustomComponent{
 	}
 	
 	private Component buildForm() {
-		Panel pnl = new Panel("Isi/Edit Data Mahasiswa");
+		//VerticalLayout root = new VerticalLayout();
+		Panel pnl = new Panel("Data Mahasiswa");
+		Panel pnlW = new Panel("Data Wali");
 		VerticalLayout vl = new VerticalLayout();
 		vl.setMargin(true);
 		vl.setSpacing(true);
 		HorizontalLayout hl = new HorizontalLayout();
+		HorizontalLayout hlW = new HorizontalLayout();
+		hlW.setSpacing(true);
+		hlW.setMargin(true);
 		hl.setSpacing(true);
 		FormLayout fl1 = new FormLayout(),fl2 = new FormLayout();
 		hl.addComponents(fl1,fl2);
 		vl.addComponent(hl);
+		vl.addComponent(pnlW);
 		pnl.setContent(vl);
+		pnlW.setContent(hlW);
 		
 		fg = new FieldGroup(item);
 		
@@ -100,6 +111,16 @@ public class AdministrasiEditorDataMahasiswa extends CustomComponent{
 		fl2.addComponent(tfAngkatan);
 		fg.bind(tfAngkatan, "angkatan");
 		
+		tfStatus = new TextField("Status");
+		tfStatus.setValue(mahasiswa.getStatus().toString());
+		tfStatus.setReadOnly(true);
+		fl1.addComponent(tfStatus);
+		
+		tfDosenPa = new TextField("Pembimbing Akademik");
+		tfDosenPa.setValue(mahasiswa.getPembimbingAkademik().getNama());
+		tfDosenPa.setReadOnly(true);
+		fl2.addComponent(tfDosenPa);
+		
 		fl1.addComponent(fg.buildAndBind("Asal Sekolah", "asalSekolah"));
 		
 		Property<Integer> integerProperty2 = (Property<Integer>) item
@@ -115,12 +136,14 @@ public class AdministrasiEditorDataMahasiswa extends CustomComponent{
 		fg.bind(taAlamat, "alamat");
 		fl1.addComponent(taAlamat);
 		
-		fl1.addComponent(fg.buildAndBind("Nama Wali", "wali"));
-		fl2.addComponent(fg.buildAndBind("Nomor Telepon Wali", "nomorHPWali"));
+		fl2.addComponent(new Label());
+		
+		hlW.addComponent(fg.buildAndBind("Nama Wali", "wali"));
+		hlW.addComponent(fg.buildAndBind("Nomor Telepon Wali", "nomorHPWali"));
 		
 		taAlamatWali = new TextArea("Alamat Wali");
 		fg.bind(taAlamatWali, "alamatWali");
-		fl1.addComponent(taAlamatWali);
+		hlW.addComponent(taAlamatWali);
 		
 		Button simpan = new Button("Simpan");
 		simpan.addClickListener(new ClickListener() {
@@ -128,6 +151,8 @@ public class AdministrasiEditorDataMahasiswa extends CustomComponent{
 			public void buttonClick(ClickEvent event) {
 				try {
 					fg.commit();
+					Mahasiswa m =  item.getBean();
+					m.setUpdateOleh(user);
 					GenericPersistence.merge(item.getBean());
 					Notification.show("Perubahan data berhasil dilakukan", Notification.Type.HUMANIZED_MESSAGE);
 				} catch (CommitException e) {
