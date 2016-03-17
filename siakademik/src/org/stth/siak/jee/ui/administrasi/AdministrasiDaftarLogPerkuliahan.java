@@ -15,6 +15,7 @@ import org.stth.siak.entity.LogPerkuliahan;
 import org.stth.siak.entity.UserAccessRightsAdministrasi;
 import org.stth.siak.enumtype.Semester;
 import org.stth.siak.jee.ui.generalview.ViewFactory;
+import org.stth.siak.util.GeneralUtilities;
 
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
@@ -152,13 +153,15 @@ public class AdministrasiDaftarLogPerkuliahan extends VerticalLayout implements 
 	}
 	
 	protected void saringData() {
+		Date dt1 = GeneralUtilities.truncateDate(periodStart.getValue());
+		Date dt2 = GeneralUtilities.truncateNextDay(periodEnd.getValue());
 		List<LogPerkuliahan> l;
 		if (kelasPerkuliahan!=null){
-			l = LogPerkuliahanPersistence.getByKelasOnPeriod(kelasPerkuliahan, periodStart.getValue(), periodEnd.getValue());
+			l = LogPerkuliahanPersistence.getByKelasOnPeriod(kelasPerkuliahan, dt1, dt2);
 		} else if (dosen!=null){
-			l = LogPerkuliahanPersistence.getByDosenOnPeriod(dosen, periodStart.getValue(), periodEnd.getValue());
+			l = LogPerkuliahanPersistence.getByDosenOnPeriod(dosen,  dt1, dt2);
 		} else {
-			l = LogPerkuliahanPersistence.getLogOnPeriod(periodStart.getValue(), periodEnd.getValue());
+			l = LogPerkuliahanPersistence.getLogOnPeriod( dt1, dt2);
 		}
 		content.removeAllComponents();
 		Table t = new Table();

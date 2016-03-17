@@ -115,11 +115,16 @@ public class AdministrasiIsianDaftarHadirMahasiswa extends CustomComponent{
 			public Object generateCell(Table source, Object itemId, Object columnId) {
 				BeanItem<?> i = (BeanItem<?>) source.getContainerDataSource().getItem(itemId);
 				final LogKehadiranPesertaKuliah lpk = (LogKehadiranPesertaKuliah) i.getBean();
-				Label hadir = new Label();
-				if (lpk.isHadir()){
-					hadir.setValue("Hadir");
-				}
-				return hadir;
+				CheckBox isHadir= new CheckBox();
+				isHadir.setValue(lpk.isHadir());
+				isHadir.addValueChangeListener(new ValueChangeListener() {
+					@Override
+					public void valueChange(ValueChangeEvent event) {
+						boolean b = (boolean) event.getProperty().getValue();
+						lpk.setHadir(b);
+					}
+				});
+				return isHadir;
 			}
 		});
 		

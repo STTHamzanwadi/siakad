@@ -63,5 +63,17 @@ public class GeneralPopups {
 		UI.getCurrent().addWindow(win);
 	}
 	
+	public static <T extends Component & HasParent> void showWindowRefreshParentOnClose(T child, String title){
+		final Window win = new Window(title);
+		VerticalLayout vl = new VerticalLayout();
+		vl.setSizeUndefined();
+		vl.setMargin(true);
+		vl.addComponent(child);
+		win.setContent(vl);
+		win.setModal(true);
+		win.setWidth("600px");
+		win.center();
+		UI.getCurrent().addWindow(win);
+	}
 
 }

@@ -35,7 +35,7 @@ public class MultiPurposeImageUploaderWindow extends Window{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String uploadDirectory;
+	private String uploadDirectory="/home/tmp/foto";
 	public static final long FILE_MAX_SIZE = 0;
 	final Embedded image = new Embedded();
 	private Panel pl;

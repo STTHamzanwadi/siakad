@@ -6,10 +6,11 @@ import com.vaadin.server.Resource;
 
 public enum MahasiswaMenuItems {
 	 DASHBOARD("Profil Anda", MahasiswaProfil.class, FontAwesome.USER, true),
-	 PERKULIAHAN("Kelas Perkuliahan", KelasPerkuliahanView.class, FontAwesome.UNIVERSITY, false),
+	 RENCANASTUDI("Rencana Studi", RencanaStudiView.class, FontAwesome.LIST, false),
+	 KULIAH_SEMESTER("Kelas Semester Berjalan", MahasiswaKelasDiikuti.class, FontAwesome.UNIVERSITY, false),
+	 PERKULIAHAN("Riwayat Kuliah", KelasPerkuliahanView.class, FontAwesome.UNIVERSITY, false),
 	 INDEKSPRESTASI("Indeks Prestasi", IPKView.class, FontAwesome.TABLE, true),
-	 KURIKULUM("Struktur Kurikulum", MahasiswaDetailKurikulum.class, FontAwesome.TABLE, true),
-	 RENCANASTUDI("Rencana Studi", RencanaStudiView.class, FontAwesome.LIST, false);
+	 KURIKULUM("Struktur Kurikulum", MahasiswaDetailKurikulum.class, FontAwesome.TABLE, true);
 	 
 	 private final String viewName;
 	 private final Class<? extends View> viewClass;

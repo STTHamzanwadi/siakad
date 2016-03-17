@@ -163,7 +163,6 @@ public class GeneralUtilities {
 		return false;
 	}
 
-
 	public static List<Date> getDates(Date tglMulai, Date tglAkhir){
 		List<Date> dates = new ArrayList<>();
 		Calendar c,e;
@@ -178,9 +177,31 @@ public class GeneralUtilities {
 		}
 		return dates;
 	}
+	
+	public static Date truncateDate(Date date){
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
+		return c.getTime();
+	}
+	public static Date truncateNextDay(Date date){
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		c.add(Calendar.DATE, 1);
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
+		return c.getTime();
+	}
+	
 	public static int getBit(int n, int pos) {
 		return (n >> pos) & 1;
 	}
+	
 	public static Container createContainerFromEnumClass(Class<? extends Enum<?>> enumClass) {
 		LinkedHashMap<Enum<?>, String> enumMap = new LinkedHashMap<Enum<?>, String>();
 		for (Object enumConstant : enumClass.getEnumConstants()) {

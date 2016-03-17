@@ -25,6 +25,7 @@ public class LogKehadiranPerkuliahanPersistence {
 		String[] alias = {"logPerkuliahan"};
 		lc.add(Restrictions.eq("logPerkuliahan.kelasPerkuliahan", p.getKelasPerkuliahan()));
 		lc.add(Restrictions.eq("mahasiswa", p.getMahasiswa()));
+		lc.add(Restrictions.eq("isHadir", true));
 		List<LogKehadiranPesertaKuliah> l = GenericPersistence.findList(LogKehadiranPesertaKuliah.class, lc, alias);
 		return l;
 	}
