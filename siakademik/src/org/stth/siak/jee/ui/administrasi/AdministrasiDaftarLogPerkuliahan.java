@@ -137,7 +137,9 @@ public class AdministrasiDaftarLogPerkuliahan extends VerticalLayout implements 
 		c.add(Calendar.DATE, +2);
 		periodEnd.setValue(c.getTime());
 		Button saring = new Button("Saring");
+		
 		saring.addClickListener(new ClickListener() {
+			private static final long serialVersionUID = 1L;
 			@Override
 			public void buttonClick(ClickEvent event) {
 				saringData();

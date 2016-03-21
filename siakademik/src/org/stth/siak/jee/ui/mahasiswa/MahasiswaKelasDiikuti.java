@@ -34,9 +34,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Table.ColumnGenerator;
 
 public class MahasiswaKelasDiikuti extends VerticalLayout implements View{
-	
-	
-	
+	private static final long serialVersionUID = 1L;
 	private Mahasiswa mhs;
 	private Semester semester;
 	private String ta;
@@ -75,6 +73,7 @@ public class MahasiswaKelasDiikuti extends VerticalLayout implements View{
 		tabel.setContainerDataSource(beans);
 		tabel.setRowHeaderMode(Table.RowHeaderMode.INDEX);
 		tabel.addGeneratedColumn("matakuliah", new ColumnGenerator() {
+			private static final long serialVersionUID = 1L;
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
 				BeanItem<?> i = (BeanItem<?>) source.getContainerDataSource().getItem(itemId);
@@ -83,6 +82,7 @@ public class MahasiswaKelasDiikuti extends VerticalLayout implements View{
 			}
 		});
 		tabel.addGeneratedColumn("sks", new ColumnGenerator() {
+			private static final long serialVersionUID = 1L;
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
 				BeanItem<?> i = (BeanItem<?>) source.getContainerDataSource().getItem(itemId);
@@ -91,6 +91,7 @@ public class MahasiswaKelasDiikuti extends VerticalLayout implements View{
 			}
 		});
 		tabel.addGeneratedColumn("jadwal", new ColumnGenerator() {
+			private static final long serialVersionUID = 1L;
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
 				BeanItem<?> i = (BeanItem<?>) source.getContainerDataSource().getItem(itemId);
@@ -101,11 +102,13 @@ public class MahasiswaKelasDiikuti extends VerticalLayout implements View{
 					for (JadwalKuliah j : l) {
 						s = s + j.getHariJam() + " ";
 					}
+					return s;
 				}
 				return "-";
 			}
 		});
 		tabel.addGeneratedColumn("kehadiran", new ColumnGenerator() {
+			private static final long serialVersionUID = 1L;
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
 				BeanItem<?> i = (BeanItem<?>) source.getContainerDataSource().getItem(itemId);
@@ -118,12 +121,15 @@ public class MahasiswaKelasDiikuti extends VerticalLayout implements View{
 			}
 		});
 		tabel.addGeneratedColumn("log", new ColumnGenerator() {
+			private static final long serialVersionUID = 1L;
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
 				Button log = new Button("Lihat");
 				BeanItem<?> i = (BeanItem<?>) source.getContainerDataSource().getItem(itemId);
 				final KelasPerkuliahan o = (KelasPerkuliahan) i.getBean();
+				
 				log.addClickListener(new ClickListener() {
+				private static final long serialVersionUID = 1L;
 				@Override
 					public void buttonClick(ClickEvent event) {
 						showLogPerkuliahan(o);

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.stth.siak.entity.BerkasFotoDosen;
 import org.stth.siak.entity.DosenKaryawan;
@@ -12,6 +13,16 @@ public class DosenKaryawanPersistence {
 	public static List<DosenKaryawan> getDosen(){
 		List<Criterion> lc = new ArrayList<>();
 		lc.add(Restrictions.eq("dosen", true));
+		List<DosenKaryawan> l = GenericPersistence.findList(DosenKaryawan.class, lc);
+		return l;
+	}
+	public static List<DosenKaryawan> getDosenByExample(DosenKaryawan dosen){
+		List<Criterion> lc = new ArrayList<>();
+		lc.add(Restrictions.eq("dosen", true));
+		if (dosen.getProdi()!=null){
+			lc.add(Restrictions.eq("prodi", dosen.getProdi()));
+		}
+		lc.add(Restrictions.like("nama", dosen.getNama(), MatchMode.ANYWHERE));
 		List<DosenKaryawan> l = GenericPersistence.findList(DosenKaryawan.class, lc);
 		return l;
 	}

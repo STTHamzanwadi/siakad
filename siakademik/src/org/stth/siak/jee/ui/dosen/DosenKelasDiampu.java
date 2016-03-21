@@ -4,9 +4,11 @@ package org.stth.siak.jee.ui.dosen;
 import java.util.Collections;
 import java.util.List;
 
+import org.stth.jee.persistence.JadwalKuliahPersistence;
 import org.stth.jee.persistence.KelasPerkuliahanPersistence;
 import org.stth.jee.persistence.KonfigurasiPersistence;
 import org.stth.siak.entity.DosenKaryawan;
+import org.stth.siak.entity.JadwalKuliah;
 import org.stth.siak.entity.KelasPerkuliahan;
 import org.stth.siak.enumtype.Semester;
 import org.stth.siak.jee.ui.generalview.DaftarLogPerkuliahan;
@@ -27,9 +29,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
 public class DosenKelasDiampu extends VerticalLayout implements View{
@@ -84,6 +84,7 @@ public class DosenKelasDiampu extends VerticalLayout implements View{
 				return o.getMataKuliah().getSks();
 			}
 		});
+		
 		tabel.addGeneratedColumn("matakuliah", new ColumnGenerator() {
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
@@ -92,12 +93,30 @@ public class DosenKelasDiampu extends VerticalLayout implements View{
 				return o.getMataKuliah().toString();
 			}
 		});
+		
 		tabel.addGeneratedColumn("prodi", new ColumnGenerator() {
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
 				BeanItem<?> i = (BeanItem<?>) source.getContainerDataSource().getItem(itemId);
 				KelasPerkuliahan o = (KelasPerkuliahan) i.getBean();
 				return o.getProdi().getNama();
+			}
+		});
+		
+		tabel.addGeneratedColumn("jadwal", new ColumnGenerator() {
+			@Override
+			public Object generateCell(Table source, Object itemId, Object columnId) {
+				BeanItem<?> i = (BeanItem<?>) source.getContainerDataSource().getItem(itemId);
+				KelasPerkuliahan o = (KelasPerkuliahan) i.getBean();
+				List<JadwalKuliah> l = JadwalKuliahPersistence.getJadwalByKelasPerkuliahan(o);
+				if (l.size()>0){
+					String s="";
+					for (JadwalKuliah j : l) {
+						s = s + j.getHariJam() + " ";
+					}
+					return s;
+				}
+				return "-";
 			}
 		});
 		
@@ -132,7 +151,8 @@ public class DosenKelasDiampu extends VerticalLayout implements View{
 		tabel.setColumnHeader("kodeKelas", "KELAS");
 		tabel.setColumnHeader("sks", "SKS");
 		tabel.setColumnHeader("aksi", "LIHAT");
-		tabel.setVisibleColumns("matakuliah","sks","kodeKelas","prodi","aksi");
+		tabel.setColumnHeader("jadwal", "JADWAL");
+		tabel.setVisibleColumns("matakuliah","sks","kodeKelas","jadwal","prodi","aksi");
 		dashboardPanels.addComponent(tabel);
 		return dashboardPanels;
 	}

@@ -13,7 +13,8 @@ public enum AdministrasiControlledAccessMenuItems implements AppMenuItems{
 	 JADWAL_PERKULIAHAN("Jadwal Perkuliahan", AdministrasiDaftarJadwalKuliah.class, FontAwesome.TABLE, false, ACLAdministrasiEnum.JADWAL_KULIAH),
 	 CETAK_ABSENSI("Cetak Absensi", AdministrasiCetakAbsensi.class, FontAwesome.PRINT, false, ACLAdministrasiEnum.LOG_PERKULIAHAN),
 	 CETAK_TRANSKRIP("Cetak Transkrip", AdministrasiCetakTranskripMahasiswa.class, FontAwesome.PRINT, false, ACLAdministrasiEnum.TRANSKRIP_PRINT),
-	 DATA_MAHASISWA("Administrasi Data Mahasiswa", AdministrasiDataMahasiswa.class, FontAwesome.USERS, false, ACLAdministrasiEnum.EDIT_MAHASISWA),;
+	 DATA_MAHASISWA("Administrasi Data Mahasiswa", AdministrasiDataMahasiswa.class, FontAwesome.USERS, false, ACLAdministrasiEnum.EDIT_MAHASISWA),
+	 DATA_DOSEN("Administrasi Data Dosen", AdministrasiDataDosen.class, FontAwesome.USERS, false, ACLAdministrasiEnum.EDIT_MAHASISWA);
 	 
 	 
 	 private final String viewName;

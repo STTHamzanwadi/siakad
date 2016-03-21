@@ -5,10 +5,15 @@ import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
+
+import org.stth.siak.enumtype.JenisKelamin;
+import org.stth.siak.enumtype.StatusDosen;
 
 @Entity
 public class DosenKaryawan implements Comparable<DosenKaryawan>, Comparator<DosenKaryawan> {
@@ -19,6 +24,9 @@ public class DosenKaryawan implements Comparable<DosenKaryawan>, Comparator<Dose
 	private String nidn;
 	private String nis;
 	private String tempatLahir;
+	@Enumerated(EnumType.STRING)
+	private JenisKelamin jenisKelamin;
+	private String agama;
 	private Date tanggalLahir;
 	private String email;
 	private byte[] password;
@@ -32,6 +40,9 @@ public class DosenKaryawan implements Comparable<DosenKaryawan>, Comparator<Dose
 	private String jenjangPendTerakhir;
 	private String prodiPendTerakhir;
 	private String institusiPendTerakhir;
+	@ManyToOne(cascade = CascadeType.REFRESH)
+    @PrimaryKeyJoinColumn
+	private DosenKaryawan updateOleh;
 	private Date lastSuccessfulLogin;
 	private boolean dosen;
 	@ManyToOne(cascade = CascadeType.REFRESH)
@@ -92,6 +103,12 @@ public class DosenKaryawan implements Comparable<DosenKaryawan>, Comparator<Dose
 	public void setAlamatRumah(String alamatRumah) {
 		this.alamatRumah = alamatRumah;
 	}
+	public String getAgama() {
+		return agama;
+	}
+	public void setAgama(String agama) {
+		this.agama = agama;
+	}
 	public String getNomorTelepon() {
 		return nomorTelepon;
 	}
@@ -140,11 +157,23 @@ public class DosenKaryawan implements Comparable<DosenKaryawan>, Comparator<Dose
 	public void setInstitusiPendTerakhir(String institusiPendTerakhir) {
 		this.institusiPendTerakhir = institusiPendTerakhir;
 	}
+	public DosenKaryawan getUpdateOleh() {
+		return updateOleh;
+	}
+	public void setUpdateOleh(DosenKaryawan updateOleh) {
+		this.updateOleh = updateOleh;
+	}
 	public ProgramStudi getProdi() {
 		return prodi;
 	}
 	public void setProdi(ProgramStudi prodi) {
 		this.prodi = prodi;
+	}
+	public JenisKelamin getJenisKelamin() {
+		return jenisKelamin;
+	}
+	public void setJenisKelamin(JenisKelamin jenisKelamin) {
+		this.jenisKelamin = jenisKelamin;
 	}
 	public Date getLastSuccessfulLogin() {
 		return lastSuccessfulLogin;
