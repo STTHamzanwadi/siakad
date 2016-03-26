@@ -44,7 +44,7 @@ public class AdministrasiDataDosen extends VerticalLayout implements View{
 		setMargin(true);
 		setSpacing(true);
 		Responsive.makeResponsive(this);
-		addComponent(ViewFactory.header("Administrasi Data Mahasiswa"));
+		addComponent(ViewFactory.header("Administrasi Data Dosen"));
 		addComponent(createFilterComponent());
 		siapkanPilihanProdi();
 		addComponent(content);
