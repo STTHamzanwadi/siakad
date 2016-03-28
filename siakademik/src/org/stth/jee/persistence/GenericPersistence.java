@@ -130,6 +130,29 @@ public class GenericPersistence {
 		}
 		HibernateUtil.closeSession();
 	}
+	public static void refresh(Object a){
+		Session session = HibernateUtil.getSession();
+		try {
+			Transaction tx;
+			if ((session.getTransaction() != null)
+					&& (session.getTransaction().isActive())) {
+				tx = session.getTransaction();
+			} else {
+				tx = session.beginTransaction();
+			}
+			try {
+				session.refresh(a);
+				tx.commit();
+			} catch (Exception e) {
+				tx.rollback();
+				e.printStackTrace();
+				throw e;
+			}
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		HibernateUtil.closeSession();
+	}
 
 	public static void closeSession() {
 		Session session = HibernateUtil.getSession();
