@@ -1,5 +1,6 @@
 package org.stth.siak.entity;
 
+import java.util.Comparator;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -12,7 +13,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 
 @Entity
-public class LogPerkuliahan {
+public class LogPerkuliahan implements Comparable<LogPerkuliahan>, Comparator<LogPerkuliahan>{
 	@Id @GeneratedValue
 	private int id;
 	@ManyToOne(cascade = CascadeType.REFRESH)
@@ -83,6 +84,14 @@ public class LogPerkuliahan {
 		s+=" "+tanggalPertemuan;
 		s+=" "+diisiOleh.getNama();
 		return s;
+	}
+	@Override
+	public int compare(LogPerkuliahan o1, LogPerkuliahan o2) {
+		return o1.compareTo(o2);
+	}
+	@Override
+	public int compareTo(LogPerkuliahan o) {
+		return this.tanggalPertemuan.compareTo(o.tanggalPertemuan);
 	}
 
 }

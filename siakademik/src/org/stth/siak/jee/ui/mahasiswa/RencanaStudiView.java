@@ -168,7 +168,7 @@ public class RencanaStudiView extends VerticalLayout implements View{
 				UI.getCurrent().getPage().reload();
 			}
 		});
-		actionButtonContainer.addComponents(buttonAutoPick,buttonPrint,buttonSubmit);
+		actionButtonContainer.addComponents(buttonPrint,buttonSubmit);
 		refreshActionButtonsState();
 	}
 

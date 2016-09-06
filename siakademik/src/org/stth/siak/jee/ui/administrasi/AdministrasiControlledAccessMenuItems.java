@@ -10,6 +10,7 @@ import com.vaadin.server.Resource;
 public enum AdministrasiControlledAccessMenuItems implements AppMenuItems{
 	 
 	 LOG_PERKULIAHAN("Log Perkuliahan", AdministrasiDaftarLogPerkuliahan.class, FontAwesome.TABLE, false, ACLAdministrasiEnum.LOG_PERKULIAHAN),
+	 REKAP_HADIR_DOSEN("Rekapitulasi Kehadiran Dosen", AdministrasiRekapKehadiranDosen.class, FontAwesome.TABLE, false, ACLAdministrasiEnum.LOG_PERKULIAHAN),
 	 JADWAL_PERKULIAHAN("Jadwal Perkuliahan", AdministrasiDaftarJadwalKuliah.class, FontAwesome.TABLE, false, ACLAdministrasiEnum.JADWAL_KULIAH),
 	 CETAK_ABSENSI("Cetak Absensi", AdministrasiCetakAbsensi.class, FontAwesome.PRINT, false, ACLAdministrasiEnum.LOG_PERKULIAHAN),
 	 CETAK_TRANSKRIP("Cetak Transkrip", AdministrasiCetakTranskripMahasiswa.class, FontAwesome.PRINT, false, ACLAdministrasiEnum.TRANSKRIP_PRINT),

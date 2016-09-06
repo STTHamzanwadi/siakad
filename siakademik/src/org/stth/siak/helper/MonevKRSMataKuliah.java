@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.stth.jee.persistence.GenericPersistence;
-import org.stth.jee.persistence.MahasiswaPersistence;
 import org.stth.jee.persistence.RencanaStudiPilihanMataKuliahPersistence;
 import org.stth.siak.entity.DosenKaryawan;
 import org.stth.siak.entity.Mahasiswa;

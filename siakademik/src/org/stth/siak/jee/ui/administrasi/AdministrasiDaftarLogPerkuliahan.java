@@ -1,16 +1,20 @@
 package org.stth.siak.jee.ui.administrasi;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import org.stth.jee.persistence.DosenKaryawanPersistence;
+import org.stth.jee.persistence.GenericPersistence;
 import org.stth.jee.persistence.KelasPerkuliahanPersistence;
 import org.stth.jee.persistence.KonfigurasiPersistence;
+import org.stth.jee.persistence.LogKehadiranPerkuliahanPersistence;
 import org.stth.jee.persistence.LogPerkuliahanPersistence;
 import org.stth.siak.entity.ACLAdministrasiEnum;
 import org.stth.siak.entity.DosenKaryawan;
 import org.stth.siak.entity.KelasPerkuliahan;
+import org.stth.siak.entity.LogKehadiranPesertaKuliah;
 import org.stth.siak.entity.LogPerkuliahan;
 import org.stth.siak.entity.UserAccessRightsAdministrasi;
 import org.stth.siak.enumtype.Semester;
@@ -32,6 +36,7 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
@@ -121,6 +126,8 @@ public class AdministrasiDaftarLogPerkuliahan extends VerticalLayout implements 
 		
 		
 		hl.addComponents(tambah);
+		
+		
 		hl.setSpacing(true);
 		return hl;
 	}
@@ -165,6 +172,7 @@ public class AdministrasiDaftarLogPerkuliahan extends VerticalLayout implements 
 		} else {
 			l = LogPerkuliahanPersistence.getLogOnPeriod( dt1, dt2);
 		}
+		Collections.sort(l);
 		content.removeAllComponents();
 		Table t = new Table();
 		BeanContainer<Integer, LogPerkuliahan> beans = new BeanContainer<>(LogPerkuliahan.class);
@@ -213,6 +221,23 @@ public class AdministrasiDaftarLogPerkuliahan extends VerticalLayout implements 
 					});
 					hl.addComponent(edit);
 				}
+				//allow hapus
+				//if (ACLAdministrasiEnum.isEligibleTo(lacl, ACLAdministrasiEnum.LOG_PERKULIAHAN_DELETE)){
+				if (true){
+					Button hapus;
+					hapus = new Button("Hapus");
+					hapus.addClickListener(new ClickListener() {
+						
+						@Override
+						public void buttonClick(ClickEvent event) {
+							deleteLog(log);
+							Notification.show("Data berhasil dihapus");
+							saringData();
+						}
+
+					});
+					hl.addComponent(hapus);
+				}
 				
 				return hl;
 			}
@@ -253,6 +278,15 @@ public class AdministrasiDaftarLogPerkuliahan extends VerticalLayout implements 
 		win.setWidth("600px");
 		win.center();
 		UI.getCurrent().addWindow(win);
+	}
+	
+
+	private void deleteLog(LogPerkuliahan log) {
+		List<LogKehadiranPesertaKuliah> l = LogKehadiranPerkuliahanPersistence.getByLogPerkuliahan(log);
+		for (LogKehadiranPesertaKuliah logKehadiranPesertaKuliah : l) {
+			GenericPersistence.delete(logKehadiranPesertaKuliah);
+		}
+		GenericPersistence.delete(log);
 	}
 	
 	@Override
