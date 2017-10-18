@@ -53,10 +53,12 @@ public class AdministrasiEditorAlumni extends Window{
 		if (m!=null) {
 			this.m=m;
 		}
-		
+		setModal(true);
 		setWidth("600px");
 		setCaption("Edit Data Alumni");
-		setContent(buildLayout());
+		Panel p = new Panel();
+		p.setContent(buildLayout());
+		setContent(p);
 		center();
 	}
 	private Component buildLayout(){
@@ -74,16 +76,14 @@ public class AdministrasiEditorAlumni extends Window{
 		TextField prodi = new TextField("prodi");
 		prodi.setValue(m.getProdi().toString());
 		prodi.setReadOnly(true);
-		TextField jenjang = new TextField("Jenjang");
 		TextArea alamat = new TextArea("Alamat Rumah");
 		TextField noHP= new TextField("No Handphone");
 		TextField email = new TextField("Email");
 		TextField facebook = new TextField("Facebook");
-		TextField angkatanLulus = new TextField("Angkatan Lulus");
 		DateField tanggalLulus = new DateField("Lulus");
 		status = new ComboBox("Status",  Arrays.asList(StatusMahasiswa.values()));
 		status.setValue(m.getStatus());
-		
+		TextArea noSeriIjazah = new TextArea("No Seri Ijazah");
 		
 		fgMahasiswa.bind(status, "status");
 		
@@ -91,13 +91,13 @@ public class AdministrasiEditorAlumni extends Window{
 		fgMahasiswa.bind(nim, "npm");
 		fgMahasiswa.bind(alamat, "alamat");
 		fgMahasiswa.bind(noHP, "nomorHP");
-		fgMahasiswa.bind(angkatanLulus, "angkatanLulus");
 		fgMahasiswa.bind(email, "email");
 		fgMahasiswa.bind(facebook, "facebook");
 		fgMahasiswa.bind(tanggalLulus, "tanggalLulus");
+		fgMahasiswa.bind(noSeriIjazah, "noSeriIjazah");
 		
-		flkiri.addComponents(nama, nim, prodi, jenjang, alamat);
-		flKanan.addComponents(noHP, email, facebook, status, angkatanLulus, tanggalLulus);
+		flkiri.addComponents(nama, nim, prodi,  status, alamat);
+		flKanan.addComponents(noHP, email, facebook,   tanggalLulus, noSeriIjazah);
 		judulSkripsi = new TextArea("Judul Skripsi");
 		Button toUpperCase = new Button("To UpperCase First Letter");
 		toUpperCase.addClickListener(e-> {
@@ -110,9 +110,11 @@ public class AdministrasiEditorAlumni extends Window{
 		VerticalLayout vlJudul = new VerticalLayout();
 		vlJudul.addComponents(judulSkripsi, toUpperCase);
 		HorizontalLayout hl = new HorizontalLayout();
+		hl.setSpacing(true);
 		hl.addComponents(flkiri, flKanan);
 		VerticalLayout vlMahasiswa = new VerticalLayout();
 		vlMahasiswa.addComponents(hl, vlJudul);
+		vlMahasiswa.setMargin(true);
 		p.setContent(vlMahasiswa);
 		
 		vl.addComponent(p);
@@ -172,7 +174,7 @@ public class AdministrasiEditorAlumni extends Window{
 		beanRiwayatKerja=new BeanItem<RiwayatPekerjaan>(rp);
 		fgRiwayat= new FieldGroup(beanRiwayatKerja);
 		
-		FormLayout fl = new FormLayout();
+		
 		TextField instansi = new TextField("Instansi");
 		TextArea alamatInstansi = new TextArea("Alamat Instansi");
 		ComboBox cbLamaMenunggu = new ComboBox("Lama Menunggu Pekerjaan");
@@ -192,9 +194,13 @@ public class AdministrasiEditorAlumni extends Window{
 		fgRiwayat.bind(alamatInstansi, "alamatInstansi");
 		fgRiwayat.bind(cbLamaMenunggu, "lamaMenungguKerja");
 		fgRiwayat.bind(sumberInformasi, "sumberPekerjaan");
-		
-		fl.addComponents(instansi, alamatInstansi, cbLamaMenunggu, sumberInformasi);
-		pRiwayat.setContent(fl);
+		FormLayout flKiri = new FormLayout();
+		FormLayout flKanan = new FormLayout();
+		flKiri.addComponents(instansi, alamatInstansi);
+		flKanan.addComponents(cbLamaMenunggu, sumberInformasi);
+		HorizontalLayout hl =new HorizontalLayout();
+		hl.addComponents(flKiri, flKanan);
+		pRiwayat.setContent(hl);
 		
 		return pRiwayat;
 	}

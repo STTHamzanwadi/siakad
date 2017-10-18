@@ -10,6 +10,7 @@ import org.stth.siak.entity.ProgramStudi;
 import org.stth.siak.jee.ui.generalview.DaftarDosenView;
 import org.stth.siak.jee.ui.generalview.DaftarMahasiswaView;
 import org.stth.siak.jee.ui.generalview.ViewFactory;
+import org.stth.siak.ui.util.GeneralPopups;
 
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
@@ -45,6 +46,12 @@ public class AdministrasiDataDosen extends VerticalLayout implements View{
 		setSpacing(true);
 		Responsive.makeResponsive(this);
 		addComponent(ViewFactory.header("Administrasi Data Dosen"));
+		Button add = new Button("Tambah");
+		add.addClickListener(klik->{
+			AdministrasiEditorDataDosen ae = new AdministrasiEditorDataDosen(null);
+			GeneralPopups.showGenericWindow(ae, "Edit Data Dosen");
+		});
+		addComponent(add);
 		addComponent(createFilterComponent());
 		siapkanPilihanProdi();
 		addComponent(content);
@@ -63,8 +70,6 @@ public class AdministrasiDataDosen extends VerticalLayout implements View{
 			}
 		});
 	}
-
-
 	
 	private Component createFilterComponent() {
 		Panel pnl = new Panel("Cari mahasiswa");

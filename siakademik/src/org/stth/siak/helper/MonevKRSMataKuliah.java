@@ -101,7 +101,7 @@ public class MonevKRSMataKuliah {
 	}
 	private void loadDataMataKuliahTerpilih() {
 		//load data matakuliah terpilih berdasarkan semester dan angkatan
-		lrspmkRaw = RencanaStudiPilihanMataKuliahPersistence.getValidBySemesterTahunAjaran(semester, tahunAjaran);
+		lrspmkRaw = RencanaStudiPilihanMataKuliahPersistence.getValidBySemesterTahunAjaran(semester, tahunAjaran,null);
 		//load mahasiswa aktif berdasarkan kriteria
 	
 	}

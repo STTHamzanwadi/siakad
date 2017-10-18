@@ -8,14 +8,20 @@ import java.util.List;
 import java.util.Locale;
 
 import org.stth.siak.entity.Mahasiswa;
+import org.stth.siak.enumtype.StatusMahasiswa;
+import org.stth.siak.helper.IndeksPrestasiHelper;
 import org.stth.siak.jee.ui.administrasi.AdministrasiEditorDataMahasiswa;
+import org.stth.siak.jee.ui.administrasi.AdministrasiPopupTanggalLulus;
+import org.stth.siak.rpt.ReportContentFactory;
 import org.stth.siak.rpt.ReportResourceGenerator;
 import org.stth.siak.ui.util.GeneralPopups;
 import org.stth.siak.util.GeneralUtilities;
+import org.vaadin.dialogs.ConfirmDialog;
 
 import com.vaadin.data.util.BeanContainer;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.converter.StringToDateConverter;
+import com.vaadin.server.BrowserWindowOpener;
 import com.vaadin.server.StreamResource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -23,9 +29,17 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Link;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
+import com.vaadin.ui.Window.CloseEvent;
+import com.vaadin.ui.Window.CloseListener;
+
+import net.sf.jasperreports.engine.JRException;
+
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 
 public class DaftarMahasiswaView extends CustomComponent{
 	/**
@@ -95,7 +109,7 @@ public class DaftarMahasiswaView extends CustomComponent{
 			public Object generateCell(Table source, Object itemId, Object columnId) {
 				HorizontalLayout hl = new HorizontalLayout();
 				hl.setSpacing(true);
-				
+
 				Button buttonLihatProfil = new Button("Profil");
 				BeanItem<?> i = (BeanItem<?>) source.getContainerDataSource().getItem(itemId);
 				final Mahasiswa o = (Mahasiswa) i.getBean();
@@ -104,26 +118,36 @@ public class DaftarMahasiswaView extends CustomComponent{
 						GeneralPopups.showProfilMahasiswa(o);
 					}
 				});
-				
+
 				Button buttonIPK = new Button("Indeks Prestasi");
 				buttonIPK.addClickListener(new ClickListener() {
 					@Override public void buttonClick(ClickEvent event) {
 						GeneralPopups.showIpkMahasiswa(o);
 					}
 				});
-				
-				Button buttonTranskrip = new Button("Cetak Transkrip");
-				buttonTranskrip.addClickListener(new ClickListener() {
-					@Override public void buttonClick(ClickEvent event) {
-						try {
-							StreamResource resource = ReportResourceGenerator.cetakTranskripMahasiswa(o);
-							getUI().getPage().open(resource, "_blank", false);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
+
+				final Button buttonTranskrip = new Button("Cetak Transkrip");
+				buttonTranskrip.addClickListener(e-> {
+					if (o.getStatus().equals(StatusMahasiswa.LULUS)) {
+						ConfirmDialog.show(getUI(), "", "Print Transkrip?", "Sementara", "Akademik"
+								, new ConfirmDialog.Listener() {
+							
+							@Override
+							public void onClose(ConfirmDialog arg0) {
+								if (arg0.isConfirmed()) {
+									cetakTranskrip(o);
+								}else{
+									cetakTranskripAkademik(o);
+								}		
+							}
+						});
+						
+					}else{
+						cetakTranskrip(o);
 					}
+
 				});
-				
+
 				Button buttonEdit = new Button("Edit Mahasiswa");
 				buttonEdit.addClickListener(new ClickListener() {
 					@Override public void buttonClick(ClickEvent event) {
@@ -131,7 +155,12 @@ public class DaftarMahasiswaView extends CustomComponent{
 						GeneralPopups.showGenericWindow(ae, "Edit Data Mahasiswa");
 					}
 				});
-				
+				Button buttonResetPassword = new Button("Reset Password");
+				buttonResetPassword.addClickListener(klik->{
+					ResetPassword rp = new ResetPassword(o);
+					GeneralPopups.showGenericWindow(rp, "Reset Password");
+				});
+
 				for (int j = 0; j < visColumnsArrays.length; j++) {
 					int bitVal = GeneralUtilities.getBit(allowedActionsBit, j);
 					if (bitVal==1 && j==0){
@@ -144,10 +173,39 @@ public class DaftarMahasiswaView extends CustomComponent{
 						hl.addComponent(buttonTranskrip);
 					}
 					if (bitVal==1 && j==3){
-						hl.addComponent(buttonEdit);
+						hl.addComponents(buttonEdit, buttonResetPassword);
 					}
 				}
+				//hl.addComponents(buttonEdit, buttonTranskrip, buttonResetPassword);
 				return hl;
+			}
+
+			private void cetakTranskripAkademik(final Mahasiswa o) {
+				Window window = new AdministrasiPopupTanggalLulus();
+				window.addCloseListener(event-> {
+					
+					String[] l = (String[]) event.getWindow().getData();
+					StreamResource resource;
+					try {
+						resource = ReportResourceGenerator.cetakTranskripWisudaMahasiswa(o,l);
+						getUI().getPage().open(resource, "_blank", false);
+					} catch (JRException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				});
+				getUI().addWindow(window);
+			}
+
+			private void cetakTranskrip(final Mahasiswa o) {
+				StreamResource resource;
+				try {
+					resource = ReportResourceGenerator.cetakTranskripMahasiswa(o);
+					getUI().getPage().open(resource, "_blank", false);
+				} catch (JRException ex) {
+					// TODO Auto-generated catch block
+					ex.printStackTrace();
+				}
 			}
 		});
 		table.setConverter("tanggalLahir", new StringToDateConverter(){
@@ -178,6 +236,7 @@ public class DaftarMahasiswaView extends CustomComponent{
 			visibleColumnNames.add("aksi");
 		}
 		table.setVisibleColumns(visibleColumnNames.toArray());
+		
 		return table;
 	}
 	public void showTranskripButton(){

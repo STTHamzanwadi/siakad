@@ -14,6 +14,7 @@ import org.stth.siak.entity.Mahasiswa;
 import org.stth.siak.entity.MataKuliahKurikulum;
 import org.stth.siak.entity.PesertaKuliah;
 import org.stth.siak.rpt.TranskripReportElement;
+import org.stth.siak.rpt.TranskripWisudaElement;
 
 public class IndeksPrestasiHelper {
 	private ArrayList<PesertaKuliah> nilai;
@@ -26,7 +27,7 @@ public class IndeksPrestasiHelper {
 	private Map<String, PesertaKuliah> nilaiD;
 	private Map<String,Integer> semMatKuKur;
 	private Kurikulum kur;
-	
+
 	public IndeksPrestasiHelper(Mahasiswa mhs){
 		this.mhs = mhs;
 		List<Criterion> lc = new ArrayList<>();
@@ -112,16 +113,18 @@ public class IndeksPrestasiHelper {
 			PesertaKuliah p = (PesertaKuliah) o;
 			if (p.getNilai()!=null) {
 				if (!(p.getNilai().equals("") || p.getNilai().equals("0"))) {
-					if (m.containsKey(p.getCopiedKodeMatkul())) {
-						PesertaKuliah p1 = m.get(p.getCopiedKodeMatkul());
+					if (m.containsKey(p.getCopiedNamaMatkul())) {
+						PesertaKuliah p1 = m.get(p.getCopiedNamaMatkul());
 						int p1n = convertNilai(p1.getNilai());
 						int pn = convertNilai(p.getNilai());
 						if (pn > p1n) {
 							m.remove(p1);
-							m.put(p.getCopiedKodeMatkul(), p);
+							m.put(p.getCopiedNamaMatkul(), p);
+							//m.put(p.getCopiedNamaMatkul(), p);
 						}
 					} else {
-						m.put(p.getCopiedKodeMatkul(), p);
+						m.put(p.getCopiedNamaMatkul(), p);
+						//m.put(p.getCopiedNamaMatkul(), p);
 					}
 				}
 			}
@@ -144,7 +147,7 @@ public class IndeksPrestasiHelper {
 	public Map<String, PesertaKuliah> getNilaiD() {
 		return nilaiD;
 	}
-	
+
 	public double getTotnilai() {
 		return kumNilai;
 	}
@@ -197,8 +200,38 @@ public class IndeksPrestasiHelper {
 		ArrayList<TranskripReportElement> rslt = new ArrayList<>();
 		for (PesertaKuliah p : nilai) {
 			rslt.add(new TranskripReportElement(p,getSem(p.getCopiedKodeMatkul())));
+
 		}
 		Collections.sort(rslt);
+		if (this.mhs.getProdi().getNama().equals("Manajemen Informatika")) {
+			TranskripReportElement tre = rslt.get(0);
+			if(tre.getNamamk().equals("Tugas Akhir")){
+				rslt.remove(0);
+				rslt.add(tre);
+			}
+			
+		}
+		return rslt;
+	}
+	public ArrayList<TranskripWisudaElement> getTranskripWisudaReportElements(){
+		ArrayList<TranskripWisudaElement> rslt = new ArrayList<>();
+		ArrayList<TranskripReportElement> listTransKiri = new ArrayList<>();
+		ArrayList<TranskripReportElement> listTransKanan= new ArrayList<>();
+		int no =1;
+		int batas = getTranskripReportElements().size()/2 +2;
+		
+		TranskripWisudaElement twe = new TranskripWisudaElement();
+		for (TranskripReportElement tre : getTranskripReportElements()) {
+			if (no<=batas) {
+				listTransKiri.add(tre);		
+			}else{
+				listTransKanan.add(tre);
+			}
+			no++;
+		}
+		twe.setListTransKiri(listTransKiri);
+		twe.setListTransKanan(listTransKanan);
+		rslt.add(twe);
 		return rslt;
 	}
 }

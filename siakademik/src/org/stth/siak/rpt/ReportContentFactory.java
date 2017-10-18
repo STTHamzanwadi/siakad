@@ -1,6 +1,7 @@
 package org.stth.siak.rpt;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,13 +12,12 @@ import org.hibernate.criterion.Restrictions;
 import org.stth.jee.persistence.GenericPersistence;
 import org.stth.jee.persistence.PesertaKuliahPersistence;
 import org.stth.siak.entity.KelasPerkuliahan;
-import org.stth.siak.entity.KelasPerkuliahanMahasiswaPerSemester;
+import org.stth.siak.entity.KelasPerkuliahanMahasiswaPerSemester2;
 import org.stth.siak.entity.Mahasiswa;
 import org.stth.siak.entity.PesertaKuliah;
 import org.stth.siak.entity.RencanaStudiMahasiswa;
 import org.stth.siak.entity.RencanaStudiPilihanMataKuliah;
 import org.stth.siak.enumtype.JenisUjian;
-import org.stth.siak.enumtype.Semester;
 import org.stth.siak.helper.IndeksPrestasiHelper;
 import org.stth.siak.util.GeneralUtilities;
 
@@ -27,6 +27,35 @@ public class ReportContentFactory {
 	public enum tipeAbsen{
 		KEHADIRAN,UTS,UAS
 	}
+	public static ReportRawMaterials siapkanReportTranskripWisudaMahasiswa(IndeksPrestasiHelper iph,String tanggalLulus, String tanggalTranskrip ) {
+		Map<String,Object> parameters = new HashMap<>();
+		Mahasiswa curMhs = iph.getMhs();
+		String rptFile = "TranskripWisuda.jrxml";
+		parameters.put("nim", curMhs.getNpm());
+		parameters.put("nama", curMhs.getNama());
+		parameters.put("prodi", curMhs.getProdi().getNama());
+		parameters.put("ttl",curMhs.getTtldiIjazah());
+		parameters.put("totsks", iph.getTotsks());
+		DecimalFormat df = new DecimalFormat("#.00");
+		String ipk = df.format(iph.getIpk());
+		parameters.put("ipk", ipk);
+		int kum = (int) iph.getTotnilai();
+		parameters.put("tanggalLulus", tanggalLulus);
+		parameters.put("tanggalTranskrip", tanggalTranskrip);
+		parameters.put("noSeriIjazah", curMhs.getNoSeriIjazah());
+		parameters.put("printJudul", curMhs.getJudulSkripsi());
+		parameters.put("jumnilai", kum);
+		parameters.put("batasNo", (iph.getTranskripReportElements().size()/2)+2);
+		parameters.put("timestamp",GeneralUtilities.getLongFormattedDate(new Date()));
+		parameters.put("dekanname", "H. Muh. Djamaluddin, BE. M.Kom");
+		parameters.put("dekannis", "830785720105003");
+		parameters.put("predikat", iph.getPredikat());
+		List<?> l = iph.getTranskripWisudaReportElements();
+		String title = "RPT: Transkrip Mahasiswa";
+		ReportRawMaterials rrm = new ReportRawMaterials(rptFile, parameters, l, title);
+		return rrm;
+	}
+	
 	public static ReportRawMaterials siapkanReportTranskripMahasiswa(IndeksPrestasiHelper iph) {
 		Map<String,Object> parameters = new HashMap<>();
 		Mahasiswa curMhs = iph.getMhs();
@@ -34,7 +63,7 @@ public class ReportContentFactory {
 		parameters.put("nim", curMhs.getNpm());
 		parameters.put("nama", curMhs.getNama());
 		parameters.put("prodi", curMhs.getProdi().getNama());
-		parameters.put("ttl",curMhs.getTempatLahir()+"/"+GeneralUtilities.getLongFormattedDate(curMhs.getTanggalLahir()));
+		parameters.put("ttl",curMhs.getTempatLahir()+"/"+GeneralUtilities.getLongFormattedDate2(curMhs.getTanggalLahir()));
 		parameters.put("totsks", iph.getTotsks());
 		DecimalFormat df = new DecimalFormat("#.00");
 		String ipk = df.format(iph.getIpk());
@@ -42,8 +71,8 @@ public class ReportContentFactory {
 		int kum = (int) iph.getTotnilai();
 		parameters.put("jumnilai", kum);
 		parameters.put("timestamp",new Date());
-		parameters.put("puket1name", "Hariman Bahtiar, S.Kom");
-		parameters.put("puket1nis", "830785720105003");
+		parameters.put("puket1name", "Hariman Bahtiar, M.Kom");
+		parameters.put("puket1nidn", "9908002976");
 		parameters.put("predikat", iph.getPredikat());
 		List<?> l = iph.getTranskripReportElements();
 		String title = "RPT: Transkrip Mahasiswa";
@@ -96,8 +125,10 @@ public class ReportContentFactory {
 		parameters.put("timestamp",new Date());
 		if (rs.getPembimbingAkademik()!=null) {
 			parameters.put("pembimbingakademik", rs.getPembimbingAkademik());
-			parameters
-					.put("pembimbingnis", rs.getPembimbingAkademik().getNis());
+			if (rs.getPembimbingAkademik().getNidn()!=null) {
+				parameters.put("pembimbingnidn", rs.getPembimbingAkademik().getNidn());
+			}else
+			parameters.put("pembimbingnidn", "-");
 		}
 		String title = "RPT: Rencana Studi";
 		ReportRawMaterials rrm = new ReportRawMaterials(rptFile, parameters, lrsre, title);
@@ -155,16 +186,16 @@ public class ReportContentFactory {
 		ReportRawMaterials rrm = new ReportRawMaterials(rptFile, parameters, pesertaKuliah, title);
 		return rrm;		
 	}
-	public static List<ReportRawMaterials> siapkanReportKartuUjian(List<KelasPerkuliahanMahasiswaPerSemester> curSelection, Semester semester, String ta,JenisUjian tipe) {
+	public static List<ReportRawMaterials> siapkanReportKartuUjian(List<KelasPerkuliahanMahasiswaPerSemester2> curSelection,JenisUjian tipe) {
 		List<ReportRawMaterials> rrms = new ArrayList<>();
-		for (KelasPerkuliahanMahasiswaPerSemester o : curSelection) {
+		for (KelasPerkuliahanMahasiswaPerSemester2 o : curSelection) {
 			ReportRawMaterials rrm;
 			rrm = siapkanReportKartuUjian(o, tipe);
 			rrms.add(rrm);
 		}
 		return rrms;
 	}
-	public static ReportRawMaterials siapkanReportKartuUjian(KelasPerkuliahanMahasiswaPerSemester o,JenisUjian jenisUjian) {
+	public static ReportRawMaterials siapkanReportKartuUjian(KelasPerkuliahanMahasiswaPerSemester2 o,JenisUjian jenisUjian) {
 		List<Criterion> lc = new ArrayList<>();
 		lc.add(Restrictions.eq("mahasiswa", o.getMahasiswa()));
 		lc.add(Restrictions.eq("kelasPerkuliahan.semester", o.getSemester()));
@@ -194,7 +225,10 @@ public class ReportContentFactory {
 		}
 		if (curMhs.getProdi().getKaprodi()!=null) {
 			parameters.put("kaprodi", curMhs.getProdi().getKaprodi().getNama());
-			parameters.put("kaprodinis", curMhs.getProdi().getKaprodi().getNis());
+			if (curMhs.getProdi().getKaprodi().getNidn()!=null) {
+				parameters.put("kaprodinidn", curMhs.getProdi().getKaprodi().getNidn());
+			}else parameters.put("kaprodinidn", "-");
+			
 		}
 		String title = "RPT: Rencana Studi";
 		ReportRawMaterials rrm = new ReportRawMaterials(rptFile, parameters, lpkre, title);
@@ -250,8 +284,10 @@ public class ReportContentFactory {
 		parameters.put("kodekelas", curObject.getKodeKelas());
 		if (curObject.getDosenPengampu()!=null){
 			parameters.put("dosen", curObject.getDosenPengampu().getNama());
+			parameters.put("nidndosen", curObject.getDosenPengampu().getNidn());
 		} else {
 			parameters.put("dosen", "-");
+			parameters.put("nidndosen", "-");
 		}
 		parameters.put("semta", curObject.getSemester().toString()+"/"+curObject.getTahunAjaran());
 		parameters.put("prodi", curObject.getProdi().toString());
@@ -266,6 +302,7 @@ public class ReportContentFactory {
 		for (KelasPerkuliahan kp : lkp) {
 			List<PesertaKuliahReportElement> lpkre = new ArrayList<>();
 			List<PesertaKuliah> lpk = PesertaKuliahPersistence.getPesertaKuliahByKelasPerkuliahan(kp);
+			Collections.sort(lpk);
 			for (PesertaKuliah pesertaKuliah : lpk) {
 				PesertaKuliahReportElement pkre = new PesertaKuliahReportElement(pesertaKuliah);
 				lpkre.add(pkre);
@@ -283,10 +320,10 @@ public class ReportContentFactory {
 		parameters.put("kodekelas", curObject.getKodeKelas());
 		if (curObject.getDosenPengampu()!=null){
 			parameters.put("dosen", curObject.getDosenPengampu().getNama());
-			if (curObject.getDosenPengampu().getNis()!=null){
-				parameters.put("nisdosen", curObject.getDosenPengampu().getNis());
+			if (curObject.getDosenPengampu().getNidn()!=null){
+				parameters.put("nidndosen", curObject.getDosenPengampu().getNidn());
 			} else {
-				parameters.put("nisdosen", "-");
+				parameters.put("nidndosen", "-");
 			}
 		} else {
 			parameters.put("dosen", "-");
@@ -297,5 +334,59 @@ public class ReportContentFactory {
 		String title = "RPT: Berita Acara Perkuliahan";
 		ReportRawMaterials rrm = new ReportRawMaterials(rptFile, parameters, lpkre, title);
 		return rrm;
+	}
+	
+	public static List<ReportRawMaterials> siapkanKHS(){
+		
+		return null;
+	}
+	private static ReportRawMaterials siapkanKartuHasilStdui(KelasPerkuliahanMahasiswaPerSemester2 kpmp){
+		Map<String, Object> parameters = new HashMap<>();
+		List<Criterion> lc = new ArrayList<>();
+		Mahasiswa m = kpmp.getMahasiswa();
+		parameters.put("semester", kpmp.getSemester());
+		parameters.put("tahunajaran", kpmp.getTahunAjaran());
+		parameters.put("nama", m.getNama());
+		parameters.put("nim", m.getNpm());
+		parameters.put("prodi", m.getProdi().getNama());
+		parameters.put("pembimbingakademik", kpmp.getMahasiswa().getPembimbingAkademik());
+		
+		lc.add(Restrictions.eq("mahasiswa", kpmp.getMahasiswa()));
+		lc.add(Restrictions.eq("kelasPerkuliahan.semester", kpmp.getSemester()));
+		lc.add(Restrictions.eq("kelasPerkuliahan.tahunAjaran", kpmp.getTahunAjaran()));
+		String[] alias = {"kelasPerkuliahan"};
+		List<PesertaKuliah> lpk = GenericPersistence.findList(PesertaKuliah.class,lc,alias);
+		IndeksPrestasiHelper iph = new IndeksPrestasiHelper(lpk, kpmp.getMahasiswa());
+		
+		List<TranskripReportElement> l = iph.getTranskripReportElements();
+		/*List<KHSReportElement> lkhs = new ArrayList<>();
+		for (PesertaKuliah pk: lpk) {
+			lkhs.add(new KHSReportElement(pk));
+			totSks+=pk.getCopiedSKSMatkul();
+		}
+		*/
+		parameters.put("totsks", iph.getTotsks());
+		parameters.put("totkn", iph.getTotnilai());
+		DecimalFormat df = new DecimalFormat("#.00");
+		String ipk = df.format(iph.getIpk());
+		parameters.put("ipk", ipk);
+		parameters.put("kaprodi",m.getProdi().getKaprodi().getNama());
+		if (m.getProdi().getKaprodi().getNidn()!=null) {
+			parameters.put("kaprodinidn", m.getProdi().getKaprodi().getNidn());
+		}else parameters.put("kaprodinidn", "-");
+		
+		parameters.put("timestamp",(new Date()));
+		
+		String rptFile= "KartuHasilStudi.jrxml";
+		String title = "Kartu Hasil Studi";
+		ReportRawMaterials rrm = new ReportRawMaterials(rptFile, parameters, l, title);
+		return rrm;
+	}
+	public static List<ReportRawMaterials> siapkanKartuHasilStdui(List<KelasPerkuliahanMahasiswaPerSemester2> lkpmp){
+		List<ReportRawMaterials> rrms= new ArrayList<>();
+		for (KelasPerkuliahanMahasiswaPerSemester2 km : lkpmp) {
+			rrms.add(siapkanKartuHasilStdui(km));
+		}
+		return rrms;
 	}
 }

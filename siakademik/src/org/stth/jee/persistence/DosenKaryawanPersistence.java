@@ -22,7 +22,10 @@ public class DosenKaryawanPersistence {
 		if (dosen.getProdi()!=null){
 			lc.add(Restrictions.eq("prodi", dosen.getProdi()));
 		}
-		lc.add(Restrictions.like("nama", dosen.getNama(), MatchMode.ANYWHERE));
+		if(dosen.getNama()!=null){
+			lc.add(Restrictions.like("nama", dosen.getNama(), MatchMode.ANYWHERE));
+		}
+		
 		List<DosenKaryawan> l = GenericPersistence.findList(DosenKaryawan.class, lc);
 		return l;
 	}

@@ -23,4 +23,25 @@ public class RencanaStudiPersistence {
 		}
 		return null;
 	}
+	public static List<RencanaStudiMahasiswa> getList(RencanaStudiMahasiswa rsm){
+		List<Criterion> lc = new ArrayList<>();
+		
+		if (rsm.getMahasiswa()!=null) {
+			lc.add(Restrictions.eq("mahasiswa", rsm.getMahasiswa()));
+		}
+		if (rsm.getSemester()!=null) {
+			lc.add(Restrictions.eq("semester", rsm.getSemester()));
+		}
+		if (!rsm.getTahunAjaran().isEmpty()) {
+			lc.add(Restrictions.eq("tahunAjaran", rsm.getTahunAjaran()));
+		}
+		if (rsm.getStatus()!=null) {
+			lc.add(Restrictions.eq("status", rsm.getStatus()));
+		}
+		if (rsm.getPembimbingAkademik()!=null) {
+			lc.add(Restrictions.eq("pembimbingAkademik", rsm.getPembimbingAkademik()));
+		}
+		List<RencanaStudiMahasiswa> lrsm = GenericPersistence.findList(RencanaStudiMahasiswa.class, lc);
+		return lrsm;
+	}
 }

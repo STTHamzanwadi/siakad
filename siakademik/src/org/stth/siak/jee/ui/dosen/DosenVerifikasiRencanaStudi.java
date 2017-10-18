@@ -1,6 +1,8 @@
 package org.stth.siak.jee.ui.dosen;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.stth.jee.persistence.KonfigurasiPersistence;
@@ -10,6 +12,7 @@ import org.stth.siak.entity.DosenKaryawan;
 import org.stth.siak.entity.Mahasiswa;
 import org.stth.siak.entity.RencanaStudiMahasiswa;
 import org.stth.siak.enumtype.Semester;
+import org.stth.siak.enumtype.StatusRencanaStudi;
 import org.stth.siak.helper.IndeksPrestasiHelper;
 import org.stth.siak.jee.ui.generalview.MahasiswaProfilView;
 import org.stth.siak.jee.ui.generalview.ViewFactory;
@@ -22,12 +25,16 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.Window.CloseEvent;
@@ -35,6 +42,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseListener;
+import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.themes.ValoTheme;
 
 public class DosenVerifikasiRencanaStudi extends VerticalLayout implements View{
@@ -42,13 +50,15 @@ public class DosenVerifikasiRencanaStudi extends VerticalLayout implements View{
 	 * 
 	 */
 	private static final long serialVersionUID = -5660284900239030833L;
-	private Table tableMhs = new Table("DAFTAR STATUS PENGAJUAN RENCANA STUDI OLEH MAHASISWA BIMBINGAN AKADEMIK");
+	private Table tableMhs ;
 	private VerticalLayout dashboardPanels;
 	private BeanContainer<Integer, Mahasiswa> beansMhs = new BeanContainer<Integer, Mahasiswa>(Mahasiswa.class);
 	private DosenKaryawan dosen;
 	private Semester semester;
 	private String ta;
 	private boolean isKRSOpen;
+	private Panel p ;
+	private AbstractField<Object> cbStatus;
 	//private int limitPengambilanSKS;
 
 	public DosenVerifikasiRencanaStudi() {
@@ -61,9 +71,12 @@ public class DosenVerifikasiRencanaStudi extends VerticalLayout implements View{
 		isKRSOpen = k.isKRSOpen();
 		//limitPengambilanSKS = k.getKRSMaxSKS();
 		Responsive.makeResponsive(this);
+		p=new Panel();
 		addComponent(ViewFactory.header("Verifikasi Rencana Studi Semester "+semester+" t.a "+ta ));
 		if (isKRSOpen) {
-			addComponent(getTable());
+			addComponent(filter());
+			p.setContent(getTable());
+			addComponent(p);
 		} else {
 			addComponent(new Label("Masa pengambilan mata kuliah telah ditutup"));
 		}
@@ -71,11 +84,37 @@ public class DosenVerifikasiRencanaStudi extends VerticalLayout implements View{
 
 	}
 
-
-
+	private Component filter(){
+		FormLayout fl = new FormLayout();
+		cbStatus = new ComboBox("Status", Arrays.asList(StatusRencanaStudi.values()));
+		cbStatus.setValue(StatusRencanaStudi.DIAJUKAN);
+		cbStatus.addValueChangeListener(e->{
+			p.setContent(getTable());
+		});
+		fl.addComponent(cbStatus);
+		return fl;
+	}
+	
 	@SuppressWarnings("serial")
 	private Component getTable(){
-		List<Mahasiswa> lm = MahasiswaPersistence.getListByPembimbingAkademik(dosen);
+		tableMhs = new Table("DAFTAR STATUS PENGAJUAN RENCANA STUDI OLEH MAHASISWA BIMBINGAN AKADEMIK");
+		List<Mahasiswa> lm = new ArrayList<>();
+		StatusRencanaStudi sRS = (StatusRencanaStudi) cbStatus.getValue();
+		if (sRS!=null) {
+			RencanaStudiMahasiswa rsm = new RencanaStudiMahasiswa();
+			rsm.setStatus(sRS);
+			rsm.setSemester(semester);
+			rsm.setTahunAjaran(ta);
+			List<RencanaStudiMahasiswa> lrs = RencanaStudiPersistence.getList(rsm );
+			for (RencanaStudiMahasiswa rs : lrs) {
+				if (dosen.getId()==rs.getMahasiswa().getPembimbingAkademik().getId()) {
+					lm.add(rs.getMahasiswa());
+				}
+			}
+		}else{
+			lm = MahasiswaPersistence.getListByPembimbingAkademik(dosen);
+		}
+		
 		dashboardPanels = new VerticalLayout();
 		dashboardPanels.addStyleName("dashboard-panels");
 		Responsive.makeResponsive(dashboardPanels);
@@ -89,7 +128,6 @@ public class DosenVerifikasiRencanaStudi extends VerticalLayout implements View{
 		tableMhs.setContainerDataSource(beansMhs);
 		tableMhs.setRowHeaderMode(Table.RowHeaderMode.INDEX);
 		tableMhs.addGeneratedColumn("prodi", new ColumnGenerator() {
-
 
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
@@ -118,9 +156,13 @@ public class DosenVerifikasiRencanaStudi extends VerticalLayout implements View{
 				final Mahasiswa o = (Mahasiswa) i.getBean();
 				final RencanaStudiMahasiswa rsm = RencanaStudiPersistence.getByMhsSemTa(o, semester, ta);
 				Button buttonVerifikasi = new Button("Belum Mengisi KRS");
+				buttonVerifikasi.setStyleName(Reindeer.LAYOUT_BLACK);
 				buttonVerifikasi.setEnabled(false);
 				if (rsm!=null){
 					buttonVerifikasi.setCaption(rsm.getStatus()+" | Lihat");
+					if (rsm.getStatus()==StatusRencanaStudi.DISETUJUI) {
+						buttonVerifikasi.setStyleName(Reindeer.LAYOUT_BLUE);
+					}
 					buttonVerifikasi.setEnabled(true);
 					buttonVerifikasi.addClickListener(new ClickListener() {
 						public void buttonClick(ClickEvent event) {

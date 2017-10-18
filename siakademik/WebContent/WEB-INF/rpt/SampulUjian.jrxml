@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version last-->
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-06-12T11:51:42 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SampulUjian" language="groovy" pageWidth="612" pageHeight="1008" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="19f1f3ee-d96b-48ee-b8a2-8181f6b7a970">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
@@ -11,6 +12,7 @@
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<parameter name="title" class="java.lang.String"/>
+	<parameter name="basepath" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[]]>
 	</queryString>
@@ -51,21 +53,21 @@
 		<band height="11" splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="19" splitType="Stretch"/>
+		<band height="5" splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="9" splitType="Stretch"/>
+		<band height="3" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
 		<band height="271" splitType="Stretch">
 			<rectangle>
-				<reportElement mode="Transparent" x="-1" y="7" width="572" height="72" uuid="c2517c0f-56d4-4b21-9c35-359f855d3206"/>
+				<reportElement mode="Transparent" x="-1" y="0" width="572" height="79" uuid="c2517c0f-56d4-4b21-9c35-359f855d3206"/>
 				<graphicElement>
 					<pen lineWidth="2.0" lineStyle="Double"/>
 				</graphicElement>
 			</rectangle>
 			<textField>
-				<reportElement x="60" y="32" width="490" height="18" uuid="357e2d2b-13a2-4693-aa80-f8b33119a3fe"/>
+				<reportElement x="80" y="36" width="470" height="18" uuid="357e2d2b-13a2-4693-aa80-f8b33119a3fe"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>
@@ -187,22 +189,18 @@
 				<text><![CDATA[:                          /]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="60" y="50" width="490" height="20" uuid="90cc4b03-cf8b-409d-95f7-cb81f3df8dc4"/>
+				<reportElement x="80" y="54" width="470" height="20" uuid="90cc4b03-cf8b-409d-95f7-cb81f3df8dc4"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font size="13" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{semester}+" / Tahun Akademik "+ $F{tahunajaran}]]></textFieldExpression>
 			</textField>
-			<image>
-				<reportElement x="10" y="13" width="60" height="60" uuid="368a091a-b567-40ed-81a8-cb12f6657fd8"/>
-				<imageExpression><![CDATA["rpt/image/logo.png"]]></imageExpression>
-			</image>
 			<staticText>
-				<reportElement x="60" y="13" width="490" height="19" uuid="10f47624-6569-4e1f-8584-887ca3fa91d3"/>
+				<reportElement x="80" y="4" width="470" height="19" uuid="10f47624-6569-4e1f-8584-887ca3fa91d3"/>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[SEKOLAH TINGGI TEKNOLOGI HAMZANWADI]]></text>
+				<text><![CDATA[UNIVERSITAS HAMZANWADI]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="20" y="210" width="140" height="20" uuid="abbc7ac5-11c6-41fa-87e5-4b203d425d52"/>
@@ -218,6 +216,20 @@
 				</textElement>
 				<textFieldExpression><![CDATA[":  "+$F{dosenpengampu}]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement x="9" y="5" width="68" height="68" uuid="022e6890-05c5-4f86-80df-39d5040dffd2">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{basepath}+"image/logo.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="85" y="19" width="470" height="19" uuid="a42b6a3c-7215-44da-8894-82e1ad289239"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FAKULTAS TEKNIK]]></text>
+			</staticText>
 		</band>
 	</detail>
 	<columnFooter>

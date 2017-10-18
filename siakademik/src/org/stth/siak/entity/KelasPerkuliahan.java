@@ -1,7 +1,6 @@
 package org.stth.siak.entity;
 
 import java.util.Comparator;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
-
 import org.stth.siak.enumtype.Semester;
 
 @Entity
@@ -31,6 +29,7 @@ public class KelasPerkuliahan implements Comparable<KelasPerkuliahan>, Comparato
     @PrimaryKeyJoinColumn
 	private ProgramStudi prodi;
 	private String kodeKelas;
+	
 	
 	public int getId() {
 		return id;
@@ -75,6 +74,9 @@ public class KelasPerkuliahan implements Comparable<KelasPerkuliahan>, Comparato
 	public void setKodeKelas(String kodeKelas) {
 		this.kodeKelas = kodeKelas;
 	}
+	
+	
+	@Override
 	public String toString(){
 		return mataKuliah+" kelas "+kodeKelas+" "+semester+" "+tahunAjaran;
 	}

@@ -101,11 +101,16 @@ public class DaftarDosenView extends CustomComponent{
 						GeneralPopups.showGenericWindow(ae, "Edit Data Dosen");
 					}
 				});
+				Button buttonResetPassword = new Button("Reset Password");
+				buttonResetPassword.addClickListener(klik->{
+					ResetPassword rp = new ResetPassword(d);
+					GeneralPopups.showGenericWindow(rp, "Reset Password");
+				});
 	
 				for (int j = 0; j < visColumnsArrays.length; j++) {
 					int bitVal = GeneralUtilities.getBit(allowedActionsBit, j);
 					if (bitVal==1 && j==0){
-						hl.addComponent(buttonEdit);
+						hl.addComponents(buttonEdit, buttonResetPassword);
 					}
 					
 				}

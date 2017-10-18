@@ -23,6 +23,8 @@ public class KonfigurasiPersistence {
 		lc.add(Restrictions.eq("namaKonfigurasi", k.getNamaKonfigurasi()));
 		List<Konfigurasi> l = GenericPersistence.findList(Konfigurasi.class, lc);
 		Konfigurasi konf= l.get(0);
+		System.out.println(l.size());
+		konf.setNilaiKonfigurasi(k.getNilaiKonfigurasi());
 		GenericPersistence.merge(konf);
 	}
 	public String getKRSTa(){

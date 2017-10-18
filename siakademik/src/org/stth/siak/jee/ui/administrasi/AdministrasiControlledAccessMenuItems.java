@@ -13,11 +13,19 @@ public enum AdministrasiControlledAccessMenuItems implements AppMenuItems{
 	 REKAP_HADIR_DOSEN("Rekapitulasi Kehadiran Dosen", AdministrasiRekapKehadiranDosen.class, FontAwesome.TABLE, false, ACLAdministrasiEnum.LOG_PERKULIAHAN),
 	 JADWAL_PERKULIAHAN("Jadwal Perkuliahan", AdministrasiDaftarJadwalKuliah.class, FontAwesome.TABLE, false, ACLAdministrasiEnum.JADWAL_KULIAH),
 	 CETAK_ABSENSI("Cetak Absensi", AdministrasiCetakAbsensi.class, FontAwesome.PRINT, false, ACLAdministrasiEnum.LOG_PERKULIAHAN),
-	 CETAK_TRANSKRIP("Cetak Transkrip", AdministrasiCetakTranskripMahasiswa.class, FontAwesome.PRINT, false, ACLAdministrasiEnum.TRANSKRIP_PRINT),
-	 DATA_MAHASISWA("Administrasi Data Mahasiswa", AdministrasiDataMahasiswa.class, FontAwesome.USERS, false, ACLAdministrasiEnum.EDIT_MAHASISWA),
-	 DATA_DOSEN("Administrasi Data Dosen", AdministrasiDataDosen.class, FontAwesome.USERS, false, ACLAdministrasiEnum.EDIT_MAHASISWA);
-	 
-	 
+	 DATA_MAHASISWA("Administrasi Data Mahasiswa", AdministrasiCetakTranskripMahasiswa.class, FontAwesome.USER, false, ACLAdministrasiEnum.TRANSKRIP_PRINT),
+	 //DATA_MAHASISWA("Administrasi Data Mahasiswa", AdministrasiDataMahasiswa.class, FontAwesome.USERS, false, ACLAdministrasiEnum.EDIT_MAHASISWA),
+	 DATA_DOSEN("Administrasi Data Dosen", AdministrasiDataDosen.class, FontAwesome.USERS, false, ACLAdministrasiEnum.EDIT_DOSEN),
+	 PRODI("Program Studi", AdministrasiProgramStudi.class, FontAwesome.UNIVERSITY, false, ACLAdministrasiEnum.EDIT_DOSEN),
+	 DATA_ALUMNI("Administrasi Data Alumni", AdministrasiAlumniMahasiswa.class, FontAwesome.UNIVERSITY, false, ACLAdministrasiEnum.EDIT_MAHASISWA),
+	 KELAS_PERKULIAHAN("Kelas Perkuliahan", AdministrasiKelasPerkuliahan.class, FontAwesome.UNIVERSITY, false, ACLAdministrasiEnum.ADD_KELASPERKULIAHAN),
+	 MAHASISWA_AKTIF("Daftar Mahasiswa Aktif", AdministrasiKartudanHasilStudi.class, FontAwesome.PRINT, false, ACLAdministrasiEnum.EDIT_MAHASISWA),
+	 RENCANA_STUDI("Daftar Rencana Studi", AdministrasiDaftarRencanaStudi.class, FontAwesome.TABLE, false, ACLAdministrasiEnum.TOLAK_KRS),
+	 MATA_KULIAH("Administrasi MataKuliah", AdministrasiMataKuliah.class, FontAwesome.TABLE, false, ACLAdministrasiEnum.MATAKULIAH),
+	 KURIKULUM("Administrasi Kurikulum", AdministrasiKurikulum.class, FontAwesome.TABLE, false, ACLAdministrasiEnum.MATAKULIAH),
+	 KONFIGURASI("Konfigurasi", KonfigurasiAkademik.class, FontAwesome.TICKET, false, ACLAdministrasiEnum.KONFIGURASI),
+	 MATAKULIAH_RENCANASTUDI("Mata Kuliah Rencana Studi", AdministrasiMataKuliahRencanaStudi.class, FontAwesome.TABLE, false, ACLAdministrasiEnum.TOLAK_KRS);
+	
 	 private final String viewName;
 	 private final Class<? extends View> viewClass;
 	 private final Resource icon;
@@ -33,18 +41,22 @@ public enum AdministrasiControlledAccessMenuItems implements AppMenuItems{
 	        this.acl = acl;
 	    }
 
+	@Override
 	public String getViewName() {
 		return viewName;
 	}
 
+	@Override
 	public Class<? extends View> getViewClass() {
 		return viewClass;
 	}
 
+	@Override
 	public Resource getIcon() {
 		return icon;
 	}
 
+	@Override
 	public boolean isStateful() {
 		return stateful;
 	}

@@ -155,7 +155,6 @@ public class RencanaStudiView extends VerticalLayout implements View{
 				try {
 					printRencanaStudi();
 				} catch (JRException e) {
-					
 					e.printStackTrace();
 				}
 			}

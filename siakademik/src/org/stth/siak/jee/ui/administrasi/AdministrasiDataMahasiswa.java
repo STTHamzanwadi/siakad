@@ -2,17 +2,15 @@ package org.stth.siak.jee.ui.administrasi;
 
 
 import java.util.List;
-
 import org.stth.jee.persistence.DosenKaryawanPersistence;
 import org.stth.jee.persistence.GenericPersistence;
 import org.stth.jee.persistence.MahasiswaPersistence;
 import org.stth.siak.entity.DosenKaryawan;
 import org.stth.siak.entity.Mahasiswa;
 import org.stth.siak.entity.ProgramStudi;
-import org.stth.siak.jee.ui.generalview.DaftarKelasPerkuliahanView;
 import org.stth.siak.jee.ui.generalview.DaftarMahasiswaView;
 import org.stth.siak.jee.ui.generalview.ViewFactory;
-
+import org.stth.siak.ui.util.GeneralPopups;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.BeanItemContainer;
@@ -31,9 +29,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 public class AdministrasiDataMahasiswa extends VerticalLayout implements View{
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = -5660284900239030833L;
 	private DosenKaryawan dosenPA;
 	private BeanItemContainer<ProgramStudi> beanProdi = new BeanItemContainer<>(ProgramStudi.class);
@@ -52,6 +48,12 @@ public class AdministrasiDataMahasiswa extends VerticalLayout implements View{
 		setSpacing(true);
 		Responsive.makeResponsive(this);
 		addComponent(ViewFactory.header("Administrasi Data Mahasiswa"));
+		Button add = new Button("Tambah");
+		add.addClickListener(klik->{
+			AdministrasiEditorDataMahasiswa ae = new AdministrasiEditorDataMahasiswa(null);
+			GeneralPopups.showGenericWindow(ae, "Edit Data Mahasiswa");
+		});
+		addComponent(add);
 		addComponent(createFilterComponent());
 		siapkanPilihanProdi();
 		siapkanPilihanPA();
@@ -92,10 +94,12 @@ public class AdministrasiDataMahasiswa extends VerticalLayout implements View{
 		GridLayout gl = new GridLayout(3, 2);
 		gl.setMargin(true);
 		FormLayout flKiri = new FormLayout();
+		FormLayout flMid = new FormLayout();
 		FormLayout flKanan = new FormLayout();
 		tfNama = new TextField("Nama");
 		tfNimStart = new TextField("Nim mulai");
 		tfAngkatan = new TextField("Angkatan");
+		
 		flKiri.setSpacing(true);
 		flKanan.setSpacing(true);
 		
@@ -109,10 +113,12 @@ public class AdministrasiDataMahasiswa extends VerticalLayout implements View{
 			}
 			
 		});
-		flKiri.addComponents(tfNama,tfNimStart,cbProdi);
-		flKanan.addComponents(tfAngkatan,cbPA,buttonFilter);
+		flKiri.addComponents(tfNama,tfNimStart);
+		flMid.addComponents(cbPA, cbProdi);
+		flKanan.addComponents(tfAngkatan,buttonFilter);
 		gl.addComponent(flKiri, 0, 0);
-		gl.addComponent(flKanan, 1, 0);
+		gl.addComponent(flMid, 1, 0);
+		gl.addComponent(flKanan, 2, 0);
 		gl.setSpacing(true);
 		pnl.setContent(gl);
 		return pnl;
@@ -133,12 +139,12 @@ public class AdministrasiDataMahasiswa extends VerticalLayout implements View{
 		int visColumns = DaftarMahasiswaView.NIM 
 				| DaftarMahasiswaView.NAMA 
 				| DaftarMahasiswaView.PRODI 
-				| DaftarMahasiswaView.TGL_LAHIR
-				| DaftarMahasiswaView.TEMPAT_LAHIR
+				//| DaftarMahasiswaView.TGL_LAHIR
+				//| DaftarMahasiswaView.TEMPAT_LAHIR
 				| DaftarMahasiswaView.DOSEN_PA
 				;
 		int allowedActions = DaftarMahasiswaView.LIHAT_PROFIL
-				| DaftarMahasiswaView.EDIT;
+				| DaftarMahasiswaView.EDIT | DaftarMahasiswaView.CETAK_TRANSKRIP;;
 		DaftarMahasiswaView dafv = new DaftarMahasiswaView(kr,visColumns 
 				,allowedActions);
 		dafv.showTranskripButton();

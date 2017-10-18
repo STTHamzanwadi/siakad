@@ -57,11 +57,15 @@
 		<dependency org="com.ibm.icu" name="icu4j" rev="53.1"/>
 		<dependency org="com.google.guava" name="guava" rev="18.0"/>
 		<dependency org="javax.validation" name="validation-api" rev="1.1.0.Final"/>
-		<dependency org="net.sf.jasperreports" name="jasperreports" rev="6.0.0"/>
+		<dependency org="net.sf.jasperreports" name="jasperreports" rev="6.4.0"/>
+		
 		<dependency org="net.sf.jasperreports" name="jasperreports-fonts" rev="6.0.0"/>
 		<dependency org="org.codehaus.groovy" name="groovy-all" rev="2.4.5"/>
 		<dependency org="com.vaadin.addon" name="tableexport-for-vaadin" rev="1.6.2" />
 		<dependency org="org.apache.commons" name="commons-lang3" rev="3.0"/>
+		<dependency org="eu.maxschuster"  name="vaadin-autocompletetextfield" rev="1.0-alpha-4" />
+		<dependency org="org.apache.poi" name="poi-ooxml" rev="3.13"/>
+		
 		
 		
 	</dependencies>

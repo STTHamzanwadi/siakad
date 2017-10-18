@@ -22,7 +22,6 @@ import org.stth.siak.ui.util.NoPropertyGenerated;
 import org.stth.siak.ui.util.StringPropertyGenerated;
 
 import com.vaadin.data.Item;
-import com.vaadin.data.util.BeanContainer;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.GeneratedPropertyContainer;
@@ -76,7 +75,7 @@ public class AdministrasiAlumniMahasiswa extends VerticalLayout implements View{
 		setMargin(true);
 		setSpacing(true);
 		HorizontalLayout hl = tambahAlumni();
-		addComponent(ViewFactory.header("Administrasi Data Almuni"));
+		addComponent(ViewFactory.header("Administrasi Data Alumni"));
 		addComponent(hl);
 		addComponent(filterLulusan());
 		addComponent(content);
@@ -160,8 +159,8 @@ public class AdministrasiAlumniMahasiswa extends VerticalLayout implements View{
 			example.setAngkatan(Integer.parseInt(angkatan.getValue()));
 		}
 		List<Mahasiswa> l = MahasiswaPersistence.getListByExample(example);
-		BeanContainer<Integer, Mahasiswa> beans = new BeanContainer<Integer, Mahasiswa>(Mahasiswa.class);
-		beans.setBeanIdProperty("id");
+		BeanItemContainer<Mahasiswa> beans = new BeanItemContainer<Mahasiswa>(Mahasiswa.class);
+		
 		if (!l.isEmpty()) {
 			beans.addAll(l);
 		}
@@ -173,7 +172,6 @@ public class AdministrasiAlumniMahasiswa extends VerticalLayout implements View{
 
 			@Override
 			public String getValue(Item item, Object itemId, Object propertyId) {
-				// TODO Auto-generated method stub
 				String kerja = "Belum";
 				BeanItem<?> i = (BeanItem<?>) item;
 				Mahasiswa m = (Mahasiswa) i.getBean();
@@ -188,11 +186,10 @@ public class AdministrasiAlumniMahasiswa extends VerticalLayout implements View{
 
 			@Override
 			public Class<String> getType() {
-				// TODO Auto-generated method stub
 				return String.class;
 			}
 		});
-		gpc.addGeneratedProperty("NO", new NoPropertyGenerated()); 
+		gpc.addGeneratedProperty("NO", new NoPropertyGenerated(beans)); 
 		Grid g = new Grid(gpc);
 		g.setWidth("800px");
 		g.setCaption("Ditemukan "+ l.size()+ " mahasiswa");
@@ -202,7 +199,7 @@ public class AdministrasiAlumniMahasiswa extends VerticalLayout implements View{
 		g.addColumn("prodi").setHeaderCaption("PRODI");
 		g.addColumn("tempatLahir").setHeaderCaption("TEMPAT LAHIR");
 		g.addColumn("tanggalLahir").setHeaderCaption("TGL LAHIR").setConverter(new StringToDateConverter(){
-			private static final long serialVersionUID = 1L;
+			private static final long serialVersionUID = -722166920049925960L;
 			@Override
 			public DateFormat getFormat(Locale locale){
 				return new SimpleDateFormat("dd-MMM-yyyy");

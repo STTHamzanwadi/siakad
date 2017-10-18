@@ -34,7 +34,6 @@ public class MahasiswaUI extends UI {
         setTheme("tests-valo-reindeer");
     
         Responsive.makeResponsive(this);
-
         updateContent();
 
         Page.getCurrent().addBrowserWindowResizeListener(

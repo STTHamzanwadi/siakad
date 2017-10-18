@@ -13,8 +13,8 @@ public class TranskripReportElement implements Comparable<TranskripReportElement
 	private int kn;
 	private int semester;
 	public TranskripReportElement(PesertaKuliah p, int sem){
-		this.kodemk = p.getCopiedKodeMatkul();
-		this.namamk = p.getCopiedNamaMatkul();
+		this.kodemk = p.getKelasPerkuliahan().getMataKuliah().getKode();
+		this.namamk = p.getKelasPerkuliahan().getMataKuliah().getNama();
 		this.nilaihuruf = p.getNilai();
 		this.nilaiangka = convertNilai(nilaihuruf);
 		this.sks = p.getCopiedSKSMatkul();
@@ -28,6 +28,7 @@ public class TranskripReportElement implements Comparable<TranskripReportElement
 	}
 	
 
+	
 	public String getKodemk() {
 		return kodemk;
 	}

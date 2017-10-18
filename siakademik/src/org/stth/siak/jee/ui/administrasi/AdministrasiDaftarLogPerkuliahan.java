@@ -49,6 +49,7 @@ import com.vaadin.ui.Window.CloseListener;
 
 public class AdministrasiDaftarLogPerkuliahan extends VerticalLayout implements View {
 
+	private static final long serialVersionUID = -8249051415291086482L;
 	private Semester semester;
 	private String ta;
 	private ComboBox cbDosen = new ComboBox("Dosen Pengampu");

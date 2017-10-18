@@ -15,6 +15,7 @@ import org.stth.siak.entity.Kurikulum;
 import org.stth.siak.entity.Mahasiswa;
 import org.stth.siak.entity.MataKuliahRencanaStudi;
 import org.stth.siak.entity.PesertaKuliah;
+import org.stth.siak.entity.ProgramStudi;
 import org.stth.siak.entity.RencanaStudiMahasiswa;
 import org.stth.siak.entity.RencanaStudiPilihanMataKuliah;
 import org.stth.siak.enumtype.RencanaStudiCreationMethod;
@@ -41,10 +42,13 @@ public class RencanaStudiManualHelper {
 	private String tahunAjaran;
 	private Date timestamp = new Date();
 	private RencanaStudiMahasiswa rs;
+	private ProgramStudi ps;
+	
 
-	public RencanaStudiManualHelper(Kurikulum kur, Semester sem, int maksSks, String tahunAjaran) {
+	public RencanaStudiManualHelper(ProgramStudi ps, Semester sem, int maksSks, String tahunAjaran) {
 		super();
 		//this.kur = kur;
+		this.ps=ps;
 		this.semester = sem;
 		this.maksSks = maksSks;
 		this.maksSks=maksSks;
@@ -66,7 +70,7 @@ public class RencanaStudiManualHelper {
 		if (rs==null){
 			siapkanRencanaStudiKosong();
 		}
-		
+
 	}
 
 	public void setMahasiswa(Mahasiswa m){
@@ -78,7 +82,12 @@ public class RencanaStudiManualHelper {
 		daftarMatkulTersediaMap = new HashMap<>();
 		List<Criterion> lc = new ArrayList<>();
 		lc.add(Restrictions.eq("semester", semester));
-		lc.add(Restrictions.eq("prodi", mahasiswa.getProdi()));
+		if (mahasiswa!=null) {
+			lc.add(Restrictions.eq("prodi", mahasiswa.getProdi()));
+		}else{
+			lc.add(Restrictions.eq("prodi", ps));
+		}
+
 		lc.add(Restrictions.eq("tahunAjaran", tahunAjaran));
 		List<MataKuliahRencanaStudi> ls = GenericPersistence.findList(MataKuliahRencanaStudi.class, lc);
 		for (MataKuliahRencanaStudi mkrs : ls) {
@@ -137,6 +146,11 @@ public class RencanaStudiManualHelper {
 	}
 
 	public void ambilMataKuliahOtomatis() {
+		ambilMatkulOtomatis(true);
+	}
+
+
+	private void ambilMatkulOtomatis(boolean saveToDatabase) {
 		siapkanDaftarMatkulSudahDiambil();
 		siapkanDaftarMatkulBelumDiambil();
 		siapkanMatkulPerluDiambil();
@@ -156,12 +170,22 @@ public class RencanaStudiManualHelper {
 				rsmk.setKeterangan(ambil.keterangan);
 				daftarMatkulRencanaStudi.add(rsmk);
 				i=i+ambil.mkrs.getMataKuliah().getSks();
-				GenericPersistence.merge(rsmk);
+				if (saveToDatabase) {
+					GenericPersistence.merge(rsmk);
+				}
+
 			}
 
 		}
 	}
 	public void siapkanRencanaStudiKosong(){
+		rencanaStudiMahasiswa();
+		rs.setCreationMethod(RencanaStudiCreationMethod.MANUAL_MAHASISWA);
+		GenericPersistence.saveAndFlush(rs);
+	}
+
+
+	private void rencanaStudiMahasiswa() {
 		siapkanDaftarMatkulSudahDiambil();
 		rs = new RencanaStudiMahasiswa();
 		rs.setMahasiswa(mahasiswa);
@@ -176,9 +200,37 @@ public class RencanaStudiManualHelper {
 		} else {
 			rs.setRemarks("-");
 		}
-		rs.setCreationMethod(RencanaStudiCreationMethod.MANUAL_MAHASISWA);
-		GenericPersistence.saveAndFlush(rs);
 	}
+
+	public void siapkanRencanaStudiOtomatis(boolean saveToDatabase){
+		if (saveToDatabase) {
+			deleteRencanaStudi();	
+		}
+		rencanaStudiMahasiswa();
+		rs.setCreationMethod(RencanaStudiCreationMethod.AUTO_SYSTEM);
+		rs.setStatus(StatusRencanaStudi.DIAJUKAN);
+		if (saveToDatabase) {
+			GenericPersistence.saveAndFlush(rs);
+		}
+		ambilMatkulOtomatis(saveToDatabase);
+	}
+
+	private void deleteRencanaStudi() {
+		List<Criterion> cl = new ArrayList<>();
+		cl.add(Restrictions.eq("mahasiswa",mahasiswa));
+		cl.add(Restrictions.eq("semester", semester));
+		cl.add(Restrictions.eq("tahunAjaran", tahunAjaran));
+		List<RencanaStudiMahasiswa> l = GenericPersistence.findList(RencanaStudiMahasiswa.class, cl);
+		if (l.size()>0){
+			for (RencanaStudiMahasiswa rencanaStudiMahasiswa : l) {
+				rs=rencanaStudiMahasiswa;
+				deleteMatkulRencanaStudiAktif();
+				GenericPersistence.delete(rencanaStudiMahasiswa);
+			}
+		}
+		
+	}
+
 
 	private RencanaStudiMahasiswa getExistingRencanaStudi() {
 		List<Criterion> cl = new ArrayList<>();
@@ -193,14 +245,15 @@ public class RencanaStudiManualHelper {
 	}
 	//persistent manager
 	private void deleteMatkulRencanaStudiAktif() {
-		
+		if (rs.getId()>0) {
 			List<Criterion> cl = new ArrayList<>();
 			cl.add(Restrictions.eq("rencanaStudi",rs));
 			List<?> lchild = GenericPersistence.findList(RencanaStudiPilihanMataKuliah.class, cl);
 			for (Object object2 : lchild) {
 				GenericPersistence.delete(object2);
 			}
-		
+		}
+
 	}
 	/*private void cekRencanaStudiYangAda(List<?> l) throws RencanaStudiExistException {
 		for (Object object : l) {

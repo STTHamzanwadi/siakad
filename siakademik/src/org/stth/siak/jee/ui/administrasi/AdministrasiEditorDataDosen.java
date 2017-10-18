@@ -11,10 +11,12 @@ import org.stth.siak.util.GeneralUtilities;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
+import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
@@ -26,13 +28,14 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 public class AdministrasiEditorDataDosen extends CustomComponent{
-	
+	private static final long serialVersionUID = -5134947009911467672L;
 	private VerticalLayout vl = new VerticalLayout();
 	private DosenKaryawan dosen;
 	private BeanItem<DosenKaryawan> item;
@@ -42,12 +45,16 @@ public class AdministrasiEditorDataDosen extends CustomComponent{
 	private DosenKaryawan user;
 	private ComboBox cbProdi = new ComboBox("Pilih prodi");
 	private BeanItemContainer<ProgramStudi> beanProdi = new BeanItemContainer<>(ProgramStudi.class);
+	private TextField tfNama;
 	/**
 	 * Open editor for Mahasiswa instance
 	 * @param dosen if creating new record, use new Mahasiswa()
 	 */
 	
 	public AdministrasiEditorDataDosen(DosenKaryawan dosen) {
+		if (dosen==null) {
+			dosen = new DosenKaryawan();
+		}
 		this.dosen = dosen;
 		user = VaadinSession.getCurrent().getAttribute(DosenKaryawan.class);
 		setCompositionRoot(vl);
@@ -84,7 +91,10 @@ public class AdministrasiEditorDataDosen extends CustomComponent{
 		
 		fg = new FieldGroup(item);
 		
-		fl1.addComponent(fg.buildAndBind("Nama", "nama"));
+		tfNama = new TextField();
+		tfNama.addValidator(new StringLengthValidator("Minimal 3 karakter", 3, null, false));
+		fg.bind(tfNama, "nama");
+		fl1.addComponent(tfNama);
 		fl2.addComponent(fg.buildAndBind("Alias", "alias"));
 		
 		fl1.addComponent(fg.buildAndBind("NIDN", "nidn"));
@@ -135,28 +145,25 @@ public class AdministrasiEditorDataDosen extends CustomComponent{
 		hlW.addComponent(fg.buildAndBind("Institusi Studi", "institusiPendTerakhir"));
 		
 		
-		
 		Button simpan = new Button("Simpan");
-		simpan.addClickListener(new ClickListener() {
-			@Override
-			public void buttonClick(ClickEvent event) {
-				try {
-					fg.commit();
-					DosenKaryawan m =  item.getBean();
-					m.setUpdateOleh(user);
-					GenericPersistence.merge(item.getBean());
-					Notification.show("Perubahan data berhasil dilakukan", Notification.Type.HUMANIZED_MESSAGE);
-				} catch (CommitException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-			}
+		simpan.addClickListener( e->{
+			save();
 		});
 		vl.addComponent(simpan);
 		return pnl;
 	}
-	
+	private void save() {
+		try {
+			fg.commit();
+			DosenKaryawan m =  item.getBean();
+			m.setUpdateOleh(user);
+			GenericPersistence.merge(item.getBean());
+			Notification.show("Perubahan data berhasil dilakukan", Notification.Type.HUMANIZED_MESSAGE);
+		} catch (CommitException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 
 }

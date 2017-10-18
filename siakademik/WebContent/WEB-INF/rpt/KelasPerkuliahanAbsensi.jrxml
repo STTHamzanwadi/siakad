@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version last-->
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-03-21T09:38:53 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" language="groovy" pageWidth="1008" pageHeight="612" orientation="Landscape" columnWidth="968" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="d72ff107-3a31-43c3-a01c-2e337b71e36b">
 	<property name="ireport.callouts" value="callouts.1.fg=0,0,0\n callouts.1.bg=255,255,0\n "/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
@@ -20,9 +21,9 @@
 	<field name="nilai" class="java.lang.String"/>
 	<background>
 		<band height="592" splitType="Stretch">
-			<image>
+			<image onErrorType="Blank" evaluationTime="Column">
 				<reportElement x="480" y="160" width="270" height="260" uuid="4221d109-07cd-4eed-b213-3ea7bba49e7c"/>
-				<imageExpression><![CDATA["rpt/image/logo-transparent.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{basepath}+"image/logo-transparent.png"]]></imageExpression>
 			</image>
 		</band>
 	</background>
@@ -33,7 +34,7 @@
 				<textElement textAlignment="Left">
 					<font size="16" isBold="true"/>
 				</textElement>
-				<text><![CDATA[SEKOLAH TINGGI TEKNOLOGI HAMZANWADI]]></text>
+				<text><![CDATA[FAKULTAS TEKNIK UNIVERSITAS HAMZANWADI]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="40" y="40" width="921" height="15" uuid="0a051530-c13c-4354-a666-d18787eb876e">
@@ -395,13 +396,6 @@
 	</columnFooter>
 	<pageFooter>
 		<band height="18" splitType="Stretch">
-			<staticText>
-				<reportElement x="40" y="1" width="301" height="16" uuid="1bfd0056-e4dd-44f5-8fa0-79eae128df85"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[SISTEM INFORMASI AKADEMIK STT HAMZANWADI]]></text>
-			</staticText>
 			<textField>
 				<reportElement x="860" y="0" width="100" height="18" uuid="137f5c56-65f7-4ebc-af98-8f5abf6545eb"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">

@@ -8,6 +8,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.stth.siak.entity.DosenKaryawan;
 import org.stth.siak.entity.Mahasiswa;
+import org.stth.siak.entity.ProgramStudi;
 import org.stth.siak.enumtype.StatusMahasiswa;
 
 public class MahasiswaPersistence {
@@ -18,7 +19,18 @@ public class MahasiswaPersistence {
 		List<Mahasiswa> rslt = GenericPersistence.findList(Mahasiswa.class,lc);
 		return rslt;
 	}
-	
+	public static List<Mahasiswa> getListByPembimbingAkademik(DosenKaryawan d, ProgramStudi prodi){
+		List<Criterion> lc = new ArrayList<>();
+		if (prodi!=null){
+			lc.add(Restrictions.eq("prodi", prodi));
+		}
+		lc.add(Restrictions.eq("pembimbingAkademik", d));
+		lc.add(Restrictions.eq("status", StatusMahasiswa.AKTIF));
+		List<Mahasiswa> rslt = GenericPersistence.findList(Mahasiswa.class,lc);
+		return rslt;
+	}
+
+
 	public static List<Mahasiswa> getListByExample(Mahasiswa example){
 		List<Criterion> lc = new ArrayList<>();
 		if (example.getPembimbingAkademik()!=null){
@@ -36,7 +48,15 @@ public class MahasiswaPersistence {
 		if (example.getProdi()!=null){
 			lc.add(Restrictions.eq("prodi", example.getProdi()));
 		}
-		lc.add(Restrictions.eq("status", StatusMahasiswa.AKTIF));
+
+		if (example.getStatus()!=null) {
+			lc.add(Restrictions.eq("status", example.getStatus()));
+		}else{
+			lc.add(Restrictions.eq("status", StatusMahasiswa.AKTIF));
+		}
+		if (example.getStatusMasuk()!=null) {
+			lc.add(Restrictions.eq("statusMasuk", example.getStatusMasuk()));
+		}
 		List<Mahasiswa> rslt = GenericPersistence.findList(Mahasiswa.class,lc);
 		return rslt;
 	}

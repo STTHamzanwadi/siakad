@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports Library version 5.6.1  -->
-<!-- 2016-01-14T14:52:35 -->
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-10-06T09:08:09 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" isIgnorePagination="true" uuid="d72ff107-3a31-43c3-a01c-2e337b71e36b">
 	<property name="ireport.callouts" value="callouts.1.fg=0,0,0\n callouts.1.bg=255,255,0\n "/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
@@ -26,7 +26,7 @@
 	</parameter>
 	<parameter name="tahunajaran" class="java.lang.String"/>
 	<parameter name="pembimbingakademik" class="java.lang.String"/>
-	<parameter name="pembimbingnis" class="java.lang.String"/>
+	<parameter name="pembimbingnidn" class="java.lang.String"/>
 	<parameter name="keterangan" class="java.lang.String"/>
 	<parameter name="Parameter1" class="java.lang.String"/>
 	<parameter name="basepath" class="java.lang.String">
@@ -58,40 +58,50 @@
 		</band>
 	</background>
 	<title>
-		<band height="136" splitType="Stretch">
+		<band height="140" splitType="Stretch">
 			<staticText>
-				<reportElement x="100" y="14" width="454" height="20" uuid="2a0a9972-abb9-438f-81dc-1c144f7420bd"/>
-				<textElement textAlignment="Center">
-					<font size="16" isBold="true"/>
-				</textElement>
-				<text><![CDATA[SEKOLAH TINGGI TEKNOLOGI HAMZANWADI]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="100" y="34" width="455" height="64" uuid="e12d056f-24ec-4fc6-ac29-c986a737edf2"/>
-				<textElement textAlignment="Center" markup="none">
-					<font size="9" isBold="false"/>
-				</textElement>
-				<text><![CDATA[SK MENDIKBUD NO : 356/E/O/2013
-PROGRAM STUDI: 
-S1 TEKNIK INFORMATIKA - S1 SISTEM INFORMASI - D3 MANAJEMEN INFORMATIKA
-Alamat: Jln. Prof. M. Yamin Pancor, Lombok Timur, Nusa Tenggara Barat
-Telp/Fax: 0376 23681 http://www.stthamzanwadi.ac.id stthamzanwadi@gmail.com]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="110" width="554" height="20" uuid="8d5c2a8e-8b4c-469e-b2f5-709d78067b5c"/>
+				<reportElement x="0" y="119" width="554" height="20" uuid="8d5c2a8e-8b4c-469e-b2f5-709d78067b5c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[KARTU RENCANA STUDI]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="30" y="96" width="525" height="1" uuid="1f76e0c2-0d90-4622-b7b3-84314c01d346">
+				<reportElement x="30" y="108" width="525" height="1" uuid="1f76e0c2-0d90-4622-b7b3-84314c01d346">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="120" y="42" width="435" height="64" uuid="0e2802f3-4187-45bf-a3d8-f53182636ac0"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[PROGRAM STUDI 
+S1 TEKNIK INFORMATIKA - S1 SISTEM INFORMASI - D3 MANAJEMEN INFORMATIKA
+S1 TEKNIK KOMPUTER - S1 TEKNIK LINGKUNGAN
+Alamat: Jln. Prof. M. Yamin No 35 Pancor, Lombok Timur, Nusa Tenggara Barat
+Telp: (0376) 23681 http://www.hamzanwadi.ac.id ft.hamzanwadi@gmail.com]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="120" y="8" width="435" height="20" uuid="3ffafcc5-8fb1-4cc9-94b1-b349aa76c929"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UNIVERSITAS HAMZANWADI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="25" width="435" height="17" uuid="6d298a4f-9ce3-42dc-a219-96c810878dd8"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FAKULTAS TEKNIK]]></text>
+			</staticText>
 			<image>
-				<reportElement x="30" y="14" width="80" height="84" uuid="1108cd38-a454-491c-9f4a-f7c4521153fd"/>
+				<reportElement x="37" y="12" width="90" height="90" uuid="76f5541a-ff33-40fa-b858-598e89450518">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
 				<imageExpression><![CDATA[$P{basepath}+"image/logo.png"]]></imageExpression>
 			</image>
 		</band>
@@ -385,23 +395,15 @@ Telp/Fax: 0376 23681 http://www.stthamzanwadi.ac.id stthamzanwadi@gmail.com]]></
 				<text><![CDATA[]]></text>
 			</staticText>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement x="120" y="40" width="167" height="12" uuid="10cb3a13-98d9-46c8-90a5-84c180be4da1"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[": "+$P{statusrencanastudi}]]></textFieldExpression>
-			</textField>
-			<textField pattern="" isBlankWhenNull="true">
-				<reportElement x="380" y="72" width="150" height="12" uuid="38145f0d-5f46-4f4b-9e57-d284eba0d09a"/>
+				<reportElement x="362" y="72" width="177" height="12" uuid="38145f0d-5f46-4f4b-9e57-d284eba0d09a"/>
 				<textElement textAlignment="Center" markup="none">
 					<font size="9" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["NIS: "+$P{pembimbingnis}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["NIDN: "+$P{pembimbingnidn}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="40" y="40" width="80" height="12" uuid="18484684-51e0-4316-820f-16106fd42103">
+				<reportElement x="40" y="38" width="70" height="11" uuid="18484684-51e0-4316-820f-16106fd42103">
 					<property name="local_mesure_unitheight" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Middle" markup="none">
 					<font size="9" isBold="true"/>
@@ -409,9 +411,10 @@ Telp/Fax: 0376 23681 http://www.stthamzanwadi.ac.id stthamzanwadi@gmail.com]]></
 				<text><![CDATA[Status]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="40" y="20" width="80" height="12" uuid="841ad1c1-84b6-4458-bcda-fefc92707729">
+				<reportElement x="40" y="21" width="70" height="12" uuid="841ad1c1-84b6-4458-bcda-fefc92707729">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="cm"/>
 				</reportElement>
 				<textElement verticalAlignment="Middle" markup="none">
 					<font size="9" isBold="true"/>
@@ -419,7 +422,7 @@ Telp/Fax: 0376 23681 http://www.stthamzanwadi.ac.id stthamzanwadi@gmail.com]]></
 				<text><![CDATA[IPK / Ket]]></text>
 			</staticText>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement x="380" y="60" width="150" height="12" uuid="e3842b14-65df-4cd3-a7b9-714156638f2c"/>
+				<reportElement x="362" y="60" width="177" height="12" uuid="e3842b14-65df-4cd3-a7b9-714156638f2c"/>
 				<box>
 					<bottomPen lineWidth="1.0"/>
 				</box>
@@ -428,15 +431,8 @@ Telp/Fax: 0376 23681 http://www.stthamzanwadi.ac.id stthamzanwadi@gmail.com]]></
 				</textElement>
 				<textFieldExpression><![CDATA[$P{pembimbingakademik}]]></textFieldExpression>
 			</textField>
-			<textField pattern="">
-				<reportElement x="120" y="20" width="236" height="12" uuid="202dc907-3f7f-4250-aa0a-f593fa15e768"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[": "+$P{ipk}+" / "+$P{keterangan}]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement x="380" y="20" width="150" height="12" uuid="b7709a2f-32d1-4ff6-a2eb-e43dd10b8b63">
+				<reportElement x="362" y="20" width="177" height="12" uuid="b7709a2f-32d1-4ff6-a2eb-e43dd10b8b63">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -445,19 +441,28 @@ Telp/Fax: 0376 23681 http://www.stthamzanwadi.ac.id stthamzanwadi@gmail.com]]></
 				</textElement>
 				<text><![CDATA[PEMBIMBING AKADEMIK]]></text>
 			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="124" y="38" width="237" height="11" uuid="938fb5b2-b492-4f2f-a0f2-466586ada1ea"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[": "+$P{statusrencanastudi}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="124" y="21" width="237" height="11" uuid="ea683e5e-f375-46b9-afe6-186657309972">
+					<property name="com.jaspersoft.studio.unit.x" value="cm"/>
+				</reportElement>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[": "+$P{ipk}+" / " + $P{keterangan}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnFooter>
 	<pageFooter>
 		<band height="32" splitType="Stretch">
-			<staticText>
-				<reportElement x="40" y="9" width="301" height="16" uuid="1bfd0056-e4dd-44f5-8fa0-79eae128df85"/>
-				<textElement>
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[IOSYS - SIAKADEMIK STT HAMZANWADI]]></text>
-			</staticText>
 			<textField>
-				<reportElement x="400" y="7" width="128" height="18" uuid="137f5c56-65f7-4ebc-af98-8f5abf6545eb"/>
+				<reportElement x="382" y="7" width="155" height="18" uuid="137f5c56-65f7-4ebc-af98-8f5abf6545eb"/>
 				<textElement textAlignment="Right" markup="none">
 					<font size="8" isItalic="true"/>
 				</textElement>

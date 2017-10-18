@@ -1,6 +1,8 @@
 package org.stth.siak.util;
 
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,6 +12,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.hibernate.HibernateException;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -93,6 +99,12 @@ public class GeneralUtilities {
 		int thn = c.get(java.util.Calendar.YEAR);
 		return thn;
 	}
+	public static int getCurrentYearLocal(){
+		Calendar c  = Calendar.getInstance();
+		c.setTime(new Date());
+		int thn = c.get(java.util.Calendar.YEAR);
+		return thn;
+	}
 	public static int getCurrentMonth(){
 		Calendar c  = Calendar.getInstance();
 		c.setTime(getCurrentDBDate());
@@ -102,6 +114,13 @@ public class GeneralUtilities {
 	public static String getLongFormattedDate(Date dt){
 		if (dt!=null) {
 			DateFormat f = new SimpleDateFormat("dd MMMM YYYY", LOCALE);
+			return f.format(dt);
+		}
+		return "-";
+	}
+	public static String getLongFormattedDate2(Date dt){
+		if (dt!=null) {
+			DateFormat f = new SimpleDateFormat("dd MMMM yyyy", LOCALE);
 			return f.format(dt);
 		}
 		return "-";
@@ -129,6 +148,31 @@ public class GeneralUtilities {
 		String thns = String.valueOf(thn)+"-"+(String.valueOf(thn+1));
 		return thns;
 	}
+	public static String getCurTA(){
+		Calendar c  = Calendar.getInstance();
+		c.setTime(new Date());
+		int thn = c.get(java.util.Calendar.YEAR);
+		String thns;
+		if (c.get(java.util.Calendar.MONTH)<7) {
+			thns = String.valueOf(thn-1)+"-"+(String.valueOf(thn));
+		}else{
+			thns = String.valueOf(thn)+"-"+(String.valueOf(thn+1));
+		}
+		
+		return thns;
+	}
+	public static Semester getCurSMS(){
+		Calendar c  = Calendar.getInstance();
+		c.setTime(new Date());
+		int bulan = c.get(java.util.Calendar.MONTH);
+		System.out.println(bulan);
+		if (bulan<7) {
+			return Semester.GENAP;
+		}
+		return Semester.GANJIL;
+	}
+	
+	
 	public static Semester genapGanjilEnumFromInt(int i){
 		if ((i % 2) == 0){
 			return Semester.GENAP;
@@ -225,6 +269,37 @@ public class GeneralUtilities {
 
 		return container;
 	}
+	
+	public static void writeSheet(Workbook wb, String tabName, String[][] data) 
+	{
+		//Create new workbook and tab
 
+		Sheet sheet = wb.createSheet(tabName);
+
+		//Create 2D Cell Array
+		Row[] row = new Row[data.length];
+		Cell[][] cell = new Cell[row.length][];
+
+		//Define and Assign Cell Data from Given
+		for(int i = 0; i < row.length; i ++)
+		{
+			row[i] = sheet.createRow(i);
+			cell[i] = new Cell[data[i].length];
+
+			for(int j = 0; j < cell[i].length; j ++)
+			{
+				cell[i][j] = row[i].createCell(j);
+				cell[i][j].setCellValue(data[i][j]);
+			}
+
+		}
+
+	}
+	public static void createFileExcel(Workbook wb, String fileName) throws IOException{
+		FileOutputStream fileOut = new FileOutputStream(fileName);
+		wb.write(fileOut);
+		fileOut.close();
+		System.out.println("File exported successfully");
+	}
 
 }

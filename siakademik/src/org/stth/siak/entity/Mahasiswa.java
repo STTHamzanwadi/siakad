@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -11,9 +12,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.stth.siak.enumtype.JenisKelamin;
 import org.stth.siak.enumtype.StatusMahasiswa;
+import org.stth.siak.enumtype.StatusMasuk;
+
 
 @Entity
 public class Mahasiswa implements Comparable<Mahasiswa>, Comparator<Mahasiswa>{
@@ -57,6 +62,17 @@ public class Mahasiswa implements Comparable<Mahasiswa>, Comparator<Mahasiswa>{
 	@ManyToOne(cascade = CascadeType.REFRESH)
     @PrimaryKeyJoinColumn
 	private DosenKaryawan updateOleh;
+	private String judulSkripsi="";
+	private String noSeriIjazah="";
+	private String ttldiIjazah="";
+	@Temporal(TemporalType.DATE)
+	private Date tanggalLulus;
+	private String facebook;
+	@Column(length=50)
+	private String angkatanLulus;
+	@Enumerated(EnumType.STRING)
+	private StatusMasuk statusMasuk;
+	
 	public int getId() {
 		return id;
 	}
@@ -214,6 +230,48 @@ public class Mahasiswa implements Comparable<Mahasiswa>, Comparator<Mahasiswa>{
 	}
 	public void setUpdateOleh(DosenKaryawan updateOleh) {
 		this.updateOleh = updateOleh;
+	}
+	public String getJudulSkripsi() {
+		return judulSkripsi;
+	}
+	public void setJudulSkripsi(String judulSkripsi) {
+		this.judulSkripsi =(judulSkripsi);
+	}
+	public String getNoSeriIjazah() {
+		return noSeriIjazah;
+	}
+	public void setNoSeriIjazah(String noSeriIjazah) {
+		this.noSeriIjazah = noSeriIjazah;
+	}
+	public String getTtldiIjazah() {
+		return ttldiIjazah;
+	}
+	public void setTtldiIjazah(String ttldiIjazah) {
+		this.ttldiIjazah = ttldiIjazah;
+	}
+	public Date getTanggalLulus() {
+		return tanggalLulus;
+	}
+	public void setTanggalLulus(Date tanggalLulus) {
+		this.tanggalLulus = tanggalLulus;
+	}
+	public String getFacebook() {
+		return facebook;
+	}
+	public void setFacebook(String facebook) {
+		this.facebook = facebook;
+	}
+	public String getAngkatanLulus() {
+		return angkatanLulus;
+	}
+	public void setAngkatanLulus(String angkatanLulus) {
+		this.angkatanLulus = angkatanLulus;
+	}
+	public StatusMasuk getStatusMasuk() {
+		return statusMasuk;
+	}
+	public void setStatusMasuk(StatusMasuk statusMasuk) {
+		this.statusMasuk = statusMasuk;
 	}
 	public String toString(){
 		return npm+" "+nama+" "+angkatan;

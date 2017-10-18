@@ -8,7 +8,9 @@ import org.stth.siak.entity.DosenKaryawan;
 import org.stth.siak.entity.Mahasiswa;
 import org.stth.siak.helper.IndeksPrestasiHelper;
 import org.stth.siak.jee.ui.generalview.ViewFactory;
+
 import org.stth.siak.ui.util.GeneralPopups;
+import org.stth.siak.util.ExportUtil;
 
 import com.ibm.icu.text.DecimalFormat;
 import com.vaadin.data.util.BeanContainer;
@@ -112,7 +114,12 @@ public class DosenStatusBimbinganAkademik extends VerticalLayout implements View
 		tableMhs.setColumnHeader("ipk", "IPK");
 		tableMhs.setColumnHeader("aksi", "LIHAT");
 		tableMhs.setVisibleColumns("npm","nama","prodi","ipk","aksi");
-		dashboardPanels.addComponent(tableMhs);
+		Button buttonTranskrip = new Button("Export Transkrip");
+		buttonTranskrip.addClickListener(e->{
+			ExportUtil.transkrip(dosen);
+		});
+		
+		dashboardPanels.addComponents(tableMhs);
 		return dashboardPanels;
 	}
 

@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.stth.jee.persistence.GenericPersistence;
 import org.stth.jee.persistence.KHSPersistence;
+import org.stth.jee.persistence.KonfigurasiPersistence;
 import org.stth.siak.entity.KelasPerkuliahanMahasiswaPerSemester2;
 import org.stth.siak.entity.ProgramStudi;
 import org.stth.siak.enumtype.JenisUjian;
@@ -13,6 +14,7 @@ import org.stth.siak.enumtype.Semester;
 import org.stth.siak.jee.ui.generalview.ViewFactory;
 import org.stth.siak.rpt.ReportResourceGenerator;
 import org.stth.siak.ui.util.NoPropertyGenerated;
+
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanContainer;
 import com.vaadin.data.util.BeanItem;
@@ -43,14 +45,15 @@ public class AdministrasiKartudanHasilStudi extends VerticalLayout implements Vi
 	private ComboBox cbProdi;
 	private TextField tfNama;
 	private Panel p = new Panel("Daftar Mahasiswa");
+	private KonfigurasiPersistence k;
 
 	public AdministrasiKartudanHasilStudi() {
 		setMargin(true);
 		setSpacing(true);
+		k = new KonfigurasiPersistence();
 		addComponent(ViewFactory.header("Administrasi Daftar Mahasiswa Aktif"));
 		addComponent(buildFilter());
 		addComponent(p);
-
 	}
 	private Component buildFilter(){
 		Panel p = new Panel("Filter");
@@ -61,7 +64,9 @@ public class AdministrasiKartudanHasilStudi extends VerticalLayout implements Vi
 		FormLayout flRight = new FormLayout();
 		tfNama = new TextField("Nama");
 		cbSemester = new ComboBox("Semester", Arrays.asList(Semester.values()));
+		cbSemester.setValue(k.getCurrentSemester());
 		tfTA= new TextField("Tahun Ajaran");
+		tfTA.setValue(k.getCurrentTa());
 		cbProdi = new ComboBox("Program Studi", GenericPersistence.findList(ProgramStudi.class));
 		tfAngkatan = new TextField("Angkatan");
 		Button cari = new Button("Cari");
@@ -74,7 +79,6 @@ public class AdministrasiKartudanHasilStudi extends VerticalLayout implements Vi
 			buildComponent();
 		});
 
-
 		return p;
 	}
 	private void buildComponent(){
@@ -82,7 +86,7 @@ public class AdministrasiKartudanHasilStudi extends VerticalLayout implements Vi
 		vl.setSpacing(true);
 		String nama="";
 		String prodi="";
-		String ta="2013-2014";
+		String ta="";
 		int angkatan=0;
 		if(!cbProdi.isEmpty()){
 			prodi=((ProgramStudi)cbProdi.getValue()).getNama();
@@ -160,12 +164,13 @@ public class AdministrasiKartudanHasilStudi extends VerticalLayout implements Vi
 
 		});
 
-		gpc.addGeneratedProperty("NO", new NoPropertyGenerated()); 
+		//gpc.addGeneratedProperty("NO", new NoPropertyGenerated()); 
 		g.setContainerDataSource(gpc);
+		g.setSizeFull();
 		g.removeAllColumns();
 		g.setWidth("800px");
 		g.setCaption("Ditemukan "+beans.size()+" mahasiswa");
-		g.addColumn("NO");
+		//g.addColumn("NO");
 		g.addColumn("semester").setHeaderCaption("SEMESTER");
 		g.addColumn("tahunAjaran");
 		g.addColumn("NIM");
@@ -191,7 +196,6 @@ public class AdministrasiKartudanHasilStudi extends VerticalLayout implements Vi
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 
 		});
 		Button cetakkartuUTS = new Button("Cetak Kartu UTS");
@@ -224,8 +228,6 @@ public class AdministrasiKartudanHasilStudi extends VerticalLayout implements Vi
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-		
 	}
 	@Override
 	public void enter(ViewChangeEvent event) {

@@ -19,6 +19,7 @@ public class PesertaKuliah implements Comparable<PesertaKuliah>, Comparator <Pes
     @PrimaryKeyJoinColumn
 	private KelasPerkuliahan kelasPerkuliahan;
 	private String nilai;
+	private Double nilaiAngka;
 	private String copiedKodeMatkul;
 	private String copiedNamaMatkul;
 	private int copiedSKSMatkul;
@@ -47,15 +48,23 @@ public class PesertaKuliah implements Comparable<PesertaKuliah>, Comparator <Pes
 	}
 	public void setKelasPerkuliahan(KelasPerkuliahan kelasPerkuliahan) {
 		this.kelasPerkuliahan = kelasPerkuliahan;
-		copiedKodeMatkul = kelasPerkuliahan.getMataKuliah().getKode();
-		copiedNamaMatkul = kelasPerkuliahan.getMataKuliah().getNama();
-		copiedSKSMatkul = kelasPerkuliahan.getMataKuliah().getSks();
+		if (kelasPerkuliahan.getMataKuliah()!=null) {
+			copiedKodeMatkul = kelasPerkuliahan.getMataKuliah().getKode();
+			copiedNamaMatkul = kelasPerkuliahan.getMataKuliah().getNama();
+			copiedSKSMatkul = kelasPerkuliahan.getMataKuliah().getSks();
+		}
 	}
 	public String getNilai() {
 		return nilai;
 	}
 	public void setNilai(String nilai) {
 		this.nilai = nilai;
+	}
+	public Double getNilaiAngka() {
+		return nilaiAngka;
+	}
+	public void setNilaiAngka(Double nilaiAngka) {
+		this.nilaiAngka = nilaiAngka;
 	}
 	public String getCopiedKodeMatkul() {
 		return copiedKodeMatkul;

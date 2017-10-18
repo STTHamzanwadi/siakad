@@ -46,6 +46,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 
 public class AdministrasiCetakAbsensi extends VerticalLayout implements View{
+	private static final long serialVersionUID = -1425418749387686688L;
 	private VerticalLayout root = new VerticalLayout();
 	private Panel content = new Panel("Daftar Kelas");
 	private ComboBox comboProdi;
@@ -112,7 +113,7 @@ public class AdministrasiCetakAbsensi extends VerticalLayout implements View{
 		if (l.size()>0){
 			beans.addAll(l);
 		} else {
-			beans.addBean(new KelasPerkuliahan());
+		//	beans.addBean(new KelasPerkuliahan());
 		}
 		t.setSelectable(true);
 		t.setMultiSelect(true);
